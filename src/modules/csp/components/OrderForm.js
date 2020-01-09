@@ -27,7 +27,6 @@ import StepIndicator from 'react-native-step-indicator';
 import { Translation } from 'react-i18next';
 import { bindComponentToContext, listOptionsSelector } from '../../../libs/componentHelper';
 import { initComponent, loadComponentData } from '../../../libs/formComponentHelper'; // [!] component FORM helper
-import { apiGetById, apiGetList, apiUpdateById, apiExportFile, apiPost, apiUpload, apiDownloadByURL } from '../../../libs/apiHelper';
 import TextField from '../../../userControls/TextField';
 import SelectionField from '../../../userControls/SelectionField';
 import Footer from '../../../userControls/Footer';
