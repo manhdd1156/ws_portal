@@ -1,0 +1,166 @@
+{
+	"app": {
+		"name": "Synnex FPT JSC Suite",
+		"copyright": "Bản quyền © 2017-2019 bởi Synnex FPT JSC."
+	},
+	"btn": {
+		"signin": "Đăng nhập",
+		"remember": "Lưu mật khẩu",
+		"create": "Tạo mới",
+		"delete": "Xóa",
+		"goBack": "Trở về",
+		"save": "Cập nhật",
+		"update": "Cập nhật",
+		"search": "Tìm kiếm",
+		"searchAll": "Tìm tất cả",
+		"sync": "Đồng bộ",
+		"export": "Kết xuất",
+		"send": "Gửi",
+		"exportIndex": "Kết xuất Index",
+		"confirm": "Xác nhận",
+		"cancel": "Hủy",
+		"select": "Lựa chọn"
+	},
+	"placeholder": {
+		"username" : "Tên người dùng hoặc email",
+		"password" : "Mật khẩu"
+	},
+	"orderState": {
+		"draft": "Dự thảo",
+		"sent": "Đã gửi",
+		"sale_approve": "Sale duyệt",
+		"bd_approve": "BD duyệt",
+		"completed": "Hoàn thành",
+		"": ""
+	},
+	"tab": {
+		"search": "Tìm kiếm",
+		"utility": "Tiện ích",
+		"queryName": "Tên truy vấn",
+		"isDefaultQuery": "Truy vấn mặc định",
+		"saveQuery": "Lưu truy vấn",
+		"savedQueryName": "Mẫu truy vấn"
+	},
+	"table": {
+		"order": "STT",
+		"name": "Tên",
+		"fieldName": "Tên trường",
+		"fieldValue": "Giá trị truy vấn"
+	},
+	"msg": {
+		"login" :{
+			"403" : "Sai tên đăng nhập hoặc mật khẩu"
+		},
+		"create": {
+			"failure": "Không tạo mới được",
+			"inprocess": "Đang tạo mới",
+			"success": "Tạo mới thành công"
+		},
+		"delete": {
+			"failure": "Không xóa được",
+			"inprocess": "Yêu cầu xóa dữ liệu đã được ghi nhận",
+			"success": "Xóa thành công",
+			"confirmMessage": "Bạn có chắc chắn muốn xóa bản ghi này không?"
+		},
+		"httpResponseCode": {
+			"200": "Cập nhật thành công.",
+			"201": "Đã tạo thành công.",
+			"301": "Đã chuyển hướng sang trang khác.",
+			"401": "Bạn chưa được xác thực quyền truy cập.",
+			"403": "Bạn không đủ thẩm quyền để thực hiện thao tác với dữ liệu.",
+			"404": "Không tìm thấy tài nguyên.",
+			"405": "Phương thức truy cập không hợp lệ.",
+			"422": "Dữ liệu chưa phù hợp.",
+			"500": "Lỗi tại máy chủ.",
+			"502": "Lỗi Gateway.",
+			"503": "Dịch vụ đang bị gián đoạn.",
+			"2xx": "Cập nhật thành công.",
+			"3xx": "Chuyển hướng dịch vụ.",
+			"4xx": "Lỗi phía người dùng.",
+			"5xx": "Lỗi phía máy chủ."
+		},
+		"read": {
+			"failure": "Không đọc được",
+			"inprocess": "Đang đọc",
+			"success": "Đọc thành công"
+		},
+		"title": {
+			"confirm": "Xác nhận",
+			"error": "Có lỗi xảy ra",
+			"info": "Thông báo",
+			"warning": "Cảnh báo"
+		},
+		"update": {
+			"failure": "Không cập nhật được",
+			"inprocess": "Đang cập nhật",
+			"success": "Cập nhật thành công"
+		},
+		"validate": {
+			"failure": "không phù hợp.",
+			"inprocess": "đang kiểm tra.",
+			"success": "hợp lệ."
+		},
+		"search": {
+			"noResult": "Không có kết quả"
+		}
+	},
+	"pageNav": {
+		"itemsPerPage": "{itemsPerPage, plural, =0 {#} other {# (bản ghi / trang)}}",
+		"totalAmount": "{totalAmount, plural, =0 {Tìm thấy 0 bản ghi. } other {Tìm thấy # bản ghi. }}",
+		"selectedAmount": "{selectedAmount, plural, =0 {} other {Đã chọn (#) }}"
+	},
+	"btn_Finished": "Hoàn thành",
+	"btn_FAF_Export": "Kế toán XK",
+	"btn_ComponentWarehouse_Export": "KLK xuất kho",
+	"btn_Manufacturing": "Đang sản xuất",
+	"btn_finishManfacture": "Đã sản xuất xong",
+	"btn_ImportWarehouseApart": "Nhập kho một phần",
+	"btn_ImportWarehouseAll": "Nhập kho toàn bộ",
+	"btn_Import_ORC_Apart": "Nhập ORC một phần",
+	"btn_Import_ORC_All": "Nhập ORC toàn bộ",
+	"btn_StopManufacturing": "Ngừng sản xuất",
+	"btn_StartManufacturing": "Tiếp tục sản xuất",
+	"btn_Send": "Gửi YCTK",
+	"btn_Approve": "Duyệt YCTK",
+	"btn_Cannot_Allocation": "Chưa cấp phát LK",
+	"btn_HasErrorComponents": "Báo lỗi linh kiện",
+	"btn_reduceQuantity": "Điều chỉnh số lượng",
+	"btn_RejectStop": "Không duyệt ngừng",
+	"btn_ArpproveStop": "Duyệt ngừng SX",
+	"btn_Reject": "Từ chối duyệt",
+	"btn_Manufactuing": "Đang sản xuất",
+	"btn_Adjustment": "Điều chỉnh số lượng",
+	"btn_Cancel": "Hủy YCTK",
+	"btn_ApprovedCancel": "Duyệt hủy YCTK ",
+	"btn_PendingFaf": "FAF nhập lại LK",
+	"btn_PendingManager": "TBP duyệt hủy",
+	"btn_PendingCW": "Kho nhập lại LK",
+	"btn_PendingMD": "Bộ phận SX xử lý",
+	"btn_Dismantling": "Tạo YC rã LK",
+	"btn_Manager_Approve": "TBP duyệt rã",
+	"btn_Planning_Approve": "KHSX duyệt rã",
+	"btn_FAF_Manager_Approve": "KTT duyệt rã",
+	"btn_ExportComponent": "In phiếu xuất",
+	"btn_ImportProduct": "In phiếu nhập",
+	"btn_InventoryProduct": "Tồn kho TP",
+	"InventoryProductHeader": "Tồn Kho Thành Phẩm",
+	"btn_InventoryComponent": "Tồn kho LK",
+	"InventoryComponent": "Tồn Kho Linh Kiện",
+	"contentCancel": "Bạn muốn hủy YCTK này ?",
+	"cancelButton": "Khoan đã",
+	"confirmButton": "Hủy luôn",
+	"btn_quantityAdjustment": "Điều chỉnh LK",
+	"btn_sendQuantityAdjustment": "Gửi YCĐC",
+	"btn_ApproveReduce": "Duyệt điều chỉnh",
+	"btn_CancelReduce": "Hủy YCĐC",
+	"file": {
+		"fileName": "Tên file",
+		"fileType": "Loại file",
+		"fileSize": "Kích thước file",
+		"uploadedAt": "TG upload"
+	},
+	"form": {
+		"commentList": "Danh sách bình luận",
+		"comment": "Bình luận"
+	}
+}

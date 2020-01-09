@@ -1,0 +1,111 @@
+{
+	"app": {
+		"name": "Synnex FPT JSC Suite",
+		"copyright": "Copyright © 2018-2019 by Synnex FPT JSC."
+	},
+	"btn": {
+		"signin" : "Login",
+		"remember": "Remember me",
+		"create": "Create",
+		"delete": "Delete",
+		"goBack": "Go back",
+		"save": "Save",
+		"update": "Update",
+		"search": "Find",
+		"searchAll": "Find All",
+		"sync": "Synchronize",
+		"export": "Export",
+		"send": "Send",
+		"seeContract": "See Contract",
+		"confirm": "Confirm",
+		"cancel": "Cancel",
+		"select" : "Select"
+	},
+	"placeholder": {
+		"username" : "Username/Email",
+		"password" : "Password"
+	},
+	"orderState": {
+		"draft": "Draft",
+		"sent": "Sent",
+		"sale_approve": "sale approve",
+		"bd_approve": "BD_approve",
+		"completed": "Completed"
+	},
+	"tab": {
+		"search": "Tìm kiếm",
+		"utility": "Tiện ích",
+		"queryName": "Query Name",
+		"isDefaultQuery": "Is Default Query",
+		"saveQuery": "Save Query",
+		"savedQueryName": "Saved Query"
+	},
+	"table": {
+		"order": "Order",
+		"name": "Name",
+		"fieldName": "Field Name",
+		"fieldValue": "Field Value"
+	},
+	"msg": {
+		"login" :{
+			"403" : "Username or password is incorrect"
+		},
+		"create": {
+			"failure": "Create failure",
+			"inprocess": "Create inprocess",
+			"success": "Create success",
+			"confirmMessage": "Are you sure to delete this record?"
+		},
+		"delete": {
+			"failure": "Delete failure",
+			"inprocess": "Delete inprocess",
+			"success": "Delete success"
+		},
+		"httpResponseCode": {
+			"200": "OK.",
+			"201": "Created.",
+			"301": "Moved Permanently.",
+			"401": "Unauthorized.",
+			"403": "Forbidden.",
+			"404": "Not Found.",
+			"405": "Method Not Allowed.",
+			"422": "Unprocessable Entity.",
+			"500": "Internal Server Error.",
+			"502": "Bad Gateway.",
+			"503": "Service Unavailable.",
+			"2xx": "Success.",
+			"3xx": "Redirection.",
+			"4xx": "Client errors.",
+			"5xx": "Server errors"
+		},
+		"read": {
+			"failure": "Read failure",
+			"inprocess": "Read inprocess",
+			"success": "Read success"
+		},
+		"title": {
+			"confirm": "Confirm",
+			"error": "Error",
+			"info": "Information",
+			"warning": "Warning"
+		},
+		"update": {
+			"failure": "Update failure",
+			"inprocess": "Update inprocess",
+			"success": "Update success"
+		},
+		"validate": {
+			"failure": "validate failure.",
+			"inprocess": "validate inprocess.",
+			"success": "validate success."
+		},
+		"search": {
+			"noResult": "Sorry, no results"
+		}
+	},
+	"pageNav": {
+		"itemsPerPage": "{itemsPerPage, plural, =0 {#} other {# (records / page)}}",
+		"totalAmount": "{totalAmount, plural, =0 {No record found. } =1 {Found: 1 record. } other {Found: # records. }}",
+		"selectedAmount": "{selectedAmount, plural, =0 {} =1 {1 selected record. } other {# selected records. }}"
+	}
+}

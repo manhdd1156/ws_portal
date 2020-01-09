@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "547374615592",
+    "firebase_url": "https://expo-notification-test-311fb.firebaseio.com",
+    "project_id": "expo-notification-test-311fb",
+    "storage_bucket": "expo-notification-test-311fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547374615592:android:cf19a156d3b02ddf11f91d",
+        "android_client_info": {
+          "package_name": "com.fit.cspmanagementsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547374615592-bajsune37q1dbdo9o2pb3qmkv562rt32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-UQOz5BNEgD8jwN27UAX22zEOcty46Zs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547374615592-bajsune37q1dbdo9o2pb3qmkv562rt32.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
