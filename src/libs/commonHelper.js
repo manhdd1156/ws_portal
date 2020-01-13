@@ -99,7 +99,7 @@ export const checkAsyncStorage = async () => {
 export const getFieldAttribute = (self, name) => {
     const splitedNameList = name.split('.'); // fieldName.index.subFieldName
     const { model, query, object } = self.state;
-
+    console.log('name,model, query, object :', name, model, query, object)
     let fieldType;
     let fieldValue;
     if (splitedNameList.length < 3) { // single field or field with '$gt' / '$lt'
