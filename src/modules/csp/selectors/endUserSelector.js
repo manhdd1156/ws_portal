@@ -156,6 +156,102 @@ export const productListRenderSelector = createCachedSelector(
         )
     })((self, orderList, modalVisible, cacheName) => cacheName);
 
+
+
+    export const permissionListRenderSelector = createCachedSelector(
+        self => self,
+        (self, pageLoad, ) => pageLoad,
+        (self, pageLoad, permissionList) => permissionList,
+        (self, pageLoad, permissionList,modalVisible) => modalVisible,
+        (self, pageLoad,permissionList ,modalVisible) => {
+            if (permissionList) {
+    
+                const permissionList = [];
+                const { onDeleteSubDocument } = self;
+                const { onChangePermission } = self;
+                const changeIndex = (index) => {
+                    publicIndex = index;
+                }
+                if (permissionList && publicIndex === undefined) {
+                    publicIndex = 0;
+                }
+    
+    
+                const checkCondition = () => {
+                    if (publicPermission && publicLineKey)
+                        return true
+                    return false
+                }
+    
+                
+                if (publicIndex !== undefined) {
+                    publicPermission = permissionList[publicIndex];
+                    publicLineKey = `permissionList.${publicIndex}`;
+                }
+                bindComponentToContext([FormObjectDetailModal, CustomeField, NumberField], ThisContext);
+    
+                
+                return (
+                    <ThisContext.Provider value={{ self }}>
+                        <Translation>
+                            {
+                                (t, { i18n }) => (
+                                    <ScrollView nestedScrollEnabled={true}>
+                                        <FormObjectDetailModal>
+                                            
+
+    
+    
+    
+                                        </FormObjectDetailModal>
+                                        {permissionList.map((permission, index) => {
+                                            const lineKey = `permissionList.${index}`;
+
+                                           // console.log('orderLineAll',orderLineAll[0].productName);
+                                            
+                                            const { fieldType, fieldValue } = getFieldAttribute(self, `${lineKey}.userID`);
+                                            const translated = fieldType ? fieldType.translated : false;                 
+                                            
+                                            ;
+                                            return (
+                                                <TouchableWithoutFeedback>
+                                                    <View style={[styles.rowView, { backgroundColor: index % 2 == 0 ? Colors.lightGrey : null }]}>
+    
+                                                        <View style={styles.rowFront}>
+                                                            <Touchable onPress={() => { changeIndex(index); self.onModal(); }}>
+                                                                <View style={{ width: '100%', justifyContent: 'center', paddingRight: 3, flex: 1, }}>
+                                                                    <LineInRow>
+                                                                        <WrapText serial={index + 1} >
+                                                                        {(translated && (i18n.exists(fieldValue))) ? t(fieldValue) : fieldValue}
+                                                                        </WrapText>
+    
+                                                                    </LineInRow>
+                                                                </View>
+                                                            </Touchable>
+                                                        </View>
+                                                        <View style={styles.rowBack}>
+                                                            <DefaultButton
+                                                                icon={<Icon ios='remove' android="remove" style={{ color: 'white', fontSize: 20 }} type="FontAwesome" />}
+                                                                color={Colors.tertiaryColor}
+                                                                buttonStyle={{ minWidth: 0, width: scale(30), padding: scale(2) }}
+                                                                onPress={() => onDeleteSubDocument(`${lineKey}`)}
+                                                            />
+                                                        </View>
+                                                    </View>
+                                                </TouchableWithoutFeedback>)
+                                        })}
+                                    </ScrollView>
+                                )
+                            }
+                        </Translation>
+                    </ThisContext.Provider>
+                )
+            }
+            return (
+                <View></View>
+            )
+        })((self, orderList, modalVisible, cacheName) => cacheName);    
+
 const styles = StyleSheet.create({
     eventView: {
         flex: 0.1,

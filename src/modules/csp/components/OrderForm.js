@@ -74,6 +74,8 @@ export default class OrderForm extends Component {
     const { permmission } = this.props;
     const { object, pageLoad, loading, objectId, messages, modalVisible } = this.state;
     const { orderState, orderLineAll } = object;
+
+    console.log('objectID : ' ,objectID)
     // const redirectInjection = this.onRedirect();
     // if (redirectInjection) { return redirectInjection; }
     let totalFix = 0;

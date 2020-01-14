@@ -137,6 +137,7 @@ export default class Home extends Component {
                         title={itemData.section.data[i].functionName}
                         onSelect={() => {
                             try {
+                                console.log('itemData :', itemData)
                                 console.log('itemData.section.data[i].functionUrl :', itemData.section.data[i].functionUrl)
                                 this.props.handleChangeCurrentFunction(itemData.section.data[i].functionId);
                                 // console.log('this.props :', this)

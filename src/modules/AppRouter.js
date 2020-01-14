@@ -12,6 +12,11 @@ import ProductInqueryFormScreen from "./csp/screens/ProductInqueryFormScreen";
 import EndUserInqueryListScreen from "./csp/screens/EndUserInqueryListScreen";
 import EndUserInqueryFormScreen from "./csp/screens/EndUserInqueryFormScreen";
 
+import EndUserListScreen from "./csp/screens/EndUserListScreen";
+import EndUserFormScreen from "./csp/screens/EndUserFormScreen";
+
+
+
 import SigninScreen from "./csp/screens/SigninScreen";
 import HomeScreen from './csp/screens/HomeScreen'
 import OrderListScreen from "./csp/screens/OrderListScreen";
@@ -50,6 +55,15 @@ const defaultStackNavOptions = (params) => {
         
       
     case '/csp/endUserInqueries/detail':
+      functionName = "Chi tiết Khách hàng"
+      break;
+      
+    case '/csp/endUsers/':
+      functionName = "Quản lý Khách hàng"
+      break;
+          
+        
+    case '/csp/endUsers/detail':
       functionName = "Chi tiết Khách hàng"
       break;      
   }
@@ -103,6 +117,14 @@ const HomeStack = createStackNavigator(
 
     '/csp/endUserInqueries/detail': {
       screen: EndUserInqueryFormScreen
+    },
+
+    '/csp/endUsers/': {
+      screen: EndUserListScreen
+    },
+
+    '/csp/endUsers/detail': {
+      screen: EndUserFormScreen
     },
     
 
