@@ -64,7 +64,7 @@ export const orderListRenderSelector = createCachedSelector(
                 publicLineKey = `orderLineAll.${publicIndex}`;
             }
             const checkCondition = () => {
-                if (publicProduct && publicProduct)
+                if (publicProduct && publicLineKey)
                     return true
                 return false
             }
@@ -91,6 +91,9 @@ export const orderListRenderSelector = createCachedSelector(
                                     </FormObjectDetailModal>
                                     {orderLineAll.map((product, index) => {
                                         const lineKey = `orderLineAll.${index}`;
+
+                                        console.log('orderLineAll',orderLineAll[0].productName);
+                                        
                                         const { fieldType, fieldValue } = getFieldAttribute(self, `${lineKey}.productName`);
                                         const translated = fieldType ? fieldType.translated : false;
                                         return (

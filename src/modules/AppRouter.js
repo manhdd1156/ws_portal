@@ -5,6 +5,13 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
+
+import ProductInqueryListScreen from "./csp/screens/ProductInqueryListScreen";
+import ProductInqueryFormScreen from "./csp/screens/ProductInqueryFormScreen";
+
+import EndUserInqueryListScreen from "./csp/screens/EndUserInqueryListScreen";
+import EndUserInqueryFormScreen from "./csp/screens/EndUserInqueryFormScreen";
+
 import SigninScreen from "./csp/screens/SigninScreen";
 import HomeScreen from './csp/screens/HomeScreen'
 import OrderListScreen from "./csp/screens/OrderListScreen";
@@ -28,6 +35,23 @@ const defaultStackNavOptions = (params) => {
     case '/csp/order/detail':
       functionName = "Chi tiết đơn hàng"
       break;
+
+    case '/csp/productInqueries/':
+      functionName = "Sản phẩm"
+      break;
+      
+    case '/csp/productInqueries/detail':
+     functionName = "Chi tiết sản phẩm"
+     break;
+  
+    case '/csp/endUserInqueries/':
+      functionName = "Khách hàng"
+      break;
+        
+      
+    case '/csp/endUserInqueries/detail':
+      functionName = "Chi tiết Khách hàng"
+      break;      
   }
   return {
     header : null
@@ -65,6 +89,24 @@ const HomeStack = createStackNavigator(
     '/csp/order/detail': {
       screen: OrderFormScreen
     },
+
+    '/csp/productInqueries/': {
+      screen: ProductInqueryListScreen
+    },
+
+    '/csp/productInqueries/detail': {
+      screen: ProductInqueryFormScreen
+    },
+
+    '/csp/endUserInqueries/': {
+      screen: EndUserInqueryListScreen
+    },
+
+    '/csp/endUserInqueries/detail': {
+      screen: EndUserInqueryFormScreen
+    },
+    
+
   },
   {
     // initialRouteName: 'Categories',
