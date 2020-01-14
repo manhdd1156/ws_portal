@@ -7,11 +7,15 @@ import _ from 'lodash';
 import async from 'async';
 import axios from 'axios';
 import { API_GATEWAY_URL, ITEM_AMOUNT_PER_PAGE } from '../constants/config';
+import { equalToId, getInputValue, convertStringToArray } from './commonHelper';
+import { API_RESERVED_KEY } from './constants/apiConstant'
+import { ACTION } from './constants/actionConstant';
 import { createDraft, finishDraft } from 'immer';
 import { apiError2Messages } from './errorHelper';
 import { NavigationActions } from 'react-navigation';
 import { apiGetList, apiCreate, apiGetById, apiDeleteById, apiUpdateImage, apiUpdateById, apiUpdateNoteById, apiUpdateReceiverById } from './apiHelper';
 import Moment from 'moment';
+import { parseServiceSwagger } from './swaggerHelper';
 import {
     LOADING_STATE,
     REFRESHING_STATE,
@@ -22,14 +26,6 @@ import {
 
 } from './componentHelper';
 
-import {
-    // getToken, removeToken,
-    getInputValue, getDefaultValue,
-    // convertDataList2OptionList, convertDataList2OptionListWithOutDuplicate,
-    // convertDataList2InstantSearchOptionList,
-    // setFunctionId,
-    equalToId,
-} from './commonHelper';
 
 export const QUERY_SERVICE = 'v2/queries';
 export const STATE_OPTION_LIST = ['intransit', 'shipping,received', 'pending', 'completed', 'failed'];
@@ -47,6 +43,8 @@ export const initComponent = (self, props) => {
     self.onResetQuery = onResetQuery.bind(self, self);
     self.onChange = onChange.bind(self, self);
     self.onCreateNew = onCreateNew.bind(self, self);
+    self.onClickFirstObject = onClickFirstObject.bind(self, self);
+    self.onClickFunctionRegister = onClickFunctionRegister.bind(self, self);
     self.onObjectClick = onObjectClick.bind(self, self);
     self.onRedirect = onRedirect.bind(self, self);
     self.onSelectObject = onSelectObject.bind(self, self);
@@ -152,7 +150,36 @@ async function onResetQuery(self, event) {
 
     await getList(self, apiEndpoint.read, defaultQuery);
 }
+async function onClickFirstObject(self) {
+    const {
+        queryList, selectedQueryId,
+        query, objectList, objectId,
+        pageLoad,
+    } = self.state;
 
+    if (!objectId) {
+        const { handleSaveQueryState } = self.props;
+        const objectListData = objectList.data;
+        const newObjectId = objectListData && (objectListData.length > 0) ? objectListData[0]._id.toString() : '';
+        const nextObjectId = objectListData && (objectListData.length > 1) ? objectListData[1]._id.toString() : '';
+
+        handleSaveQueryState(queryList, selectedQueryId, query, objectList, pageLoad, '', newObjectId, nextObjectId); // dispatch saveQueryState action to save [query, objectList]
+
+        self.setState({ // redirect to object detail form
+            ...self.state,
+            goToObject: true,
+
+            prevObjectId: '',
+            objectId: newObjectId,
+            nextObjectId,
+        });
+    } else {
+        self.setState({ // redirect to object detail form
+            ...self.state,
+            goToObject: true,
+        });
+    }
+}
 const onRedirect = (self) => {
     if (!self || !self.state) return null;
 
@@ -271,6 +298,16 @@ async function onSelectAllObjectList(self, data) {
         selectedObjectList,
     });
 }
+export const QUERY_AUTO_ADDED_FIELD = [
+    'fields',
+    'hiddenFields',
+    'page',
+    'itemsPerPage',
+    'queryName',
+    'isDefaultQuery',
+    'sortBy',
+    'groupBy',
+];
 export async function loadComponentData(self) {
     const {
         apiEndpoint,
@@ -519,3 +556,452 @@ async function onItemsPerPageChange(self, data) {
     await getList(self, apiEndpoint.read, query);
 }
 
+async function onClickFunctionRegister(self) {
+    self.setState(LOADING_STATE);
+
+    const {
+        modelName, baseUrl,
+        functionId, functionName, functionActionList,
+    } = self.props;
+
+    const functionUrl = baseUrl;
+    const serviceNameList = [];
+    const serviceActionList = [];
+    const serviceList = [];
+    const { object, query } = self.props.models;
+    const { objectFields } = object;
+    const objectFieldsArray = objectFields ? objectFields.split(',') : [];
+    const pascalize = str => pluralize.singular(_.upperFirst(str.substring(str.indexOf('/') + 1))); // convert "v2/purchaseOrderRequisitions" => "PurchaseOrderRequisition"
+    let hasError = false;
+    const errorMessageList = [];
+
+    const convertQueryToRequestFieldList = (modelQuery) => {
+        const requestFieldList = [];
+
+        Object.entries(_.omit(modelQuery, API_RESERVED_KEY)).forEach(([key]) => {
+            requestFieldList.push(key);
+        });
+
+        return requestFieldList;
+    };
+
+    serviceNameList.push(modelName);
+
+    functionActionList.forEach((functionAction) => {
+        const pascalizedServiceName = pascalize(modelName);
+
+        switch (functionAction) {
+            case ACTION.CAN_READ: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `get${pascalizedServiceName}List`,
+                    requestFieldList: objectFieldsArray,
+                    responseFieldList: objectFieldsArray,
+                });
+
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `get${pascalizedServiceName}ById`,
+                    requestFieldList: objectFieldsArray,
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_CREATE: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `create${pascalizedServiceName}`,
+                    requestFieldList: objectFieldsArray,
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_UPDATE: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `update${pascalizedServiceName}ById`,
+                    requestFieldList: objectFieldsArray,
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_DELETE: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `delete${pascalizedServiceName}ById`,
+                    requestFieldList: [],
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_EXPORT: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `export${pascalizedServiceName}`,
+                    requestFieldList: [],
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_SEND: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `send${pascalizedServiceName}ById`,
+                    requestFieldList: [],
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_APPROVE: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `approve${pascalizedServiceName}ById`,
+                    requestFieldList: [],
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_PROCESS: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `process${pascalizedServiceName}ById`,
+                    requestFieldList: [],
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            case ACTION.CAN_FINISH: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `finish${pascalizedServiceName}ById`,
+                    requestFieldList: [],
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+
+            default: {
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `${functionAction}${pascalizedServiceName}ById`,
+                    requestFieldList: objectFieldsArray,
+                    responseFieldList: objectFieldsArray,
+                });
+
+                break;
+            }
+        }
+    });
+
+    if (object && _.isArray(object.refModels)) {
+        object.refModels.forEach((m) => {
+            const { modelName, query } = m;
+            const { fields } = query;
+            const pascalizedServiceName = pascalize(modelName);
+            const responseFieldList = _.isArray(fields) ? fields : convertStringToArray(fields);
+
+            if ((serviceNameList.indexOf(modelName) < 0 && (modelName.indexOf('*.') < 0))) { // skip virtual model with sign '*.' prefix
+                serviceNameList.push(modelName);
+
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `get${pascalizedServiceName}List`,
+                    requestFieldList: _.concat(convertQueryToRequestFieldList(query), responseFieldList),
+                    responseFieldList,
+                });
+            }
+        });
+    }
+
+    if (query && _.isArray(query.refModels)) {
+        query.refModels.forEach((m) => {
+            const { modelName, query } = m;
+            const { fields } = query;
+            const responseFieldList = _.isArray(fields) ? fields : convertStringToArray(fields);
+            const pascalizedServiceName = pascalize(modelName);
+
+            if (serviceNameList.indexOf(modelName) < 0) {
+                serviceNameList.push(modelName);
+
+                serviceActionList.push({
+                    modelName,
+                    actionCode: `get${pascalizedServiceName}List`,
+                    requestFieldList: _.concat(convertQueryToRequestFieldList(query), responseFieldList),
+                    responseFieldList, // [!] TODO: check query fields much more than object fields??
+                });
+            }
+        });
+    }
+
+    // console.log('serviceNameList', serviceNameList);
+    // console.log('serviceActionList', serviceActionList);
+
+    // register service list
+    for (let i = 0; i < serviceNameList.length; i += 1) {
+        const serviceCode = serviceNameList[i];
+
+        const query = {
+            serviceCode,
+            limit: 1,
+            active: true,
+            fields: '_id, serviceCode, serviceName, actionList, fieldList',
+            exact: 'serviceCode',
+        };
+
+        const getServiceResult = await apiGetList('v2/services', query);
+
+        if (getServiceResult.error) {
+            // self.setState({
+            //   loading: false,
+            //   error: true,
+            //   messages: apiError2Messages(getServiceResult.error),
+            // });
+
+            // return;
+
+            hasError = true;
+
+            errorMessageList.push({
+                name: `apiGetList('v2/services', ${serviceCode})`,
+                message: apiError2Messages(getServiceResult.error),
+            });
+            continue;
+        }
+
+        const service = getServiceResult.data.data[0];
+
+        if (service) {
+            serviceList.push(service);
+        } else { // if (service)
+            const swaggerResult = await parseServiceSwagger(serviceCode);
+
+            if (swaggerResult.error) {
+                // self.setState({
+                //   loading: false,
+                //   error: true,
+                //   messages: apiError2Messages(swaggerResult.error),
+                // });
+
+                // return;
+
+                hasError = true;
+
+                errorMessageList.push({
+                    name: `parseServiceSwagger(${serviceCode})`,
+                    message: apiError2Messages(swaggerResult.error),
+                });
+                continue;
+            }
+
+            const createdService = {
+                serviceCode,
+                serviceName: serviceCode,
+                actionList: swaggerResult.actionList,
+                fieldList: swaggerResult.fieldList,
+                active: true,
+            };
+
+            const creationResult = await apiCreate('v2/services', createdService);
+
+            if (creationResult.error) {
+                // self.setState({
+                //   loading: false,
+                //   error: true,
+                //   messages: apiError2Messages(creationResult.error),
+                // });
+
+                // return;
+
+                hasError = true;
+
+                errorMessageList.push({
+                    name: `apiCreate('v2/services', ${serviceCode})`,
+                    message: apiError2Messages(creationResult.error),
+                });
+                continue;
+            }
+
+            serviceList.push(creationResult.data.data);
+        } // if (service)
+    } // for (let i = 0; i < serviceActionList.length; i += 1)
+
+    // console.log('server ServiceList', serviceList);
+
+    // register policy
+    for (let i = 0; i < serviceActionList.length; i += 1) {
+        const {
+            modelName, actionCode,
+            requestFieldList, responseFieldList,
+        } = serviceActionList[i];
+
+        const service = serviceList.find(s => s.serviceCode === modelName);
+        const serviceId = service._id;
+
+        const {
+            serviceCode, serviceName,
+            actionList, fieldList,
+        } = service;
+
+        const action = service.actionList.find(a => a.actionCode === actionCode);
+
+        if (!action) {
+            // self.setState({
+            //   loading: false,
+            //   error: true,
+            //   messages: `Tài nguyên ${modelName} không có hành động ${actionCode}!`,
+            // });
+
+            // return;
+
+            hasError = true;
+            errorMessageList.push({
+                name: `const action =  service.actionList.find(a => a.actionCode === ${actionCode})`,
+                message: `Tài nguyên ${modelName} không có hành động ${actionCode}!`,
+            });
+            continue;
+        }
+
+        const actionId = action._id;
+        const { path, method } = action;
+
+        if (!action) {
+            // self.setState({
+            //   loading: false,
+            //   error: true,
+            //   messages: `Tài nguyên ${modelName} hành động ${actionCode} không tìm được actionId!`,
+            // });
+
+            // return;
+
+            hasError = true;
+            errorMessageList.push({
+                name: 'const actionId = action._id',
+                message: `Tài nguyên ${modelName} hành động ${actionCode} không tìm được actionId!`,
+            });
+            continue;
+        }
+
+        const query = {
+            functionId,
+            serviceId,
+            actionId,
+
+            limit: 1,
+            active: true,
+            fields: '_id, policyName',
+        };
+
+        const getPolicyResult = await apiGetList('v2/policies', query);
+
+        // console.log('getPolicyResult', getPolicyResult);
+
+        if (getPolicyResult.error) {
+            // self.setState({
+            //   loading: false,
+            //   error: true,
+            //   messages: apiError2Messages(getPolicyResult.error),
+            // });
+
+            // return;
+
+            hasError = true;
+            errorMessageList.push({
+                name: `apiGetList('v2/policies', { functionId: ${functionId}, serviceId: ${serviceId}, actionId: ${actionId}})`,
+                message: apiError2Messages(getPolicyResult.error),
+            });
+            continue;
+        }
+
+        const policy = getPolicyResult.data.data[0];
+
+        if (policy) {
+            serviceList.push(service);
+        } else { // if (service)
+            const createdPolicy = {
+                policyName: `${functionName} - ${actionCode}`,
+
+                functionId,
+                functionUrl,
+                functionName,
+
+                serviceId,
+                serviceCode,
+                serviceName,
+                actionList,
+                fieldList,
+
+                userFeatureList: [],
+
+                actionId,
+                actionCode,
+                path,
+                method,
+
+                fullRequestFieldList: fieldList,
+                requestFieldList,
+                requestExceptFieldList: [],
+                allowedRequestFieldList: requestFieldList,
+
+                fullResponseFieldList: fieldList,
+                responseFieldList,
+                responseExceptFieldList: [],
+                allowedResponseFieldList: responseFieldList,
+
+                recordFeatureList: [],
+
+                active: true,
+            };
+
+            const creationResult = await apiCreate('v2/policies', createdPolicy);
+
+            if (creationResult.error) {
+                // self.setState({
+                //   loading: false,
+                //   error: true,
+                //   messages: apiError2Messages(creationResult.error),
+                // });
+
+                // return;
+
+                hasError = true;
+
+                errorMessageList.push({
+                    name: `apiCreate('v2/policies', { policyName: ${functionName} - ${actionCode} })`,
+                    message: apiError2Messages(creationResult.error),
+                });
+                continue;
+            }
+        } // if (policy)
+    } // for (let i = 0; i < serviceActionList.length; i += 1)
+
+    if (hasError) {
+        self.setState({
+            loading: false,
+            error: true,
+            messages: errorMessageList,
+        });
+    } else {
+        self.setState({
+            loading: false,
+            success: true,
+            messages: 'system:msg.register.success',
+        });
+    }
+}

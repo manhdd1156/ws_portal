@@ -5,9 +5,9 @@ export const PRICE_LEVEL_OPTIONS = [
 ];
 
 export const ACTIVE_OPTIONS = [
-    { text: 'Có hiệu lực', value: true },
-    { text: 'Không có hiệu lực', value: false },
-    { text: 'Tất cả', value: '' },
+    { key: true, value: true, text: 'Có hiệu lực' },
+    { key: true, value: false, text: 'Không có hiệu lực' },
+    { key: 'all', value: '', text: 'Tất cả' },
 ];
 
 export const TAX_OPTIONS = [

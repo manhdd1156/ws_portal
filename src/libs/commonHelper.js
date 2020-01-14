@@ -17,6 +17,14 @@ export const LOADING_STATE = {
     success: false,
     messages: '',
 };
+export const convertStringToArray = (text, seperator) => {
+    if (!text) {
+        return undefined;
+    }
+
+    const sep = seperator || ',';
+    return text.replace(/\s/g, '').split(sep);
+};
 export const getInputValue = (data) => {
     const {
         type, name, value, checked, options,
@@ -99,7 +107,7 @@ export const checkAsyncStorage = async () => {
 export const getFieldAttribute = (self, name) => {
     const splitedNameList = name.split('.'); // fieldName.index.subFieldName
     const { model, query, object } = self.state;
-
+    console.log('name,model, query, object :', name, model, query, object)
     let fieldType;
     let fieldValue;
     if (splitedNameList.length < 3) { // single field or field with '$gt' / '$lt'

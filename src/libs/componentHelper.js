@@ -534,7 +534,7 @@ export async function checkLogin(self) {
       // console.log('seft :', self)
     } catch (error) {
       await removeToken();
-      self.props.onLogout();
+      self.props.onLogout;
     }
   }
 }

@@ -1,3 +1,7 @@
+/*
+ 18/12/2019    FIT-ManhDD16     Created
+
+*/
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
@@ -6,7 +10,7 @@ import PropTypes from 'prop-types';
 import { scale } from '../constants/config';
 import { PropsChildrenPropType } from '../libs/componentHelper';
 
-class ListModalRow extends Component {
+class ListRow extends Component {
   static get propTypes() {
     return {
       children: PropsChildrenPropType.isRequired,
@@ -30,5 +34,5 @@ const styles = StyleSheet.create({
     paddingRight: scale(5)
   },
 });
-export default ListModalRow;
+export default ListRow;
 

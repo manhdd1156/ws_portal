@@ -69,7 +69,7 @@ class RadioField extends React.Component {
           (t, { i18n }) => (
             <TouchableOpacity onPress={userDefinedOnChange || this.onValueChange(fieldValue)}>
               <View>
-                {fieldValue ? <Icon active style={{ fontSize: moderateScale(16), color: Colors.tertiaryColor }} ios='toggle-on' android='toggle-on' type='FontAwesome' />
+                {fieldValue ? <Icon active style={{ fontSize: moderateScale(16), color: Colors.primaryColor }} ios='toggle-on' android='toggle-on' type='FontAwesome' />
                   : <Icon active style={{ fontSize: moderateScale(16), color: Colors.grey }} ios='toggle-off' android='toggle-off' type='FontAwesome' />
                 }
                 <View style={styles.labelView}><Text style={styles.label}>{label && (i18n.exists(title) ? t(title) : title)}<Text style={styles.required}>{fieldType.required ? '*' : null}</Text></Text></View>

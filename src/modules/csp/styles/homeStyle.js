@@ -1,11 +1,31 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar, Platform } from 'react-native';
 import { Colors, scale, moderateScale, verticalScale } from "../../../constants/config"
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
-        paddingTop: 10,
+        ...Platform.select({
+            android: {
+                marginTop: StatusBar.currentHeight
+            }
+        })
+    },
+    headerView: {
+        backgroundColor: Colors.white,
+        borderBottomColor: '#dddddd',
+        borderBottomWidth: 1,
+        shadowColor: '#000000',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 1,
+        elevation: 1,
+        marginBottom : 15
+    },
+    titleBodyView: {
+    },
+    title: {
+        color: Colors.primaryColor,
+        justifyContent: 'center',
     },
     screen: {
         flex: 1,

@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 // import { Message, Container, Step } from 'semantic-ui-react';
 // import NumberFormat from 'react-number-format';
 import { createDraft, finishDraft } from 'immer';
-import { Icon } from 'native-base';
+import { Icon, TabHeading, ScrollableTab, Tab } from 'native-base';
 import {
   View,
   Text,
@@ -22,7 +22,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Toast } from 'native-base'
 import StepIndicator from 'react-native-step-indicator';
 import { Translation } from 'react-i18next';
 import { bindComponentToContext, listOptionsSelector } from '../../../libs/componentHelper';
@@ -43,7 +42,8 @@ import FormScrollArea from '../../../userControls/FormScrollArea';
 import FormWorkFlow from '../../../userControls/FormWorkFlow';
 import Loading from '../../../userControls/Loading'
 import RadioField from '../../../userControls/RadioField';
-import { Colors, scale } from '../../../constants/config';
+import Tabs from '../../../userControls/Tabs'
+import { Colors, scale, tabConfig } from '../../../constants/config';
 import TextAreaField from '../../../userControls/TextAreaField';
 // import { FormField, TextArea, Button } from 'semantic-ui-react';
 import { ORDERSTATE, getCurrentPosition, ORDER_STATE, PAY_TYPE } from '../constants/orderStateConstants';
@@ -105,7 +105,7 @@ export default class OrderForm extends Component {
     }
     bindComponentToContext(
       [
-        FormWorkFlow, FormRow, TextField, SelectionField, TextAreaField, Footer, FormActionContainer, FormActionCreate, FormActionUpdate,
+        FormWorkFlow, Tabs, Tab, FormRow, TextField, SelectionField, TextAreaField, Footer, FormActionContainer, FormActionCreate, FormActionUpdate,
         FormActionDelete, FormActionGoBack, FormActionSend, FormScrollArea
       ],
       ThisContext,
@@ -143,9 +143,18 @@ export default class OrderForm extends Component {
             <FormRow>
               <TextField name="shipToName" readOnly={handleStatus} />
             </FormRow>
-
-
-
+            <Tabs>
+              <Tab heading="tab1">
+                <TextField name="billToName" readOnly={handleStatus} />
+              </Tab>
+              <Tab heading="tab2">
+                <TextField name="shipToName" readOnly={handleStatus} />
+                <TextField name="shipToName" readOnly={handleStatus} />
+              </Tab>
+              <Tab heading="tab3">
+                <TextField name="paymentTerm" readOnly={handleStatus} />
+              </Tab>
+            </Tabs>
             <FormScrollArea name='orderList'>
               {orderListRenderSelector(this, object.orderLineAll, productList, periodList, handleStatus, modalVisible, 'orderLineAll')}
             </FormScrollArea>
@@ -183,7 +192,7 @@ export default class OrderForm extends Component {
             <Footer />
           </ScrollView>
         </ThisContext.Provider>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView >
 
     );
   }
