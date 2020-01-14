@@ -68,27 +68,28 @@ const defaultStackNavOptions = (params) => {
       break;      
   }
   return {
-    headerStyle: {
-      backgroundColor: Platform.OS === 'android' ? Colors.transparentColor : ''
-    },
+    header : null
+    // headerStyle: {
+    //   backgroundColor: Platform.OS === 'android' ? Colors.transparentColor : ''
+    // },
 
-    headerBackTitleStyle: {
-      // fontFamily: 'open-sans'
-    },
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="back"
-          iconName="ios-arrow-back"
-          onPress={() => {
-            params.navigation.goBack();
-          }}
-        />
-      </HeaderButtons>
-    ),
-    headerTintColor: Colors.primaryColor,
-    headerTitle: () => (<TopBarTitle functionName={functionName} />
-    )
+    // headerBackTitleStyle: {
+    //   // fontFamily: 'open-sans'
+    // },
+    // headerLeft: (
+    //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    //     <Item
+    //       title="back"
+    //       iconName="ios-arrow-back"
+    //       onPress={() => {
+    //         params.navigation.goBack();
+    //       }}
+    //     />
+    //   </HeaderButtons>
+    // ),
+    // headerTintColor: Colors.primaryColor,
+    // headerTitle: () => (<TopBarTitle functionName={functionName} />
+    // )
   }
 };
 const HomeStack = createStackNavigator(

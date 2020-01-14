@@ -11,10 +11,12 @@ import MainMenuGrid from '../../../userControls/MainMenuGrid';
 import HeaderButton from '../../../userControls/HeaderButton';
 import { styles } from '../styles/homeStyle'
 import { initComponent } from '../../../libs/listComponentHelper'; // [!] component FORM helper
+import { Container, Header, Title, Left, Right, Body, } from 'native-base';
 // import socketIOClient from 'socket.io-client';
 import { NavigationActions, StackActions } from 'react-navigation'
 import { Notifications } from 'expo';
 import Constants from 'expo-constants';
+import ListTitle from '../../../userControls/ListTitle';
 import * as Permissions from 'expo-permissions';
 import { Colors, scale, moderateScale, verticalScale } from '../../../constants/config';
 import { convertCspFunctionList } from '../../../libs/componentHelper'
@@ -168,6 +170,24 @@ export default class Home extends Component {
         };
         return (
             <View style={styles.container} >
+                <Header style={styles.headerView}>
+                    <Left >
+                        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                            <Item
+                                title="Menu"
+                                iconName="ios-menu"
+                                onPress={() => {
+                                    this.props.navigation.toggleDrawer();
+                                    // navData.navigation.navigate('Drawer',{test: 'toto'});
+                                }}
+                            />
+                        </HeaderButtons>
+                    </Left>
+                    <Body style={styles.titleBodyView}>
+                        <Title style={styles.title}>{"Trang chủ"}</Title>
+                    </Body>
+                    <Right />
+                </Header>
                 <ImageBackground
                     source={backgroundImage}
                     style={styles.bgImage}

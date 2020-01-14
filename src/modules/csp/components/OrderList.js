@@ -6,6 +6,8 @@ import React, { Component } from "react";
 import {
   View,
   StyleSheet,
+  Platform,
+  StatusBar
 } from "react-native";
 import { bindComponentToContext } from '../../../libs/componentHelper';
 import { initComponent, loadComponentData, onUpdate } from '../../../libs/listComponentHelper'; // [!] component LIST helper
@@ -15,8 +17,12 @@ import TextField from "../../../userControls/TextField";
 import ListSearchResult from "../../../userControls/ListSearchResult";
 import DateField from "../../../userControls/DateField";
 import ListActionList from "../../../userControls/ListActionList";
-import ListModalRow from "../../../userControls/ListModalRow";
+import ListRow from "../../../userControls/ListRow";
 import SelectionField from "../../../userControls/SelectionField";
+import ListTitle from "../../../userControls/ListTitle";
+import ListBody from "../../../userControls/ListBody"
+import Footer from "../../../userControls/Footer"
+import { ACTIVE_OPTIONS } from '../constants/renderSetting';
 const ThisContext = React.createContext({});
 export default class OrderList extends Component {
   constructor(props) {
@@ -43,8 +49,8 @@ export default class OrderList extends Component {
     const { loading } = this.state;
     bindComponentToContext(
       [
-        AdvancedSearchScreen, ListActionList,
-        ListModalRow, TextField, SelectionField, DateField, ListSearchResult
+        ListTitle, ListBody, AdvancedSearchScreen, ListActionList,
+        ListRow, TextField, SelectionField, DateField, ListSearchResult
       ],
       ThisContext,
     );
@@ -63,20 +69,37 @@ export default class OrderList extends Component {
     return (
       <ThisContext.Provider value={{ self: this }}>
         <View style={styles.container} pointerEvents={loading ? 'none' : 'auto'}>
-          <AdvancedSearchScreen>
+          <ListTitle />
+          <ListBody>
+            <ListRow>
+              <TextField name='orderNumber' />
+              <SelectionField name='orderState' options={stateList} />
+            </ListRow>
 
-            <ListModalRow>
-              <TextField name='orderNumber' layout='modal' />
-              <SelectionField name='orderState' options={stateList} layout='modal' />
-            </ListModalRow>
-
-            <ListModalRow>
+            <ListRow>
               <DateField alt="fromDate" name="createdAt.$gte" />
               <DateField alt="toDate" name="createdAt.$lte" />
-            </ListModalRow>
+            </ListRow>
+            <ListRow>
+              <TextField name='customerName' />
+            </ListRow>
+            <ListActionList />
+          </ListBody>
 
-          </AdvancedSearchScreen >
-          <ListActionList />
+          {/* <AdvancedSearchScreen>
+
+            <ListRow>
+              <TextField name='orderNumber' />
+              <SelectionField name='orderState' options={stateList} />
+            </ListRow>
+
+            <ListRow>
+              <DateField alt="fromDate" name="createdAt.$gte" />
+              <DateField alt="toDate" name="createdAt.$lte" />
+            </ListRow>
+
+          </AdvancedSearchScreen > */}
+          <Footer />
           <ListSearchResult lines={lineList} keyField="orderNumber" />
         </View >
       </ThisContext.Provider>
@@ -87,5 +110,10 @@ export default class OrderList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    ...Platform.select({
+      android: {
+        marginTop: StatusBar.currentHeight
+      }
+    })
   },
 });
