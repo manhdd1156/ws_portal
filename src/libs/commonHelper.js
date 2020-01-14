@@ -17,6 +17,14 @@ export const LOADING_STATE = {
     success: false,
     messages: '',
 };
+export const convertStringToArray = (text, seperator) => {
+    if (!text) {
+        return undefined;
+    }
+
+    const sep = seperator || ',';
+    return text.replace(/\s/g, '').split(sep);
+};
 export const getInputValue = (data) => {
     const {
         type, name, value, checked, options,

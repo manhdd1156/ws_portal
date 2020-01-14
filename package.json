@@ -39,7 +39,7 @@
     "i18next-icu": "^1.1.2",
     "immer": "^5.0.1",
     "intl": "^1.2.5",
-    "native-base": "^2.13.8",
+    "native-base": "2.13.6",
     "pluralize": "^8.0.0",
     "qs": "^6.9.1",
     "re-reselect": "^3.4.0",

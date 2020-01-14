@@ -208,7 +208,7 @@ class SelectionField extends Component {
               <View style={styles.sectionView}>
                 <SectionedMultiSelect
                   items={selectionList}
-                  uniqueKey="key" // lấy giá trị key trong listOption
+                  uniqueKey="value" // lấy giá trị value trong listOption
                   displayKey="text" // lấy giá trị text trong listOption
                   confirmText={t('btn.confirm')}
                   subKey="children" // lấy giá trị children trong listOption
