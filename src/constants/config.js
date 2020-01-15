@@ -5,7 +5,7 @@ const APP_NAME = 'CSP MANAGEMENT SYSTEM';
 const APP_CODE = 'csp';
 // const API_GATEWAY_URL = 'https://api.synnexfpt.com/api';
 // const API_GATEWAY_URL = 'http://giaohang-test.ftg.vn/api';
-const API_GATEWAY_URL = 'http://10.8.6.55:30001';
+const API_GATEWAY_URL = 'http://10.8.6.102:30001';
 // const API_GATEWAY_URL = 'http://10.8.6.84:5000/api';
 // const API_UPIMAGE_URL = 'http://10.8.6.79:30001/v2/files/'
 export const MODULE_CODE = 'csp';
@@ -28,7 +28,7 @@ const guidelineBaseHeight = 680;
 const scale = size => width / guidelineBaseWidth * size;
 const verticalScale = size => height / guidelineBaseHeight * size;
 const moderateScale = (size, factor = 0.5) => size + (scale(size) - size) * factor;
-
+const widthCol = Dimensions.get('window').width / 6
 export const ITEM_AMOUNT_PER_PAGE_VALUES = [5, 15, 30, 50, 100, 200];
 export const ITEM_AMOUNT_PER_PAGE = 15;
 export const PAGE_RANGE_DISPLAYED = 5;
@@ -36,7 +36,7 @@ export const SEPARATE_STRING = ' - ';
 export const UNLIMITED_RETURNED_RESULT = 9999;
 export const INSTANT_SEARCH_RETURNED_RESULT = 10;
 
-export { scale, verticalScale, moderateScale, APP_NAME, APP_CODE, API_GATEWAY_URL, DATE_FORMAT, DATETIME_FORMAT, API_UPIMAGE_URL, weekdays, months, roles };
+export { scale, widthCol, verticalScale, moderateScale, APP_NAME, APP_CODE, API_GATEWAY_URL, DATE_FORMAT, DATETIME_FORMAT, API_UPIMAGE_URL, weekdays, months, roles };
 
 export const frontSize = 15;
 const tintColor = '#2f95dc';

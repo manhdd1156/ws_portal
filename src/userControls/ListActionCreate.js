@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Translation } from 'react-i18next';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
+import DefaultButton from './DefaultButton'
 import { Colors, moderateScale, scale } from '../constants/config';
 
 export default class ListActionCreate extends Component {
@@ -18,9 +19,11 @@ export default class ListActionCreate extends Component {
     if (!permmission.canCreate) return (<View />);
 
     return (
-      <TouchableOpacity onPress={onCreateNew} >
-        <Icon style={styles.actionCreate} ios='ios-add' android="ios-add" type="Ionicons" />
-      </TouchableOpacity>
+      <Translation ns="system">
+        {
+          t => (<DefaultButton loading={loading} color={Colors.primaryColor} onPress={onCreateNew} title={t('btn.create')} />)
+        }
+      </Translation>
 
     )
   }

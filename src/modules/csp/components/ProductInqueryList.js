@@ -28,7 +28,7 @@ import ListSearchResult from "../../../userControls/ListSearchResult";
 import DateField from "../../../userControls/DateField";
 import ListActionList from "../../../userControls/ListActionList";
 
-import ListModalRow from "../../../userControls/ListModalRow";
+import ListRow from "../../../userControls/ListRow";
 import SelectionField from "../../../userControls/SelectionField";
 const ThisContext = React.createContext({});
 export default class productInqueryList extends Component {
@@ -93,7 +93,7 @@ export default class productInqueryList extends Component {
     bindComponentToContext(
       [
         AdvancedSearchScreen, ListActionList,
-        ListModalRow, TextField, SelectionField, DateField, ListSearchResult
+        ListRow, TextField, SelectionField, DateField, ListSearchResult
       ],
       ThisContext,
     );
@@ -114,15 +114,15 @@ export default class productInqueryList extends Component {
         <View style={styles.container} pointerEvents={loading ? 'none' : 'auto'}>
           <AdvancedSearchScreen>
 
-            <ListModalRow>
+            <ListRow>
               <TextField name='productName' layout='modal' />
               
-            </ListModalRow>
+            </ListRow>
 
-            <ListModalRow>
+            <ListRow>
               <TextField  name="offerId" />
               <TextField  name="oracleCode"/>
-            </ListModalRow>
+            </ListRow>
 
           </AdvancedSearchScreen >
           <ListActionList />

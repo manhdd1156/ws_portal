@@ -9,7 +9,7 @@ import { bindComponentToContext } from '../libs/componentHelper';
 import ListActionContainer from './ListActionContainer';
 import ListActionSearch from './ListActionSearch';
 import ListCountSearchResult from './ListCountSearchResult'
-// import ListActionSearchAll from './ListActionSearchAll';
+import ListActionSearchAll from './ListActionSearchAll';
 // import ListActionExport from './ListActionExport';
 import ListActionCreate from './ListActionCreate';
 
@@ -23,7 +23,7 @@ export default class ListActionList extends Component {
     bindComponentToContext(
       [
         ListActionSearch,
-        ListCountSearchResult,
+        ListActionSearchAll,
         // ListActionExport,
         ListActionCreate,
       ],
@@ -35,7 +35,7 @@ export default class ListActionList extends Component {
       <ThisContext.Provider value={{ self }}>
         <ListActionContainer>
           <ListActionSearch />
-          <ListCountSearchResult />
+          <ListActionSearchAll />
           {/* <ListActionExport /> */}
           <ListActionCreate />
         </ListActionContainer>

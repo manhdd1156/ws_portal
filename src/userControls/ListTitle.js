@@ -51,15 +51,15 @@ class ListTitle extends Component {
 
         <Right style={styles.rightView}>
           {isAdmin && (
-            <TouchableOpacity onPress={onClickFunctionRegister}>
-              <Icon active style={{ fontSize: moderateScale(16), color: Colors.primaryColor }} ios='wrench' android='wrench' type='FontAwesome5' />
+            <TouchableOpacity onPress={loading ? null : onClickFunctionRegister}>
+              <Icon active style={{ fontSize: moderateScale(16), color: Colors.primaryColor }} ios={loading ? 'spinner' : 'wrench'} android={loading ? 'spinner' : 'wrench'} type={loading ? 'EvilIcons' : 'FontAwesome5'} />
             </TouchableOpacity>
           )}
           <TouchableOpacity disabled >
-            <Icon active style={{ fontSize: moderateScale(16), color: Colors.disableButtonColor }} ios='list' android='list' type='FontAwesome' />
+            <Icon active loading style={{ fontSize: moderateScale(16), color: Colors.disableButtonColor }} ios={loading ? 'spinner' : 'list'} android={loading ? 'spinner' : 'list'} type={loading ? 'EvilIcons' : 'FontAwesome'} />
           </TouchableOpacity>
           <TouchableOpacity disabled={!isEnabled} onPress={onClickFirstObject}>
-            <Icon active style={{ fontSize: moderateScale(16), color: isEnabled ? Colors.primaryColor : Colors.disableButtonColor }} ios='file-o' android='file-o' type='FontAwesome' />
+            <Icon active style={{ fontSize: moderateScale(16), color: isEnabled ? Colors.primaryColor : Colors.disableButtonColor }} ios={loading ? 'spinner' : 'file-o'} android={loading ? 'spinner' : 'file-o'} type={loading ? 'EvilIcons' : 'FontAwesome'} />
           </TouchableOpacity>
         </Right>
       </Header>
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
     elevation: 1,
+    height: verticalScale(50),
     marginBottom: 2
   },
   leftView: {
