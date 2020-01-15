@@ -60,11 +60,6 @@ export default class OrderList extends Component {
       { key: ORDER_STATE.BD_APPROVE, value: ORDER_STATE.BD_APPROVE, text: ORDER_STATE_LIST[ORDER_STATE.BD_APPROVE] },
       { key: ORDER_STATE.COMPLETED, value: ORDER_STATE.COMPLETED, text: ORDER_STATE_LIST[ORDER_STATE.COMPLETED] },
     ];
-    const lineList = [
-      ['orderNumber', 'orderState'],
-      ['customerName'],
-      ['total', 'createdAt'],
-    ];
 
     return (
       <ThisContext.Provider value={{ self: this }}>
@@ -100,7 +95,7 @@ export default class OrderList extends Component {
 
           </AdvancedSearchScreen > */}
           <Footer />
-          <ListSearchResult lines={lineList} keyField="orderNumber" />
+          <ListSearchResult keyField="orderNumber" />
         </View >
       </ThisContext.Provider>
     );

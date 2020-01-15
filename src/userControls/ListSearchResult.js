@@ -25,7 +25,7 @@ import { Translation } from 'react-i18next';
 import createCachedSelector from 're-reselect';
 import _ from 'lodash';
 import { format } from 'date-and-time';
-import { Icon, CheckBox, Spinner } from 'native-base';
+import { Icon, Container, Header, Content, Card, CardItem, Body, CheckBox } from "native-base";
 import { bindComponentToContext } from '../libs/componentHelper';
 import moment from 'moment';
 import WrapText from './WrapText'
@@ -59,10 +59,10 @@ const objectListRenderSelector = createCachedSelector(
   (self, state) => state.query.fields,
   (self, state) => state.query.hiddenFields,
   (self, state, keyField) => keyField,
-  (self, state, keyField, lines) => lines,
+  (self, state, keyField, colorSelector) => colorSelector,
 
-  (self, objectId, objectList, selectedObjectList, fields, hiddenFields, keyField, lines) => {
-    if (objectList && objectList.data && lines) {
+  (self, objectId, objectList, selectedObjectList, fields, hiddenFields, keyField, colorSelector) => {
+    if (objectList && objectList.data) {
       const { onObjectClick, onSelectObject, onResetQuery, onCloseRow, onItemsPerPageChange } = self;
       const { offset } = objectList.query;
       const { model, loading, rowRef, showCheckbox, query } = self.state;
@@ -103,7 +103,7 @@ const objectListRenderSelector = createCachedSelector(
       }
 
 
-      if (_.isArray(fields) && _.isArray(lines)) {
+      if (_.isArray(fields)) {
         return (
           <FlatList
             keyExtractor={(item, index) => index}
@@ -122,110 +122,208 @@ const objectListRenderSelector = createCachedSelector(
               //     </Touchable>
               //   </View>
               SWIPEROW END  */
-              <View style={styles.rowFront}>
-                {showCheckbox ? <TouchableOpacity style={styles.checkBoxView} onPress={() => selectObject(item.item._id)}>
-                  <CheckBox checked={containId(selectedObjectList, item.item._id)} onPress={() => selectObject(item.item._id)} />
-                </TouchableOpacity>
-                  :
-                  null
-                }
-                <Touchable onPress={() =>
-                  onObjectClick(item.item._id)
-                }
-                  onLongPress={() => { if (!showCheckbox) self.setState({ showCheckbox: true }); console.log('longssss press :', showCheckbox) }}
-                >
-                  <View style={{ width: '100%', justifyContent: 'center', paddingRight: 3 }}>
-                    {lines.map((line, lineIndex) => {
-                      const customeStyle = lineIndex != 0 ? { color: Colors.grey, fontSize: moderateScale(14), } : {}
-                      return (
-                        <Translation key={`row.${lineIndex}`}>
-                          {(t, { i18n }) => (
-                            <LineInRow>
-                              {line.map((element, elementIndex) => {
-                                const fieldType = model[element] ? model[element].type : DATA_TYPE.STRING;
-                                const translated = model[element] ? model[element].translated : false;
-                                const value = item.item[element];
-                                if (lineIndex == 0 && elementIndex == 0) { // nếu là phần tử đầu tiên ở line 1 thì sẽ thêm stt lên trước nó,
-                                  return (
-                                    <WrapText serial={item.index + 1} >
-                                      {value}
-                                    </WrapText>
-                                  );
-                                }
-                                else if (hiddenFields.findIndex(f => f === element) > -1) {
-                                  return (<View />);
-                                } else if (listKeyField.includes(element)) {
-                                  return (
-                                    <WrapText fillColor={true} propStyles={customeStyle}>
-                                      {value}
-                                    </WrapText>
-                                  );
-                                } else if (element === 'active') {
-                                  return (
-                                    <ActiveField active={value} />
-                                  );
-                                } else if (element === 'createdAt') {
-                                  return (
-                                    <WrapText fillColor={true} propStyles={customeStyle}>
-                                      {value ? format(new Date(value), DATETIME_FORMAT) : ''}
-                                    </WrapText>
-                                  );
-                                }
-                                switch (fieldType) {
-                                  case DATA_TYPE.STRING: {
-                                    if (translated) {
-                                      return (
-                                        <WrapText propStyles={customeStyle}>
-                                          {(`${element}.${value}` && i18n.exists(`${element}.${value}`)) ? t(`${element}.${value}`) : `${element}.${value}`}
-                                        </WrapText>
-                                      );
-                                    }
-                                    return (
-                                      <WrapText propStyles={customeStyle}>
-                                        {value}
-                                      </WrapText>
-                                    );
-                                  }
-                                  case DATA_TYPE.BOOLEAN:
-                                    return (
-                                      <ActiveField active={value} />
-                                    );
-                                  case DATA_TYPE.NUMBER:
-                                    return (
-                                      <WrapText propStyles={customeStyle}>
-                                        {value}
-                                      </WrapText>
-                                    );
-                                  case DATA_TYPE.DATE:
-                                    return (
-                                      <WrapText fillColor={true} propStyles={customeStyle}>
-                                        {value ? format(new Date(value), DATE_FORMAT) : ''}
-                                      </WrapText>
-                                    );
-                                  case DATA_TYPE.DATE_TIME:
-                                    return (
+              <Touchable onPress={() =>
+                onObjectClick(item.item._id)
+              }
+                onLongPress={() => { if (!showCheckbox) self.setState({ showCheckbox: true }); console.log('longssss press :', showCheckbox) }}
+              >
+                <Translation key={`row.${item.index}`}>
+                  {(t, { i18n }) => (
+                    <Card style={styles.cardView}>
+                      {
+                        fields.map((field, cellIndex) => {
+                          const fieldType = model[field] ? model[field].type : DATA_TYPE.STRING;
+                          const translated = model[field] ? model[field].translated : false;
+                          const value = item.item[field];
+                          console.log('item.item : ', item.item)
+                          const cellKey = `tableCell.${field}.${cellIndex}`;
+                          if (hiddenFields.findIndex(f => f === field) > -1) {
+                            return (<View key={cellKey} />);
+                          } else if (listKeyField.includes(field)) {
+                            if (listKeyField[0] === field) {
+                              return (
+                                <CardItem header bordered>
+                                  <Text style={styles.textSerial}>{item.index + 1}.</Text>
+                                  <WrapText>
+                                    {value}
+                                  </WrapText>
+                                </CardItem>
+                              )
+                            }
+                            return (
+                              <WrapText fillColor={true} >
+                                {value}
+                              </WrapText>
+                            );
+                          } else if (field === 'active') {
+                            return (
+                              <ActiveField active={value} />);
+                          } else if (field === 'createdAt') {
+                            return (
+                              <WrapText>
+                                {value ? format(new Date(value), DATETIME_FORMAT) : ''}
+                              </WrapText>);
+                          }
 
-                                      <WrapText fillColor={true} propStyles={customeStyle}>
-                                        {value ? format(new Date(value), DATETIME_FORMAT) : ''}
-                                      </WrapText>
-                                    );
-                                  default:
-                                    return (
-                                      <WrapText propStyles={customeStyle}>
-                                        {value}
-                                      </WrapText>
-                                    );
-                                }
-                              })}
-                            </LineInRow>
-                          )}
-                        </Translation>
-                      )
-                    })}
+                          switch (fieldType) {
+                            case DATA_TYPE.STRING: {
+                              if (translated) {
+                                return (
+                                  <WrapText>
+                                    {(`${field}.${value}` && i18n.exists(`${field}.${value}`)) ? t(`${field}.${value}`) : `${field}.${value}`}
+                                  </WrapText>
+                                );
+                              }
+                              return (
+                                <WrapText>
+                                  {value}
+                                </WrapText>
+                              );
+                            }
 
-                  </View>
-                </Touchable>
-              </View>
+                            case DATA_TYPE.BOOLEAN:
+                              return (
+                                <ActiveField active={value} />
+                              );
+
+                            case DATA_TYPE.NUMBER:
+                              return (
+                                <WrapText>
+                                  {value}
+                                </WrapText>
+                              );
+
+                            case DATA_TYPE.DATE:
+                              return (
+                                <WrapText>
+                                  {value ? format(new Date(value), DATE_FORMAT) : ''}
+                                </WrapText>
+                              );
+
+                            case DATA_TYPE.DATE_TIME:
+                              return (
+                                <WrapText>
+                                  {value ? format(new Date(value), DATETIME_FORMAT) : ''}
+                                </WrapText>
+                              );
+
+                            default:
+                              return (
+                                <WrapText>
+                                  {value}
+                                </WrapText>
+                              );
+                          }
+                        })
+                      }
+                    </Card>
+                  )}
+                </Translation>
+              </Touchable>
+              // <View style={styles.rowFront}>
+              //   {showCheckbox ? <TouchableOpacity style={styles.checkBoxView} onPress={() => selectObject(item.item._id)}>
+              //     <CheckBox checked={containId(selectedObjectList, item.item._id)} onPress={() => selectObject(item.item._id)} />
+              //   </TouchableOpacity>
+              //     :
+              //     null
+              //   }
+              //   <Touchable onPress={() =>
+              //     onObjectClick(item.item._id)
+              //   }
+              //     onLongPress={() => { if (!showCheckbox) self.setState({ showCheckbox: true }); console.log('longssss press :', showCheckbox) }}
+              //   >
+              //     <View style={{ width: '100%', justifyContent: 'center', paddingRight: 3 }}>
+              //       {lines.map((line, lineIndex) => {
+              //         const customeStyle = lineIndex != 0 ? { color: Colors.grey, fontSize: moderateScale(14), } : {}
+              //         return (
+              //           <Translation key={`row.${lineIndex}`}>
+              //             {(t, { i18n }) => (
+              //               <LineInRow>
+              //                 {line.map((element, elementIndex) => {
+              //                   const fieldType = model[element] ? model[element].type : DATA_TYPE.STRING;
+              //                   const translated = model[element] ? model[element].translated : false;
+              //                   const value = item.item[element];
+              //                   if (lineIndex == 0 && elementIndex == 0) { // nếu là phần tử đầu tiên ở line 1 thì sẽ thêm stt lên trước nó,
+              //                     return (
+              //                       <WrapText serial={item.index + 1} >
+              //                         {value}
+              //                       </WrapText>
+              //                     );
+              //                   }
+              //                   else if (hiddenFields.findIndex(f => f === element) > -1) {
+              //                     return (<View />);
+              //                   } else if (listKeyField.includes(element)) {
+              //                     return (
+              //                       <WrapText fillColor={true} propStyles={customeStyle}>
+              //                         {value}
+              //                       </WrapText>
+              //                     );
+              //                   } else if (element === 'active') {
+              //                     return (
+              //                       <ActiveField active={value} />
+              //                     );
+              //                   } else if (element === 'createdAt') {
+              //                     return (
+              //                       <WrapText fillColor={true} propStyles={customeStyle}>
+              //                         {value ? format(new Date(value), DATETIME_FORMAT) : ''}
+              //                       </WrapText>
+              //                     );
+              //                   }
+              //                   switch (fieldType) {
+              //                     case DATA_TYPE.STRING: {
+              //                       if (translated) {
+              //                         return (
+              //                           <WrapText propStyles={customeStyle}>
+              //                             {(`${element}.${value}` && i18n.exists(`${element}.${value}`)) ? t(`${element}.${value}`) : `${element}.${value}`}
+              //                           </WrapText>
+              //                         );
+              //                       }
+              //                       return (
+              //                         <WrapText propStyles={customeStyle}>
+              //                           {value}
+              //                         </WrapText>
+              //                       );
+              //                     }
+              //                     case DATA_TYPE.BOOLEAN:
+              //                       return (
+              //                         <ActiveField active={value} />
+              //                       );
+              //                     case DATA_TYPE.NUMBER:
+              //                       return (
+              //                         <WrapText propStyles={customeStyle}>
+              //                           {value}
+              //                         </WrapText>
+              //                       );
+              //                     case DATA_TYPE.DATE:
+              //                       return (
+              //                         <WrapText fillColor={true} propStyles={customeStyle}>
+              //                           {value ? format(new Date(value), DATE_FORMAT) : ''}
+              //                         </WrapText>
+              //                       );
+              //                     case DATA_TYPE.DATE_TIME:
+              //                       return (
+
+              //                         <WrapText fillColor={true} propStyles={customeStyle}>
+              //                           {value ? format(new Date(value), DATETIME_FORMAT) : ''}
+              //                         </WrapText>
+              //                       );
+              //                     default:
+              //                       return (
+              //                         <WrapText propStyles={customeStyle}>
+              //                           {value}
+              //                         </WrapText>
+              //                       );
+              //                   }
+              //                 })}
+              //               </LineInRow>
+              //             )}
+              //           </Translation>
+              //         )
+              //       })}
+
+              //     </View>
+              //   </Touchable>
+              // </View>
               // </SwipeRow >
 
             )
@@ -248,7 +346,6 @@ const ThisContext = React.createContext({});
 class ListSearchResult extends Component {
   static get propTypes() {
     return {
-      lines: PropTypes.array.isRequired,
       keyField: PropTypes.string.isRequired,
       colorSelector: PropTypes.oneOfType([
         PropTypes.func,
@@ -269,7 +366,7 @@ class ListSearchResult extends Component {
 
     bindComponentToContext(ListNavigator, ThisContext);
 
-    const { keyField, colorSelector, lines } = this.props;
+    const { keyField, colorSelector } = this.props;
     const { state } = self;
     const { query, model, showCheckbox, loading } = state;
 
@@ -283,7 +380,7 @@ class ListSearchResult extends Component {
           {loading && <ActivityIndicator size="large" style={styles.loading} color={Colors.primaryColor} />}
           {showCheckbox ? <ListNavigator /> : null}
           <View style={styles.listView}>
-            {objectListRenderSelector(self, self.state, keyField, lines, `${modelName}.objectList`)}
+            {objectListRenderSelector(self, self.state, keyField, colorSelector, `${modelName}.objectList`)}
           </View>
         </View>
       </ThisContext.Provider>
@@ -298,6 +395,7 @@ const styles = StyleSheet.create({
   },
   listView: {
     flex: 1,
+    backgroundColor: Colors.lightGrey
   },
   rowFront: {
     backgroundColor: 'white',
@@ -328,6 +426,14 @@ const styles = StyleSheet.create({
     paddingLeft: scale(12),
     color: Colors.grey,
     fontSize: moderateScale(28)
+  },
+  cardView: {
+    marginLeft: scale(5),
+    marginRight: scale(5),
+  },
+  textSerial: {
+    fontSize: moderateScale(16),
+    corlor: Colors.black
   }
 });
 export default ListSearchResult;

@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 1,
         elevation: 1,
-        marginBottom : 15
+        height: verticalScale(50),
+        marginBottom: 15
     },
     titleBodyView: {
     },
