@@ -8,21 +8,23 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
+  ScrollView,
 } from "react-native";
 // import { Form, Tab, Menu, Container, Radio, Input, Button, Table, Select } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import createCachedSelector from 're-reselect';
 import { Trans, Translation } from 'react-i18next';
-import { Icon } from 'native-base';
+import { Icon, Container } from 'native-base';
 import _ from 'lodash';
 import { format } from 'date-and-time';
 
-// import { DATA_TYPE } from '../constants/dataType';
-// import { DATETIME_FORMAT, DATE_FORMAT, PRIMARY_COLOR } from '../constants/config';
-// import ActiveField from '../userControls/ActiveField';
+import { DATA_TYPE } from '../constants/dataType';
+import { DATETIME_FORMAT, DATE_FORMAT } from '../constants/config';
+import ActiveField from '../userControls/ActiveField';
 import { QUERY_AUTO_ADDED_FIELD } from '../libs/listComponentHelper';
 import { convertDataList2OptionList } from '../libs/commonHelper';
-import { Colors, scale, moderateScale, verticalScale, } from '../constants/config'
+import { Colors, scale, moderateScale, verticalScale, widthCol } from '../constants/config'
 import { bindComponentToContext } from '../libs/componentHelper';
 import Tabs from '../userControls/Tabs'
 import { Tab } from 'native-base'
@@ -30,7 +32,8 @@ import SelectionField from "./SelectionField";
 import TextField from "./TextField";
 import RadioField from "./RadioField";
 import DefaultButton from "./DefaultButton"
-// import { OPERATOR_SIGN, OPERATOR_REPLACER } from '../libs/constants/mongoOperator';
+import { OPERATOR_SIGN, OPERATOR_REPLACER } from '../libs/constants/mongoOperator';
+import { Table, Row, Rows } from 'react-native-table-component';
 const ThisContext = React.createContext({});
 export const listBodyPaneSelector = createCachedSelector(
   self => self,
@@ -56,7 +59,7 @@ export const listBodyPaneSelector = createCachedSelector(
       const data = { type: 'radio', name, checked: !isDefaultQuery, };
       onChange(data);
     }
-    bindComponentToContext([Tabs, Tab, SelectionField, TextField, RadioField], ThisContext);
+    bindComponentToContext([Tabs, Tab, ActiveField, SelectionField, TextField, RadioField], ThisContext);
     return (
       <ThisContext.Provider value={{ self }}>
         <Translation>
@@ -95,150 +98,153 @@ export const listBodyPaneSelector = createCachedSelector(
                       />
                     </View>
 
-                    <TouchableOpacity onPress={() => onValueRadioFieldChange("isDefaultQuery")}>
-                      <View style={styles.radioView}>
-                        {isDefaultQuery ? <Icon active style={{ fontSize: moderateScale(25), color: Colors.primaryColor }} ios='toggle-on' android='toggle-on' type='FontAwesome' />
-                          : <Icon active style={{ fontSize: moderateScale(25), color: Colors.grey }} ios='toggle-off' android='toggle-off' type='FontAwesome' />
-                        }
-                        <View style={styles.labelView}><Text style={styles.label}>{t('system:tab.isDefaultQuery')}</Text></View>
-                      </View>
-                    </TouchableOpacity>
 
-
-                    {/* <Table striped selectable compact celled>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell width={4} textAlign="center">
-                          {t('system:table.fieldName')}
-                        </Table.HeaderCell>
-                        <Table.HeaderCell width={12} textAlign="center">
-                          {t('system:table.fieldValue')}
-                        </Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                      {
-                        Object.entries(query).map(([key, value]) => {
-                          const fieldName = key.replace(OPERATOR_SIGN, OPERATOR_REPLACER);
-
-                          if (value) {
-                            const fieldType = model[key] ? model[key].type : DATA_TYPE.STRING;
-                            let fieldValue = '';
-
-                            switch (fieldType) {
-                              case DATA_TYPE.ID:
-                                if (value === '0') {
-                                  return (<React.Fragment key={`query.${key}`} />);
-                                }
-                                fieldValue = value;
-                                break;
-
-                              case DATA_TYPE.ARRAY:
-                                fieldValue = value.join(', ');
-                                break;
-
-                              case DATA_TYPE.OBJECT:
-                                fieldValue = JSON.stringify(value);
-                                break;
-
-                              case DATA_TYPE.DATE:
-                                fieldValue = value ? format(new Date(value), DATE_FORMAT) : '';
-                                break;
-
-                              case DATA_TYPE.DATE_TIME:
-                                fieldValue = value ? format(new Date(value), DATETIME_FORMAT) : '';
-                                break;
-
-                              default:
-                                fieldValue = value.toString();
-                                break;
-                            }
-
-                            return (
-                              <Table.Row key={`query.${key}`}>
-                                <Table.Cell width={4} textAlign="center">
-                                  {(i18n.exists(fieldName) ? t(fieldName) : fieldName)}
-                                </Table.Cell>
-                                <Table.Cell width={12} textAlign="left">
-                                  {fieldValue}
-                                </Table.Cell>
-                              </Table.Row>
-                            );
+                    <View style={styles.radioView}>
+                      <TouchableOpacity onPress={() => onValueRadioFieldChange("isDefaultQuery")}>
+                        <View style={{ flexDirection: 'row' }}>
+                          {isDefaultQuery ? <Icon active style={{ fontSize: moderateScale(25), color: Colors.primaryColor }} ios='toggle-on' android='toggle-on' type='FontAwesome' />
+                            : <Icon active style={{ fontSize: moderateScale(25), color: Colors.grey }} ios='toggle-off' android='toggle-off' type='FontAwesome' />
                           }
-
-                          return null;
-                        })
-                      }
-                    </Table.Body>
-                  </Table> */}
-
-                    <View>
-                      <DefaultButton color={Colors.primaryColor} onPress={onSaveQuery} title={t('system:tab.saveQuery')} />
+                          <View style={styles.labelView}><Text style={styles.label}>{t('system:tab.isDefaultQuery')}</Text></View>
+                        </View>
+                      </TouchableOpacity>
                     </View>
 
-                    {/* <Table striped selectable compact celled color={PRIMARY_COLOR}>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell width={1} textAlign="center">
-                          {t('system:table.order')}
-                        </Table.HeaderCell>
-                        <Table.HeaderCell textAlign="center">
-                          {t('system:tab.queryName')}
-                        </Table.HeaderCell>
-                        <Table.HeaderCell width={3} textAlign="center">
-                          {t('system:tab.isDefaultQuery')}
-                        </Table.HeaderCell>
-                        <Table.HeaderCell width={2} textAlign="center" />
-                      </Table.Row>
-                    </Table.Header>
 
-                    <Table.Body>
-                      {
-                        queryList.map((tpl, index) => (
-                          <Table.Row key={tpl._id}>
-                            <Table.Cell width={1} textAlign="center">{index + 1}</Table.Cell>
-                            <Table.Cell textAlign="left">
-                              {tpl.queryName}
-                            </Table.Cell>
-                            <Table.Cell width={3} textAlign="center">
-                              <ActiveField active={tpl.isDefaultQuery ? tpl.isDefaultQuery : false} />
-                            </Table.Cell>
-                            <Table.Cell width={2} textAlign="center">
-                              <Button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  onSetQueryAsDefault(tpl._id, tpl.isDefaultQuery ? tpl.isDefaultQuery : false);
-                                }}
-                                type="button"
-                                icon="configure"
-                                color={PRIMARY_COLOR}
-                                size="mini"
-                              />
+                    <View key="Table" style={styles.tableView}>
+                      <View key="Table.Header" style={styles.tableHeadView}>
+                        <View key="Table.Row" style={styles.rowView}>
+                          <View key="Table.HeaderCell" style={[styles.tableCellView, { flex: 4 }]}>
+                            <Text>{t('system:table.fieldName')}</Text>
+                          </View>
+                          <View key="Table.HeaderCell" style={[styles.tableCellView, { flex: 10 }]}>
+                            <Text>{t('system:table.fieldValue')}</Text>
+                          </View>
+                        </View>
+                      </View>
 
-                              <Button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  onDeleteQuery(tpl._id);
-                                }}
-                                type="button"
-                                icon="delete"
-                                color={PRIMARY_COLOR}
-                                size="mini"
-                              />
-                            </Table.Cell>
-                          </Table.Row>
-                        ))
-                      }
-                    </Table.Body>
-                  </Table> */}
+                      <View key="Table.Body" style={{}}>
+
+                        {
+                          Object.entries(query).map(([key, value]) => {
+                            const fieldName = key.replace(OPERATOR_SIGN, OPERATOR_REPLACER);
+
+                            if (value) {
+                              const fieldType = model[key] ? model[key].type : DATA_TYPE.STRING;
+                              let fieldValue = '';
+
+                              switch (fieldType) {
+                                case DATA_TYPE.ID:
+                                  if (value === '0') {
+                                    return (<View key={`query.${key}`} />);
+                                  }
+                                  fieldValue = value;
+                                  break;
+
+                                case DATA_TYPE.ARRAY:
+                                  fieldValue = value.join(', ');
+                                  break;
+
+                                case DATA_TYPE.OBJECT:
+                                  fieldValue = JSON.stringify(value);
+                                  break;
+
+                                case DATA_TYPE.DATE:
+                                  fieldValue = value ? format(new Date(value), DATE_FORMAT) : '';
+                                  break;
+
+                                case DATA_TYPE.DATE_TIME:
+                                  fieldValue = value ? format(new Date(value), DATETIME_FORMAT) : '';
+                                  break;
+
+                                default:
+                                  fieldValue = value.toString();
+                                  break;
+                              }
+
+                              return (
+                                <View key="Table.Row" style={styles.rowView}>
+                                  <View key="Table.HeaderCell" style={[styles.tableCellView, { flex: 4 }]}>
+                                    <Text>{(i18n.exists(fieldName) ? t(fieldName) : fieldName)}</Text>
+                                  </View>
+                                  <View key="Table.HeaderCell" style={[styles.tableCellView, { flex: 10 }]}>
+                                    <Text>{fieldValue}</Text>
+                                  </View>
+                                </View>
+                              );
+                            }
+
+                            return null;
+                          })
+                        }
+                      </View>
+                    </View>
+
+                    <View style={{ alignItems: 'center', padding: scale(5) }}>
+                      <DefaultButton color={Colors.primaryColor} buttonStyle={{ width: widthCol * 2.5 }} onPress={onSaveQuery} title={t('system:tab.saveQuery')} />
+                    </View>
+
+                    <View key="Table" style={styles.tableView}>
+                      <ScrollView horizontal>
+                        <View key="Table.Header" style={styles.tableHeadView}>
+                          <View key="Table.Row" style={styles.rowView}>
+                            <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol }]}>
+                              <Text>{t('system:table.order')}</Text>
+                            </View>
+
+                            <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 5 }]}>
+                              <Text>{t('system:tab.queryName')}</Text>
+                            </View>
+
+                            <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 3 }]}>
+                              <Text>{t('system:tab.isDefaultQuery')}</Text>
+                            </View>
+                            <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 2 }]} />
+
+                          </View>
+                        </View>
+
+                        <View key="Table.Body" style={{}}>
+                          {
+                            queryList.map((tpl, index) => (
+                              <View key="Table.Row" style={styles.rowView}>
+                                <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol }]}>
+                                  <Text>{index + 1}</Text>
+                                </View>
+                                <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 5 }]}>
+                                  <Text>{tpl.queryName}</Text>
+                                </View>
+                                <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 3 }]}>
+                                  <ActiveField active={tpl.isDefaultQuery ? tpl.isDefaultQuery : false} />
+                                </View>
+                                <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 2 }]}>
+                                  <DefaultButton
+                                    icon={<Icon ios='wrench' android="wrench" style={{ color: 'white', fontSize: 20 }} type="FontAwesome5" />}
+                                    color={Colors.primaryColor}
+                                    buttonStyle={{ minWidth: 0, width: scale(30), padding: scale(2) }}
+                                    onPress={() => onSetQueryAsDefault(tpl._id, tpl.isDefaultQuery ? tpl.isDefaultQuery : false)}
+                                  />
+                                  <DefaultButton
+                                    icon={<Icon ios='remove' android="remove" style={{ color: 'white', fontSize: 20 }} type="FontAwesome" />}
+                                    color={Colors.primaryColor}
+                                    buttonStyle={{ minWidth: 0, width: scale(30), padding: scale(2) }}
+                                    onPress={() => onDeleteQuery(tpl._id)}
+                                  />
+                                </View>
+
+                              </View>
+                            ))
+                          }
+                        </View>
+                      </ScrollView>
+                    </View>
                   </View>
                 </Tab>
               </Tabs>
             )
           }
-        </Translation>
-      </ThisContext.Provider>
+        </Translation >
+      </ThisContext.Provider >
     );
   },
 )((self, state, children, cacheName) => cacheName);
@@ -281,9 +287,7 @@ const styles = StyleSheet.create({
     paddingRight: scale(5),
   },
   labelView: {
-    borderColor: 'red',
-    borderWidth: 1,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   required: {
     color: 'red',
@@ -309,6 +313,28 @@ const styles = StyleSheet.create({
     paddingLeft: scale(5),
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  tableView: {
+    padding: scale(5)
+  },
+  tableHeadView: {
+    backgroundColor: '#E3E4E5',
+  },
+  rowView: {
+    flexDirection: 'row',
+    borderRightColor: Colors.grey,
+    borderRightWidth: 1,
+  },
+  tableCellView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 0,
+    borderColor: Colors.grey,
+    borderWidth: 1,
+  },
+  text: {
+    margin: 6,
+    color: Colors.black
   }
 });
 export default ListBody;

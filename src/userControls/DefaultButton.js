@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     justifyContent: 'center',
     borderRadius: scale(8),
-    padding: scale(10),
+    padding: scale(5),
     minWidth: scale(95),
-    marginLeft: scale(10),
-    marginRight: scale(10),
+    // marginLeft: scale(10),
+    // marginRight: scale(10),
   },
 });

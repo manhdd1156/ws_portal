@@ -6,12 +6,12 @@ import { Icon } from 'native-base';
 import DefaultButton from './DefaultButton'
 import { Colors, moderateScale, scale } from '../constants/config';
 
-export default class ListActionSearch extends Component {
+export default class ListActionSearchAll extends Component {
   render() {
     const { self } = this.context;
     if (!self || !self.state) return (<View />);
 
-    const { state, onSearch } = self;
+    const { state, onResetQuery } = self;
     const { loading } = state;
     const { permmission } = self.props;
 
@@ -27,7 +27,7 @@ export default class ListActionSearch extends Component {
 
       <Translation ns="system">
         {
-          t => (<DefaultButton loading={loading} color={Colors.primaryColor} onPress={onSearch} title={t('btn.search')} />)
+          t => (<DefaultButton loading={loading} color={Colors.primaryColor} onPress={onResetQuery} title={t('btn.searchAll')} />)
         }
       </Translation>
     )

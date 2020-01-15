@@ -29,7 +29,7 @@ import DateField from "../../../userControls/DateField";
 import ListActionList from "../../../userControls/ListActionList";
 import { ACTIVE_OPTIONS } from '../constants/renderSetting';
 
-import ListModalRow from "../../../userControls/ListModalRow";
+import ListRow from "../../../userControls/ListRow";
 import SelectionField from "../../../userControls/SelectionField";
 const ThisContext = React.createContext({});
 export default class EndUserInqueryList extends Component {
@@ -94,7 +94,7 @@ export default class EndUserInqueryList extends Component {
     bindComponentToContext(
       [
         AdvancedSearchScreen, ListActionList,
-        ListModalRow, TextField, SelectionField, DateField, ListSearchResult
+        ListRow, TextField, SelectionField, DateField, ListSearchResult
       ],
       ThisContext,
     );
@@ -115,23 +115,23 @@ export default class EndUserInqueryList extends Component {
         <View style={styles.container} pointerEvents={loading ? 'none' : 'auto'}>
           <AdvancedSearchScreen>
 
-            <ListModalRow>
+            <ListRow>
               <TextField name='customerName' />
               <TextField alt="customerOracleListCode" name="customerOracleCode" />
               
-            </ListModalRow>
+            </ListRow>
 
-            <ListModalRow>
+            <ListRow>
               <TextField name='taxCode' />
               <TextField name="userName" alt="salesmanId" />
               
-            </ListModalRow>
+            </ListRow>
 
 
-            <ListModalRow>
+            <ListRow>
              <SelectionField name='active' options={ACTIVE_OPTIONS} layout='modal' />
               
-            </ListModalRow>
+            </ListRow>
 
           </AdvancedSearchScreen >
           <ListActionList />
