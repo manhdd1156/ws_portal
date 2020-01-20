@@ -33,7 +33,6 @@ import TextField from "./TextField";
 import RadioField from "./RadioField";
 import DefaultButton from "./DefaultButton"
 import { OPERATOR_SIGN, OPERATOR_REPLACER } from '../libs/constants/mongoOperator';
-import { Table, Row, Rows } from 'react-native-table-component';
 const ThisContext = React.createContext({});
 export const listBodyPaneSelector = createCachedSelector(
   self => self,
@@ -50,7 +49,14 @@ export const listBodyPaneSelector = createCachedSelector(
       onChange, onRunAsQuery,
       onSaveQuery, onSetQueryAsDefault, onDeleteQuery,
     } = self;
+    console.log('selfffff', self)
+    
+    console.log('queryListTTTT: ', queryList)
+    
     const queryListOptions = convertDataList2OptionList(queryList, '_id', 'queryName', '');
+
+    //console.log('queryListOptions: ', queryListOptions)
+
     const onValueTextFieldChange = (name, text) => {
       const data = { type: 'input.textField', name, value: text };
       onChange(data);
@@ -71,14 +77,15 @@ export const listBodyPaneSelector = createCachedSelector(
                   <View>
                     {
                       queryList && queryList.length ? (
-                        <SelectionField
-                          value={selectedQueryId}
+                        <SelectionField style = {{borderWidth: 2, borderColor: Colors.black}}
+                          // value={selectedQueryId}
+                          name={''}
                           options={queryListOptions}
                           label={t('system:tab.savedQueryName')}
                           onChange={onRunAsQuery}
                         />
                       ) : (
-                          <View />
+                          <View/>
                         )
                     }
 
@@ -185,7 +192,9 @@ export const listBodyPaneSelector = createCachedSelector(
                     </View>
 
                     <View key="Table" style={styles.tableView}>
-                      <ScrollView horizontal>
+
+                    <ScrollView horizontal>
+                      <ScrollView vertical>
                         <View key="Table.Header" style={styles.tableHeadView}>
                           <View key="Table.Row" style={styles.rowView}>
                             <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol }]}>
@@ -203,16 +212,23 @@ export const listBodyPaneSelector = createCachedSelector(
 
                           </View>
                         </View>
-
+                        {/* </ScrollView> */}
+                    
+                    
+                    
                         <View key="Table.Body" style={{}}>
                           {
+                            
                             queryList.map((tpl, index) => (
+                              
                               <View key="Table.Row" style={styles.rowView}>
                                 <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol }]}>
                                   <Text>{index + 1}</Text>
+                                 
                                 </View>
-                                <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 5 }]}>
+                                <View key="Table.HeaderCell"  style={[styles.tableCellView, { width: widthCol * 5 }]}>
                                   <Text>{tpl.queryName}</Text>
+                                 
                                 </View>
                                 <View key="Table.HeaderCell" style={[styles.tableCellView, { width: widthCol * 3 }]}>
                                   <ActiveField active={tpl.isDefaultQuery ? tpl.isDefaultQuery : false} />
@@ -236,6 +252,7 @@ export const listBodyPaneSelector = createCachedSelector(
                             ))
                           }
                         </View>
+                      </ScrollView>
                       </ScrollView>
                     </View>
                   </View>
@@ -319,6 +336,7 @@ const styles = StyleSheet.create({
   },
   tableHeadView: {
     backgroundColor: '#E3E4E5',
+    
   },
   rowView: {
     flexDirection: 'row',

@@ -31,7 +31,7 @@ import FormObjectDetailModal from '../../../userControls/FormObjectDetailModal';
 import EmptyField from '../../../userControls/EmptyField';
 import NumberField from '../../../userControls/NumberField';
 import DefaultButton from '../../../userControls/DefaultButton';
-import ListModalRow from '../../../userControls/ListModalRow';
+import ListRow from '../../../userControls/ListRow';
 import TextField from '../../../userControls/TextField';
 import CustomeField from '../../../userControls/CustomeField';
 const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
