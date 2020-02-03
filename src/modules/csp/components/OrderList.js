@@ -3,12 +3,7 @@
 
 */
 import React, { Component } from "react";
-import {
-  View,
-  StyleSheet,
-  Platform,
-  StatusBar
-} from "react-native";
+import { View } from "react-native";
 import { bindComponentToContext } from '../../../libs/componentHelper';
 import { initComponent, loadComponentData, onUpdate } from '../../../libs/listComponentHelper'; // [!] component LIST helper
 import AdvancedSearchScreen from '../../../userControls/AdvancedSearchScreen'
@@ -21,6 +16,7 @@ import ListRow from "../../../userControls/ListRow";
 import SelectionField from "../../../userControls/SelectionField";
 import ListTitle from "../../../userControls/ListTitle";
 import ListBody from "../../../userControls/ListBody"
+import { styles } from '../styles/orderListStyle';
 import Footer from "../../../userControls/Footer"
 import { ACTIVE_OPTIONS } from '../constants/renderSetting';
 const ThisContext = React.createContext({});
@@ -30,7 +26,6 @@ export default class OrderList extends Component {
     initComponent(this, props);
 
   }
-
   async componentDidMount() {
     await loadComponentData(this);
     this.willFocusSubscription = this.props.navigation.addListener(
@@ -66,7 +61,6 @@ export default class OrderList extends Component {
         <View style={styles.container} pointerEvents={loading ? 'none' : 'auto'}>
           <ListTitle />
           <ListBody>
-           
             <ListRow>
               <TextField name='orderNumber' />
               <SelectionField name='orderState' options={stateList} />
@@ -81,20 +75,6 @@ export default class OrderList extends Component {
             </ListRow>
             <ListActionList />
           </ListBody>
-
-          {/* <AdvancedSearchScreen>
-
-            <ListRow>
-              <TextField name='orderNumber' />
-              <SelectionField name='orderState' options={stateList} />
-            </ListRow>
-
-            <ListRow>
-              <DateField alt="fromDate" name="createdAt.$gte" />
-              <DateField alt="toDate" name="createdAt.$lte" />
-            </ListRow>
-
-          </AdvancedSearchScreen > */}
           <Footer />
           <ListSearchResult keyField="orderNumber" />
         </View >
@@ -103,13 +83,4 @@ export default class OrderList extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    ...Platform.select({
-      android: {
-        marginTop: StatusBar.currentHeight
-      }
-    })
-  },
-});
+

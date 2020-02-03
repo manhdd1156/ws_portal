@@ -1,8 +1,13 @@
+/*
+ 22/12/2019    FIT-ManhDD16     Created
+
+*/
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
-import { Colors } from '../constants/config'
-import { scale, moderateScale, verticalScale } from '../constants/config';
-const defaultInput = props => (
+import { Colors } from '../constants/config';
+import { styles } from "../styles/defaultInputStyle";
+
+const DefaultInput = props => (
   <TextInput
     underlineColorAndroid="transparent"
     {...props}
@@ -13,19 +18,4 @@ const defaultInput = props => (
   />
 );
 
-const styles = StyleSheet.create({
-  input: {
-    width: "100%",
-    borderWidth: 1,
-    borderColor: Colors.black,
-    borderRadius: 23,
-    paddingVertical: verticalScale(5),
-    paddingHorizontal: verticalScale(15),
-    marginTop: verticalScale(6),
-    marginBottom: verticalScale(6),
-    // placeholderTextColor: "#4f4f4f"
-  },
-
-});
-
-export default defaultInput;
+export default DefaultInput;

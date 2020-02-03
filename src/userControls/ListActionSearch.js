@@ -1,10 +1,13 @@
+/*
+ 25/12/2019    FIT-ManhDD16     Created
+
+*/
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from "react";
 import { Translation } from 'react-i18next';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon } from 'native-base';
+import { View } from 'react-native';
 import DefaultButton from './DefaultButton'
-import { Colors, moderateScale, scale } from '../constants/config';
+import { Colors } from '../constants/config';
 
 export default class ListActionSearch extends Component {
   render() {
@@ -33,9 +36,3 @@ export default class ListActionSearch extends Component {
     )
   }
 }
-const styles = StyleSheet.create({
-  actionSearch: {
-    color: Colors.grey,
-    fontSize: moderateScale(28)
-  }
-})

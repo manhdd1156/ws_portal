@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import {
   View,
-  StyleSheet,
   Image,
-  ImageBackground,
   Dimensions,
   KeyboardAvoidingView,
   Keyboard,
-  Alert,
   TouchableWithoutFeedback,
   ActivityIndicator,
   AsyncStorage,
@@ -15,30 +12,22 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Icon } from 'native-base'
-import PropTypes from 'prop-types';
 
 import DefaultInput from "../../../userControls/DefaultInput";
 import HeadingText from "../../../userControls/HeadingText";
 import { bindComponentToContext } from '../../../libs/componentHelper';
-// import MainText from "../../../userControls/MainText";
 import ButtonWithBackground from "../../../userControls/ButtonWithBackground";
-// import backgroundImage from '../../../assets/images/background.png';
 import logo from '../../../assets/images/fit-logo1.png';
 import { APP_NAME } from '../../../constants/config'
-// import { validate } from "../../../libs/commonHelper";
 import { Translation } from 'react-i18next';
 import { Colors, scale } from "../../../constants/config"
-import { initComponent } from '../../../libs/listComponentHelper'; // [!] component LIST helper
+import { styles } from '../styles/signinStyle';
 import Footer from '../../../userControls/Footer'
-// import { clearLoginErrorMessage, login } from '../actions/authAction';
 const ThisContext = React.createContext({});
 export default class Signin extends Component {
   constructor(props) {
     super(props);
     Dimensions.addEventListener("change", this.updateStyles);
-
-    // initComponent(this, props)
-    // this.secondTextInput = React.createRef();
     const tempState = {
       ...this.props,
       rememberMe: false,
@@ -47,19 +36,9 @@ export default class Signin extends Component {
       controls: {
         email: {
           value: "",
-          // valid: false,
-          // validationRules: {
-          //   isEmail: true
-          // },
-          // touched: false
         },
         password: {
           value: "",
-          // valid: false,
-          // validationRules: {
-          //   minLength: -1
-          // },
-          // touched: false
         },
         confirmPassword: {
           value: "",
@@ -91,7 +70,6 @@ export default class Signin extends Component {
         controls,
         rememberMe: username ? true : false
       });
-    // this.props.onAutoSignIn();
   }
 
   getRememberedUser = async () => {
@@ -110,18 +88,7 @@ export default class Signin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { error, messages } = this.props;
-    console.log('errorMessage here 1 :', this.props.error)
-    console.log('errorMessage here 2 :', nextProps.error)
-    // if (nextProps !== this.props) {
-    //   this.state = { ...this.state, nextProps }
-    // }
     if (nextProps.error === true) {
-      // Alert.alert(
-      //   nextProps.messages,
-      //   '',
-      //   [{ text: 'OK', onPress: () => { this.props.clearLoginErrorMessage(); } }],
-      // );
       this.setState({ error: true, loading: false, messages: nextProps.messages })
     }
   }
@@ -206,9 +173,7 @@ export default class Signin extends Component {
     );
     if (viewMode === "portrait") {
       headingText = (
-        // <MainText>
         <HeadingText>{APP_NAME}</HeadingText>
-        // </MainText>
       );
     }
 
@@ -225,7 +190,7 @@ export default class Signin extends Component {
           (t) => (
             <ThisContext.Provider value={{ self: this }}>
               <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-                <Image source={logo} style={{ width: Dimensions.get('window').width * 0.31, height: Dimensions.get('window').width * 0.31 }} />
+                <Image source={logo} style={styles.imageStyle} />
                 {headingText}
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                   <View style={styles.inputContainer}>
@@ -234,17 +199,9 @@ export default class Signin extends Component {
                       style={styles.input}
                       value={controls.email.value}
                       onChangeText={val => this.updateInputState("email", val)}
-                      // valid={controls.email.valid}
-                      // valid={true}
-                      // touched={controls.email.touched}
-                      // touched={true}
-                      // autoCapitalize="none"
-                      // autoCorrect={false}
                       editable={loading ? false : true}
                       keyboardType="email-address"
                       returnKeyType='next'
-                    // onSubmitEditing={() => this.customInput2.refs.innerTextInput2.focus()}
-                    // blurOnSubmit={false}
                     />
                     <View
                       style={
@@ -265,12 +222,7 @@ export default class Signin extends Component {
                           style={styles.input}
                           value={controls.password.value}
                           onChangeText={val => this.updateInputState("password", val)}
-                          // valid={controls.password.valid}
-                          // touched={controls.password.touched}
-                          // touched={true}
                           editable={loading ? false : true}
-                          // ref={ref => this.customInput2 = ref}
-                          // refInner="innerTextInput2"
                           secureTextEntry={!showPass}
                         />
                         <View style={styles.viewShowPass}>
@@ -302,69 +254,3 @@ export default class Signin extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  backgroundImage: {
-    width: "100%",
-    flex: 1
-  },
-  inputContainer: {
-    width: "80%",
-    paddingBottom: 30,
-  },
-  input: {
-    // backgroundColor: "#fff",
-    // borderColor: "#4f4f4f",
-    padding: 15,
-    paddingVertical: 10,
-
-  },
-  landscapePasswordContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  checkBox: {
-    // flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'flex-end',
-  },
-  iconCheckBox: {
-    color: Colors.grey,
-  },
-  viewShowPass: {
-    justifyContent: 'center',
-    position: 'absolute',
-    right: scale(10),
-    height: '100%'
-  },
-  iconShowPass: {
-    // position: 'absolute',
-    color: Colors.black
-  },
-  textCheckBox: {
-    color: Colors.grey,
-  },
-  portraitPasswordContainer: {
-    flexDirection: "column",
-    justifyContent: "flex-start"
-  },
-  landscapePasswordWrapper: {
-    width: "45%"
-  },
-  portraitPasswordWrapper: {
-    width: "100%"
-  }
-});
-
-
-// Signin.propTypes = {
-//   errorMessage: PropTypes.string.isRequired,
-//   loggingIn: PropTypes.bool.isRequired,
-//   login: PropTypes.func.isRequired,
-// };

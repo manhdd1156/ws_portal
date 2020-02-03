@@ -1,11 +1,14 @@
+/*
+ 22/12/2019    FIT-ManhDD16     Created
+
+*/
 import React from 'react';
-import { Platform } from 'react-native';
 import { HeaderButton } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Colors } from '../constants/config';
-import { scale, moderateScale, verticalScale } from '../constants/config';
-const CustomHeaderButton = props => {
+import { moderateScale } from '../constants/config';
+ const CustomHeaderButton = props => {
   return (
     <HeaderButton
       {...props}
@@ -15,5 +18,4 @@ const CustomHeaderButton = props => {
     />
   );
 };
-
 export default CustomHeaderButton;

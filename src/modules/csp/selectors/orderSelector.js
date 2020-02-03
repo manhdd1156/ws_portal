@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import { Icon } from 'native-base'
 import WrapText from '../../../userControls/WrapText'
-import LineInRow from '../../../userControls/LineInRow'
+import ModalRow from '../../../userControls/ModalRow'
 import SelectionField from '../../../userControls/SelectionField'
 import { bindComponentToContext } from '../../../libs/componentHelper';
 import { Colors, moderateScale, verticalScale, scale } from '../../../constants/config';
@@ -33,6 +33,7 @@ import NumberField from '../../../userControls/NumberField';
 import DefaultButton from '../../../userControls/DefaultButton';
 import DateField from '../../../userControls/DateField';
 import CustomeField from '../../../userControls/CustomeField'
+import { styles } from '../styles/orderSelectorStyle'
 import TextField from '../../../userControls/TextField';
 const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
 const ThisContext = React.createContext({});
@@ -91,9 +92,6 @@ export const orderListRenderSelector = createCachedSelector(
                                     </FormObjectDetailModal>
                                     {orderLineAll.map((product, index) => {
                                         const lineKey = `orderLineAll.${index}`;
-
-                                        console.log('orderLineAll',orderLineAll[0].productName);
-                                        
                                         const { fieldType, fieldValue } = getFieldAttribute(self, `${lineKey}.productName`);
                                         const translated = fieldType ? fieldType.translated : false;
                                         return (
@@ -103,21 +101,21 @@ export const orderListRenderSelector = createCachedSelector(
                                                     <View style={styles.rowFront}>
                                                         <Touchable onPress={() => { changeIndex(index); self.onModal(); }}>
                                                             <View style={{ width: '100%', justifyContent: 'center', paddingRight: 3, flex: 1, }}>
-                                                                <LineInRow>
+                                                                <ModalRow>
                                                                     <WrapText serial={index + 1} >
                                                                         {(translated && (i18n.exists(fieldValue))) ? t(fieldValue) : fieldValue}
                                                                     </WrapText>
 
-                                                                </LineInRow>
+                                                                </ModalRow>
                                                             </View>
                                                         </Touchable>
                                                     </View>
                                                     {!handleStatus ?
                                                         <View style={styles.rowBack}>
                                                             <DefaultButton
-                                                                icon={<Icon ios='remove' android="remove" style={{ color: 'white', fontSize: 20 }} type="FontAwesome" />}
+                                                                icon={<Icon ios='remove' android="remove" style={styles.icon} type="FontAwesome" />}
                                                                 color={Colors.tertiaryColor}
-                                                                buttonStyle={{ minWidth: 0, width: scale(30), padding: scale(2) }}
+                                                                buttonStyle={styles.buttonStyle}
                                                                 onPress={() => onDeleteSubDocument(`${lineKey}`)}
                                                             />
                                                         </View>
@@ -172,52 +170,3 @@ export const getTotalPrice = createCachedSelector(
 )((self, totalFix, totalBudget, cacheName) => cacheName);
 
 
-const styles = StyleSheet.create({
-    eventView: {
-        flex: 0.1,
-        borderColor: 'red',
-        borderWidth: 1,
-    },
-    listView: {
-        flex: 1,
-    },
-    rowView: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingRight: scale(10)
-    },
-    rowFront: {
-        height: 35,
-        flex: 1,
-    },
-    rowBack: {
-        flex: 0.1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    loading: {
-        position: 'absolute',
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.7,
-        justifyContent: 'center',
-        zIndex: 100,
-    },
-    checkBoxView: {
-        justifyContent: 'center',
-        width: '10%',
-        paddingLeft: scale(1)
-    },
-    actionSearch: {
-        paddingLeft: scale(12),
-        color: Colors.grey,
-        fontSize: moderateScale(28)
-    },
-    customeTextField: {
-        width: "100%",
-        paddingVertical: verticalScale(5),
-        paddingHorizontal: verticalScale(5),
-        marginTop: verticalScale(6),
-        marginBottom: verticalScale(6),
-    }
-});

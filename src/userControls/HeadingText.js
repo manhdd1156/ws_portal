@@ -1,20 +1,15 @@
+/*
+ 17/12/2019    FIT-ManhDD16     Created
+
+*/
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 import { Colors } from '../constants/config';
-const headingText = props => (
+import { styles } from '../styles/headingTextStyle';
+const HeadingText = props => (
   <Text {...props} style={[styles.textHeading, props.style]}>
     {props.children}
   </Text>
 );
 
-const styles = StyleSheet.create({
-  textHeading: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: Colors.primaryColor,
-    paddingTop: 10,
-    paddingBottom:40,
-  }
-});
-
-export default headingText;
+export default HeadingText;

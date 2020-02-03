@@ -32,7 +32,7 @@ import WrapText from './WrapText'
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { scale, moderateScale, verticalScale, Colors, DATETIME_FORMAT, DATE_FORMAT, ITEM_AMOUNT_PER_PAGE } from '../constants/config';
 import { } from '../constants/config';
-import LineInRow from './LineInRow'
+import ModalRow from './ModalRow'
 import ListNavigator from './ListNavigator'
 import ActiveField from './ActiveField'
 import Loading from './Loading'
@@ -140,7 +140,7 @@ const objectListRenderSelector = createCachedSelector(
                       return (
                         <Translation key={`row.${lineIndex}`}>
                           {(t, { i18n }) => (
-                            <LineInRow>
+                            <ModalRow>
                               {line.map((element, elementIndex) => {
                                 const fieldType = model[element] ? model[element].type : DATA_TYPE.STRING;
                                 const translated = model[element] ? model[element].translated : false;
@@ -217,7 +217,7 @@ const objectListRenderSelector = createCachedSelector(
                                     );
                                 }
                               })}
-                            </LineInRow>
+                            </ModalRow>
                           )}
                         </Translation>
                       )

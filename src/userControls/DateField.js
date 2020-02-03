@@ -1,7 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-for */
+/*
+ 01/01/2020    FIT-ManhDD16     Created
+
+*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { format } from 'date-and-time';
 import { Translation } from 'react-i18next';
 import {
@@ -13,18 +16,12 @@ import {
   Dimensions,
   StyleSheet,
   Modal,
-  Alert,
-  StatusBar,
   Platform,
-  Picker,
-  KeyboardAvoidingView,
-  ScrollView,
 } from 'react-native';
+import { styles } from '../styles/dateFieldStyle';
 import { Icon } from 'native-base';
 import { DATE_FORMAT, scale, moderateScale, verticalScale, Colors, months, weekdays } from '../constants/config';
 import CalendarPicker from 'react-native-calendar-picker';
-import { fieldErrorSelector } from '../libs/errorHelper';
-import TextField from './TextField'
 import { getFieldAttribute } from '../libs/commonHelper';
 import { OPERATOR_SIGN, OPERATOR_REPLACER } from '../libs/constants/mongoOperator';
 
@@ -87,11 +84,7 @@ class DateField extends React.Component {
     })
   }
   _submitSelection = () => {
-    // const { onConfirm } = this.props
     this._toggleSelector()
-    // reset searchTerm
-    // this.setState({ searchTerm: '' })
-    // onConfirm && onConfirm()
   }
 
   render() {
@@ -117,30 +110,13 @@ class DateField extends React.Component {
             (t, { i18n }) => (
               <View style={styles.textFieldView}>
                 <View style={styles.labelView}><Text style={styles.label}>{label && (i18n.exists(title) ? t(title) : title)}<Text style={styles.required}>{required ? '*' : null}</Text></Text></View>
-                {/* <TextField
-                  underlineColorAndroid="transparent"
-                  value={fieldValue ? format(new Date(fieldValue), DATE_FORMAT) : ''}
-                  style={[layout === 'screen' ? styles.textInputScreen : styles.textInputModal, style]}
-                  editable={false}
-                /> */}
-                <View
-                  style={[
-                    {
-                      flex: 1,
-                      flexWrap: 'wrap',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    },
-                    styles.selectToggle,
-                  ]}
-                >
+                <View style={styles.selectToggle}>
                   <Text style={styles.inputDateView} >{fieldValue ? format(new Date(fieldValue), DATE_FORMAT) : ''}</Text>
                   <Icon
                     ios='ios-calendar'
                     android="ios-calendar"
                     type="Ionicons"
-                    style={{ fontSize: scale(20), color: Colors.primaryColor, }}
+                    style={[styles.icon, { fontSize: scale(20) }]}
                   />
                 </View>
               </View>
@@ -177,7 +153,7 @@ class DateField extends React.Component {
                     <Touchable
                       accessibilityComponentType="button"
                       onPress={this._submitSelection}
-                      style={{ flex: 1, alignSelf: 'stretch', borderColor: 'red', borderWidth: 1, marginTop: verticalScale(10) }}
+                      style={styles.touchableStyle}
                     >
                       <View
                         style={{
@@ -185,8 +161,6 @@ class DateField extends React.Component {
                           alignItems: 'center',
                           justifyContent: 'center',
                           height: verticalScale(50),
-                          // paddingVertical: verticalScale(8),
-                          // paddingHorizontal: 16,
                           borderRadius: 0,
                           flexDirection: 'row',
                           backgroundColor: Colors.primaryColor,
@@ -227,7 +201,7 @@ class DateField extends React.Component {
                     ios='ios-calendar'
                     android="ios-calendar"
                     type="Ionicons"
-                    style={{ fontSize: scale(20), color: Colors.primaryColor, }}
+                    style={[styles.icon, { fontSize: scale(20) }]}
                   />
                 </View>
               </TouchableWithoutFeedback>
@@ -238,61 +212,7 @@ class DateField extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modalView: {
-    width: Dimensions.get("window").width * 0.9,
-    height: Dimensions.get("window").height * 0.52,
-    backgroundColor: 'white',
-    borderRadius: scale(9),
-    overflow: 'hidden',
-    // paddingBottom: 0,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
-  selectToggle: {
-    borderRadius: scale(4),
-    marginTop: verticalScale(6),
-    marginBottom: verticalScale(6),
-    borderColor: Colors.black,
-    borderWidth: 1,
-    paddingLeft: scale(5),
-    height: verticalScale(35)
-  },
-  textConfirm: {
-    color: '#ffffff',
-    fontSize: moderateScale(18)
-  },
-  icon: {
-    color: Colors.primaryColor
-  },
-  inputDateView: {
-    flex: 0.95,
-    fontSize: moderateScale(14),
-    color: Colors.black,
-  },
-  textFieldView: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  required: {
-    color: 'red',
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-});
+
 
 export default DateField;
 

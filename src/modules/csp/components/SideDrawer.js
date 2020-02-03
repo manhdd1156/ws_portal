@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Dimensions,
-  StyleSheet,
   TouchableOpacity,
   Platform,
   ScrollView,
@@ -11,18 +9,14 @@ import {
   Linking,
   Image,
   SectionList,
-  FlatList,
-  TouchableWithoutFeedback
 } from "react-native";
-import PropTypes from 'prop-types';
-import { Icon } from "native-base";
 import { Colors, scale, moderateScale, verticalScale } from '../../../constants/config';
 import { NavigationActions } from 'react-navigation';
 import Constants from "expo-constants";
-import { MENU_ITEM } from '../constants/itemConstant'
 import { convertCspFunctionList } from '../../../libs/componentHelper'
 const imageUser = require('../../../assets/images/user-image.png');
 const logo = require('../../../assets/images/fit-logo2.png')
+import { styles } from '../styles/sideDrawerStyle';
 export default class SideDrawer extends Component {
   constructor(props) {
     super(props);
@@ -41,9 +35,7 @@ export default class SideDrawer extends Component {
       this.props.navigation.closeDrawer()
     }
     else if (route === "SignOut") {
-      // console.log('============== :',this.props.navigation)
       await this.props.onLogout();
-      // console.log('======.....')
       this.props.navigation.navigate('Auth');
     } else {
       this.props.handleChangeCurrentFunction(functionId);
@@ -119,8 +111,8 @@ export default class SideDrawer extends Component {
           </TouchableOpacity>
           <View style={styles.footerContainer}>
             <Text style={{ flexDirection: 'row' }}>
-              <Text style={styles.textHoline}>Liên hệ: CanhNV5 - </Text>
-              <Text onPress={() => this.callNumber('0987749772')} style={[styles.textHoline, { color: '#0093e0', }]}>0987749772</Text>
+              <Text style={styles.textHoline}>Liên hệ: AnhDN4 - </Text>
+              <Text onPress={() => this.callNumber('+84936346346')} style={[styles.textHoline, { color: '#0093e0', }]}>+84936346346</Text>
             </Text>
             <Text style={styles.textHoline}>{`v${Constants.manifest.version}`}</Text>
           </View>
@@ -132,76 +124,7 @@ export default class SideDrawer extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: verticalScale(30),
-    backgroundColor: "white",
-    flex: 1
-  },
-  headerContainer: {
-    alignItems: 'center',
-    height: '23%',
-  },
-  imageUser: {
-    width: moderateScale(60),
-    height: moderateScale(60),
-    borderRadius: moderateScale(38),
-  },
-  imageLogo: {
-    width: '57%',
-    height: '38%',
-    // borderColor: 'red',
-    // borderWidth: 1,
-  },
-  headerTextView: {
-    width: Dimensions.get("window").width * 0.65 - scale(80),
-    paddingLeft: scale(12)
-  },
-  infoView: {
-    flex: 1,
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingLeft: scale(20),
-  },
-  line: {
-    borderWidth: 0.5,
-    borderColor: Colors.grey
-  },
-  drawerItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: scale(20),
-    backgroundColor: "#eeeeee",
-  },
-  drawerItemIcon: {
-    paddingRight: scale(20),
-    color: Colors.primaryColor,
-    width: moderateScale(70),
-    justifyContent: 'flex-start',
-    fontSize: moderateScale(30)
-  },
-  drawerItemText: {
-    color: Colors.primaryColor,
-    fontSize: moderateScale(16),
-  },
-  footerContainer: {
-    // position: 'absolute',
-    // bottom: 0,
-    paddingTop: verticalScale(50),
-    left: scale(5),
-  },
-  textName: {
-    fontSize: moderateScale(18),
-    // fontFamily: 'open-sans-bold'
-  },
-  textHoline: {
-    fontSize: moderateScale(15),
-  }
-});
-
-SideDrawer.propTypes = {
-  navigation: PropTypes.object
-};
+// SideDrawer.propTypes = {
+//   navigation: PropTypes.object
+// };
 

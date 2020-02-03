@@ -48,6 +48,7 @@ export const login = (authData) => (dispatch) => {
     dispatch(loggedIn(res.data.data))
     await navigate('App', {});
   }).catch((err) => {
+    console.log('authAction>>login>>error :', err)
     dispatch(errorLogIn(apiError2Messages(err)));
   });
 };

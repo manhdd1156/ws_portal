@@ -1,7 +1,7 @@
 import { StyleSheet, StatusBar, Platform } from 'react-native';
 import { Colors, scale, moderateScale, verticalScale } from "../../../constants/config"
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
@@ -47,4 +47,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export { styles }

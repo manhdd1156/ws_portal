@@ -1,10 +1,12 @@
-/* eslint-disable react/prefer-stateless-function */
+/*
+ 29/12/2019    FIT-ManhDD16     Created
+
+*/
 import React, { Component } from "react";
 import { Translation } from 'react-i18next';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon } from 'native-base';
+import { View } from 'react-native';
 import DefaultButton from './DefaultButton'
-import { Colors, moderateScale, scale } from '../constants/config';
+import { Colors } from '../constants/config';
 
 export default class ListActionCreate extends Component {
   render() {
@@ -24,13 +26,6 @@ export default class ListActionCreate extends Component {
           t => (<DefaultButton loading={loading} color={Colors.primaryColor} onPress={onCreateNew} title={t('btn.create')} />)
         }
       </Translation>
-
     )
   }
 }
-const styles = StyleSheet.create({
-  actionCreate: {
-    color: Colors.secondaryColor,
-    fontSize: moderateScale(38)
-  }
-})

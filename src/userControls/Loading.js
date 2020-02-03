@@ -1,6 +1,12 @@
+/*
+ 13/01/2020    FIT-ManhDD16     Created
+
+*/
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Colors } from '../constants/config'
+import { styles } from '../styles/loadingStyle';
+
 export default class Loading extends Component {
 
   constructor(props) {
@@ -12,10 +18,3 @@ export default class Loading extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-});

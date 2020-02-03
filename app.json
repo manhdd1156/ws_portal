@@ -30,7 +30,6 @@
     "android": {
       "icon": "./src/assets/images/icon.png",
       "package": "com.fit.cspmanagementsystem",
-      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyC9SNMJMCFIOHmtQsYNNm61qNUIKqn5RAw"

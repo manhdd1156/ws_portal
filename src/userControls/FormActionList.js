@@ -14,7 +14,7 @@ import FormActionGoBack from './FormActionGoBack';
 
 const ThisContext = React.createContext({});
 
-class FormActionList extends Component {
+export default class FormActionList extends Component {
   render() {
     const { self } = this.context;
     if (!self || !self.state) return (<React.Fragment />);
@@ -35,5 +35,3 @@ class FormActionList extends Component {
       </ThisContext.Provider>);
   }
 }
-
-export default FormActionList;

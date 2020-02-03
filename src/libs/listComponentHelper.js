@@ -37,7 +37,7 @@ export const initComponent = (self, props) => {
     self.state = getInitalStateFromProps(self, props);
 
     self.onModalSearch = onModalSearch.bind(self, self);
-    
+    // self.onSearch = onSearch.bind(self);
     self.onCloseRow = onCloseRow.bind(self, self);
     self.onSearch = onSearch.bind(self, self);
     self.onResetQuery = onResetQuery.bind(self, self);
@@ -47,19 +47,13 @@ export const initComponent = (self, props) => {
     self.onClickFunctionRegister = onClickFunctionRegister.bind(self, self);
     self.onObjectClick = onObjectClick.bind(self, self);
     self.onRedirect = onRedirect.bind(self, self);
-    self.onSelectObject = onSelectObject.bind(self, self);
-    self.onSelectAllObjectList = onSelectAllObjectList.bind(self, self);
-    self.onItemsPerPageChange = onItemsPerPageChange.bind(self, self);
 
     self.onSaveQuery = onSaveQuery.bind(self, self);
     self.onDeleteQuery = onDeleteQuery.bind(self, self);
     self.onSetQueryAsDefault = onSetQueryAsDefault.bind(self, self);
-    self.onRunAsQuery = onRunAsQuery.bind(self, self);
-
-
-    self.onSortBy = onSortBy.bind(self, self);
-    
-    
+    self.onSelectObject = onSelectObject.bind(self, self);
+    self.onSelectAllObjectList = onSelectAllObjectList.bind(self, self);
+    self.onItemsPerPageChange = onItemsPerPageChange.bind(self, self);
 
 };
 
@@ -147,195 +141,6 @@ async function onSearch(self, event) {
     await getList(self, apiEndpoint.read, newQuery);
 }
 
-async function onSaveQuery(self) {
-    
-    const { query } = self.state;
-    const { queryName, isDefaultQuery } = query;
-    console.log("qqqqqq",queryName,query)
-  
-    const {
-      userId, userName, userFullName,
-      functionId, baseUrl, functionName,
-    } = self.props;
-  
-    const messages = [];
-  
-    if (!queryName) {
-      messages.push({
-        name: 'queryName',
-        message: VALIDATE_FAILURE,
-      });
-  
-      self.setState({
-        error: true,
-        messages,
-      });
-  
-      return;
-    }
-  
-    self.setState(LOADING_STATE);
-  
-    const nomalizedQuery = {};
-  
-    Object.entries(query).forEach(([key, value]) => {
-      if (QUERY_AUTO_ADDED_FIELD.indexOf(key) < 0 && value) {
-        nomalizedQuery[key.replace(OPERATOR_SIGN, OPERATOR_REPLACER)] = value;
-      }
-    });
-  
-    const newQuery = {
-      userId,
-      userName,
-      userFullName,
-  
-      functionId,
-      functionUrl: baseUrl,
-      functionName,
-  
-      queryName,
-      isDefaultQuery,
-      query: nomalizedQuery,
-    };
-  
-    const { error } = await apiCreate(QUERY_SERVICE, newQuery);
-  
-    if (error) {
-      self.setState({
-        loading: false,
-        error: true,
-        messages: apiError2Messages(error),
-      });
-  
-      return;
-    }
-  
-    const savedQueryList = await apiGetList(QUERY_SERVICE, {
-      userId,
-      functionId,
-      fields: ['_id', 'queryName', 'isDefaultQuery', 'query'],
-      active: true,
-    });
-
-    console.log("ddddddd",savedQueryList)
-    
-    if (savedQueryList.error) {
-      self.setState({
-        loading: false,
-        error: true,
-        messages: apiError2Messages(savedQueryList.error),
-      });
-  
-      return;
-    }
-  
-    self.setState({
-      loading: false,
-      queryName: '',
-      isDefaultQuery: false,
-      queryList: savedQueryList.data.data,
-    });
-  }
-  
-  const onRedirect = (self) => {
-    if (!self || !self.state) return null;
-  
-    const { baseUrl } = self.props;
-    const { goToObject, objectId, objectUrlHandler } = self.state;
-    const url = `${baseUrl}/${objectId}`.replace('//', '/');
-  
-    if (goToObject === true) {
-      if (objectUrlHandler) {
-        return objectUrlHandler(self);
-      }
-  
-      return <Redirect to={url} />;
-    }
-  
-    return null;
-  };
-  
-  async function onSetQueryAsDefault(self, queryId, isDefaultQuery) {
-    self.setState(LOADING_STATE);
-  
-    const { queryList } = self.state;
-    let selectedQuery = {};
-  
-    if (isDefaultQuery) { // default => no set
-      queryList.forEach((query) => {
-        if (equalToId(query._id, queryId)) {
-          query.isDefaultQuery = !isDefaultQuery;
-          selectedQuery = query;
-        }
-      });
-    } else { // not set => default
-      queryList.forEach((query) => {
-        if (equalToId(query._id, queryId)) {
-          query.isDefaultQuery = !isDefaultQuery;
-          selectedQuery = query;
-        } else {
-          query.isDefaultQuery = isDefaultQuery;
-        }
-      });
-    }
-  
-    const { error } = await apiUpdateById(QUERY_SERVICE, selectedQuery); // TODO: auto unset other "isDefaultQuery" with same functionId & userId
-  
-    if (error) {
-      self.setState({
-        loading: false,
-        error: true,
-        messages: apiError2Messages(error),
-      });
-    } else {
-      self.setState({
-        loading: false,
-        queryList,
-        success: true,
-        messages: 'system:msg.update.success',
-      });
-    }
-  }
-
-  async function onDeleteQuery(self, queryId) {
-    self.setState(LOADING_STATE);
-  
-    const { error } = await apiDeleteById(QUERY_SERVICE, queryId); // TODO: delete NOT work
-  
-    if (error) {
-      self.setState({
-        loading: false,
-        error: true,
-        messages: apiError2Messages(error),
-      });
-    } else {
-      self.setState({
-        loading: false,
-        queryList: self.state.queryList.filter(f => !equalToId(f._id, queryId)),
-        success: true,
-        messages: 'system:msg.delete.success',
-      });
-    }
-  }
-  
-  async function onRunAsQuery(self, event, data) {
-    event.preventDefault();
-  
-    const { query, queryList } = self.state;
-    const { value } = getInputValue(data);
-  
-    if (value) {
-      const selectedQuery = queryList.find(f => f._id, value);
-  
-      if (query) {
-        self.setState({
-          query: _.merge(query, selectedQuery.query),
-          selectedQueryId: value,
-        });
-      }
-    }
-  }  
-
 
 async function onResetQuery(self, event) {
     event.preventDefault();
@@ -379,32 +184,32 @@ async function onClickFirstObject(self) {
         });
     }
 }
-// const onRedirect = (self) => {
-//     if (!self || !self.state) return null;
+const onRedirect = (self) => {
+    if (!self || !self.state) return null;
 
-//     const { baseUrl } = self.props;
-//     const { goToObject, objectId, objectUrlHandler } = self.state;
-//     const url = `${baseUrl}/detail`.replace('//', '/');
-//     const params = objectId
-//     console.log('url,goToObject,objectId : ', url, goToObject, objectId)
-//     console.log('objectUrlHandler : ', objectUrlHandler)
-//     if (goToObject === true) {
-//         if (objectUrlHandler) {
-//             return objectUrlHandler(self);
-//         }
+    const { baseUrl } = self.props;
+    const { goToObject, objectId, objectUrlHandler } = self.state;
+    const url = `${baseUrl}/detail`.replace('//', '/');
+    const params = objectId
+    console.log('url,goToObject,objectId : ', url, goToObject, objectId)
+    console.log('objectUrlHandler : ', objectUrlHandler)
+    if (goToObject === true) {
+        if (objectUrlHandler) {
+            return objectUrlHandler(self);
+        }
 
-//         // return <Redirect to={url} />;
-//         const navigateAction = NavigationActions.navigate({
-//             routeName: url,
-//             params: {
-//                 id: objectId
-//             }
-//         });
-//         self.props.navigation.dispatch(navigateAction);
-//     }
+        // return <Redirect to={url} />;
+        const navigateAction = NavigationActions.navigate({
+            routeName: url,
+            params: {
+                id: objectId
+            }
+        });
+        self.props.navigation.dispatch(navigateAction);
+    }
 
-//     return null;
-// };
+    return null;
+};
 async function onObjectClick(self, objectId) {
     const {
         queryList, selectedQueryId,
@@ -444,29 +249,6 @@ const navigateToScreen = (route, functionId) => async () => {
     }
 
 }
-
-async function onSortBy(self, fieldName) {
-    self.setState(LOADING_STATE);
-  
-    const { apiEndpoint, query } = self.state;
-    const sortBy = query.sortBy ? convertStringToArray(query.sortBy, '.') : [];
-    const sortedField = sortBy[0] ? sortBy[0] : '';
-    const sortDirection = sortBy[1] === 'desc' ? 'desc' : 'asc';
-  
-    query.page = 1; // reset to 1rst page when REsearch
-  
-    if (fieldName === sortedField) {
-      query.sortBy = `${fieldName}.${sortDirection === 'desc' ? 'asc' : 'desc'}`;
-    } else {
-      query.sortBy = `${fieldName}.asc`;
-    }
-  
-    await getList(self, apiEndpoint.read, query);
-  }
-  
-
-
-
 async function onCreateNew(self) {
     const {
         queryList, selectedQueryId,
@@ -502,6 +284,168 @@ async function onSelectObject(self, data) {
     self.setState({
         selectedObjectList: newSelectedObjectList,
     });
+}
+async function onSaveQuery(self) {
+    const { query } = self.state;
+    const { queryName, isDefaultQuery } = query;
+
+    const {
+        userId, userName, userFullName,
+        functionId, baseUrl, functionName,
+    } = self.props;
+
+    const messages = [];
+
+    if (!queryName) {
+        messages.push({
+            name: 'queryName',
+            message: VALIDATE_FAILURE,
+        });
+
+        self.setState({
+            error: true,
+            messages,
+        });
+
+        return;
+    }
+
+    self.setState(LOADING_STATE);
+
+    const nomalizedQuery = {};
+
+    Object.entries(query).forEach(([key, value]) => {
+        if (QUERY_AUTO_ADDED_FIELD.indexOf(key) < 0 && value) {
+            nomalizedQuery[key.replace(OPERATOR_SIGN, OPERATOR_REPLACER)] = value;
+        }
+    });
+
+    const newQuery = {
+        userId,
+        userName,
+        userFullName,
+
+        functionId,
+        functionUrl: baseUrl,
+        functionName,
+
+        queryName,
+        isDefaultQuery,
+        query: nomalizedQuery,
+    };
+
+    const { error } = await apiCreate(QUERY_SERVICE, newQuery);
+
+    if (error) {
+        self.setState({
+            loading: false,
+            error: true,
+            messages: apiError2Messages(error),
+        });
+
+        return;
+    }
+
+    const savedQueryList = await apiGetList(QUERY_SERVICE, {
+        userId,
+        functionId,
+        fields: ['_id', 'queryName', 'isDefaultQuery', 'query'],
+        active: true,
+    });
+
+    if (savedQueryList.error) {
+        self.setState({
+            loading: false,
+            error: true,
+            messages: apiError2Messages(savedQueryList.error),
+        });
+
+        return;
+    }
+
+    self.setState({
+        loading: false,
+        queryName: '',
+        isDefaultQuery: false,
+        queryList: savedQueryList.data.data,
+    });
+}
+async function onDeleteQuery(self, queryId) {
+    self.setState(LOADING_STATE);
+
+    const { error } = await apiDeleteById(QUERY_SERVICE, queryId); // TODO: delete NOT work
+
+    if (error) {
+        self.setState({
+            loading: false,
+            error: true,
+            messages: apiError2Messages(error),
+        });
+    } else {
+        self.setState({
+            loading: false,
+            queryList: self.state.queryList.filter(f => !equalToId(f._id, queryId)),
+            success: true,
+            messages: 'system:msg.delete.success',
+        });
+    }
+}
+async function onSetQueryAsDefault(self, queryId, isDefaultQuery) {
+    self.setState(LOADING_STATE);
+
+    const { queryList } = self.state;
+    let selectedQuery = {};
+
+    if (isDefaultQuery) { // default => no set
+        queryList.forEach((query) => {
+            if (equalToId(query._id, queryId)) {
+                query.isDefaultQuery = !isDefaultQuery;
+                selectedQuery = query;
+            }
+        });
+    } else { // not set => default
+        queryList.forEach((query) => {
+            if (equalToId(query._id, queryId)) {
+                query.isDefaultQuery = !isDefaultQuery;
+                selectedQuery = query;
+            } else {
+                query.isDefaultQuery = isDefaultQuery;
+            }
+        });
+    }
+
+    const { error } = await apiUpdateById(QUERY_SERVICE, selectedQuery); // TODO: auto unset other "isDefaultQuery" with same functionId & userId
+
+    if (error) {
+        self.setState({
+            loading: false,
+            error: true,
+            messages: apiError2Messages(error),
+        });
+    } else {
+        self.setState({
+            loading: false,
+            queryList,
+            success: true,
+            messages: 'system:msg.update.success',
+        });
+    }
+}
+async function onRunAsQuery(self, data) {
+
+    const { query, queryList } = self.state;
+    const { value } = getInputValue(data);
+
+    if (value) {
+        const selectedQuery = queryList.find(f => f._id, value);
+
+        if (query) {
+            self.setState({
+                query: _.merge(query, selectedQuery.query),
+                selectedQueryId: value,
+            });
+        }
+    }
 }
 async function onSelectAllObjectList(self, data) {
 

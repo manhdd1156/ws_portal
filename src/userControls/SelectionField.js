@@ -9,20 +9,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Text,
-  TextInput,
   View,
-  Picker,
-  StyleSheet,
-  Dimensions,
 } from 'react-native';
-import { scale, moderateScale, verticalScale, Colors } from '../constants/config';
+import { scale, verticalScale, Colors } from '../constants/config';
+import { styles } from '../styles/selectionFieldStyle';
 import { Translation } from 'react-i18next';
 import _ from 'lodash';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import { fieldErrorSelector } from '../libs/errorHelper';
+// import { fieldErrorSelector } from '../libs/errorHelper';
 import { getFieldAttribute, convertDataOptionList } from '../libs/commonHelper';
 
-class SelectionField extends Component {
+export default class SelectionField extends Component {
   static get propTypes() {
     return {
       name: PropTypes.string.isRequired,
@@ -114,13 +111,13 @@ class SelectionField extends Component {
   }
   render() {
     const { self } = this.context;
-    if (!self || !self.state) return (<React.Fragment />);
+    if (!self || !self.state) return (<View />);
 
     const {
       name, options,
       search, multiple,
       label, disabled,
-      alt, 
+      alt,
     } = this.props;
 
     const userDefinedOnChange = this.props.onChange;
@@ -234,28 +231,4 @@ class SelectionField extends Component {
       </Translation>);
   }
 }
-const styles = StyleSheet.create({
-  textFieldView: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  sectionView: {
-    borderRadius: scale(4),
-  },
-  required: {
-    color: 'red',
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-
-});
-
-export default SelectionField;
 

@@ -6,23 +6,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Image, ImageBackground, Dimensions, SectionList, TouchableCmp } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { MENU_ITEM } from '../constants/itemConstant'
 import MainMenuGrid from '../../../userControls/MainMenuGrid';
 import HeaderButton from '../../../userControls/HeaderButton';
 import { styles } from '../styles/homeStyle'
-import { initComponent } from '../../../libs/listComponentHelper'; // [!] component FORM helper
-import { Container, Header, Title, Left, Right, Body, } from 'native-base';
+import { Header, Title, Left, Right, Body, } from 'native-base';
 // import socketIOClient from 'socket.io-client';
 import { NavigationActions, StackActions } from 'react-navigation'
 import { Notifications } from 'expo';
 import Constants from 'expo-constants';
-import ListTitle from '../../../userControls/ListTitle';
 import * as Permissions from 'expo-permissions';
-import { Colors, scale, moderateScale, verticalScale } from '../../../constants/config';
 import { convertCspFunctionList } from '../../../libs/componentHelper'
 import registerForPushNotificationAsync from '../../../constants/registerForPushNotificationsAsync'
 import { checkLogin } from '../../../libs/componentHelper';
-// window.navigator.userAgent = 'react-native';
 import io from 'socket.io-client/dist/socket.io';
 const backgroundImage = require('../../../assets/images/background2.png');
 
@@ -139,7 +134,6 @@ export default class Home extends Component {
                         title={itemData.section.data[i].functionName}
                         onSelect={() => {
                             try {
-                                console.log('itemData :', itemData)
                                 console.log('itemData.section.data[i].functionUrl :', itemData.section.data[i].functionUrl)
                                 this.props.handleChangeCurrentFunction(itemData.section.data[i].functionId);
                                 // console.log('this.props :', this)

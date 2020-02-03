@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import { Icon } from 'native-base'
 import WrapText from '../../../userControls/WrapText'
-import LineInRow from '../../../userControls/LineInRow'
+import ModalRow from '../../../userControls/ModalRow'
 import SelectionField from '../../../userControls/SelectionField'
 import { bindComponentToContext } from '../../../libs/componentHelper';
 import { Colors, moderateScale, verticalScale, scale } from '../../../constants/config';
@@ -96,7 +96,7 @@ export const productListRenderSelector = createCachedSelector(
                                         {checkCondition() ? <CustomeField alt={`offerId`}  ><Text>{publicProduct.offerId}</Text></CustomeField> : null}
                                         {checkCondition() ? <CustomeField alt={`productName`}  ><Text>{publicProduct.productName}</Text></CustomeField> : null}
 
-                                        {checkCondition() ? <CustomeField alt={`startDate`}  ><Text>{publicProduct.startDate }</Text></CustomeField> : null}
+                                        {checkCondition() ? <CustomeField alt={`startDate`}  ><Text>{publicProduct.startDate ? format(new Date(startDate), DATE_FORMAT) : ''}</Text></CustomeField> : null}
                                         {checkCondition() ? <CustomeField alt={`quantity`}  ><Text>{publicProduct.quantity}</Text></CustomeField> : null}
 
 
@@ -124,12 +124,12 @@ export const productListRenderSelector = createCachedSelector(
                                                     <View style={styles.rowFront}>
                                                         <Touchable onPress={() => { changeIndex(index); self.onModal(); }}>
                                                             <View style={{ width: '100%', justifyContent: 'center', paddingRight: 3, flex: 1, }}>
-                                                                <LineInRow>
+                                                                <ModalRow>
                                                                     <WrapText serial={index + 1} >
                                                                         {productName}
                                                                     </WrapText>
 
-                                                                </LineInRow>
+                                                                </ModalRow>
                                                             </View>
                                                         </Touchable>
                                                     </View>

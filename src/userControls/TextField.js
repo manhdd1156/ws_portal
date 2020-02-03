@@ -8,7 +8,6 @@ import {
   TextInput,
   View,
   StyleSheet,
-  TouchableWithoutFeedback,
   ScrollView,
 } from "react-native";
 import PropTypes from 'prop-types';
@@ -16,7 +15,8 @@ import { scale, moderateScale, verticalScale, Colors } from '../constants/config
 import { fieldErrorSelector } from '../libs/errorHelper';
 import { getFieldAttribute } from '../libs/commonHelper';
 import { Translation } from 'react-i18next';
-class TextField extends Component {
+import { styles } from '../styles/textFieldStyle';
+export default class TextField extends Component {
   static get propTypes() {
     return {
       name: PropTypes.string.isRequired,
@@ -79,21 +79,12 @@ class TextField extends Component {
             (t, { i18n }) => (
               <View style={styles.textFieldView}>
                 <View style={styles.labelView}><Text style={styles.label}>{label && (i18n.exists(title) ? t(title) : title)}<Text style={styles.required}>{required ? '*' : null}</Text></Text></View>
-                {/* <View style={[ styles.textInput , style]}>
-                  
-                  <Text>{(translated && (i18n.exists(fieldValue))) ? t(fieldValue) : fieldValue}</Text>
-                </View> */}
                 <ScrollView nestedScrollEnabled={true} keyboardDismissMode='on-drag' horizontal style={[styles.textInput, style]}>
-
                   <TextInput
                     underlineColorAndroid="transparent"
                     value={(translated && (i18n.exists(fieldValue))) ? t(fieldValue) : fieldValue}
-                    // style={[styles.textInput, style]}
-                    // placeholder={placeholder}
-                    // placeholderTextColor={Colors.placeholderTextColor}
                     editable={false}
                   />
-
                 </ScrollView>
               </View>
             )
@@ -124,36 +115,3 @@ class TextField extends Component {
 
   }
 }
-
-const styles = StyleSheet.create({
-
-  textFieldView: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  required: {
-    color: 'red',
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-  textInput: {
-    width: "100%",
-    borderWidth: 1,
-    height: verticalScale(35),
-    borderColor: Colors.black,
-    borderRadius: scale(4),
-    paddingVertical: verticalScale(5),
-    paddingHorizontal: verticalScale(5),
-    marginTop: verticalScale(6),
-    marginBottom: verticalScale(6),
-  },
-});
-
-export default TextField;

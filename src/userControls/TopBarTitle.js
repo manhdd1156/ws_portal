@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, Platform, View, Dimensions } from "react-native";
 import { scale, moderateScale, verticalScale, Colors } from '../constants/config';
-const topBarTitle = props => (
+const TopBarTitle = props => (
   <View style={Platform.OS === 'android' ? styles.headerTitleAndroid : styles.headerTitleIOS}>
     <Text style={styles.textTitle}>{props.functionName}</Text>
   </View>
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default topBarTitle;
+export default TopBarTitle;

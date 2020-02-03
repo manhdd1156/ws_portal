@@ -8,18 +8,16 @@
 import React, { Component } from "react";
 import {
   Text,
-  TextInput,
   View,
-  StyleSheet,
 } from "react-native";
 import { Textarea } from "native-base"
 import PropTypes from 'prop-types';
 
 import { Translation } from 'react-i18next';
-import { scale, moderateScale, verticalScale, Colors } from '../constants/config';
-import { fieldErrorSelector } from '../libs/errorHelper';
-
-class TextAreaField extends React.Component {
+import { Colors } from '../constants/config';
+// import { fieldErrorSelector } from '../libs/errorHelper';
+import { styles } from '../styles/textAreaFieldStyle';
+export default class TextAreaField extends Component {
   static get propTypes() {
     return {
       name: PropTypes.string.isRequired,
@@ -110,27 +108,3 @@ class TextAreaField extends React.Component {
       </Translation>);
   }
 }
-const styles = StyleSheet.create({
-
-  areaFieldView: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-    paddingBottom: verticalScale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  textArea: {
-    borderColor: Colors.black,
-    borderWidth: 1,
-    borderRadius: scale(4),
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-
-});
-export default TextAreaField;
