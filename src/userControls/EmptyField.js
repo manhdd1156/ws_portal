@@ -8,7 +8,6 @@ import { styles } from '../styles/emptyFieldStyle';
 
 export default class EmptyField extends Component {
   render() {
-    console.log('abc = :', abc)
     return (<View style={styles.emptyFieldView} />);
   }
 }
