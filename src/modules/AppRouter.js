@@ -3,7 +3,7 @@ import { Platform, View, Text, StyleSheet, Image, Dimensions } from 'react-nativ
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer'
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 
 import ProductInqueryListScreen from "./csp/screens/ProductInqueryListScreen";
@@ -18,41 +18,41 @@ import OrderListScreen from "./csp/screens/OrderListScreen";
 import OrderFormScreen from "./csp/screens/OrderFormScreen";
 import SideDrawerScreen from "./csp/screens/SideDrawerScreen";
 import AuthLoadingScreen from './csp/screens/AuthLoadingScreen';
-import HeaderButton from '../userControls/HeaderButton';
-import TopBarTitle from '../userControls/TopBarTitle'
-import { Colors } from '../constants/config';
+// import HeaderButton from '../userControls/HeaderButton';
+// import TopBarTitle from '../userControls/TopBarTitle'
+// import { Colors } from '../constants/config';
 
 const defaultStackNavOptions = (params) => {
-  let functionName;
+  // let functionName;
 
-  switch (params.navigation.state.routeName) {
-    case '/csp/dashboard/':
-      functionName = "Trang chủ"
-      break;
-    case '/csp/order/':
-      functionName = "Đơn hàng"
-      break;
-    case '/csp/order/detail':
-      functionName = "Chi tiết đơn hàng"
-      break;
+  // switch (params.navigation.state.routeName) {
+  //   case '/csp/dashboard/':
+  //     functionName = "Trang chủ"
+  //     break;
+  //   case '/csp/order/':
+  //     functionName = "Đơn hàng"
+  //     break;
+  //   case '/csp/order/detail':
+  //     functionName = "Chi tiết đơn hàng"
+  //     break;
 
-    case '/csp/productInqueries/':
-      functionName = "Sản phẩm"
-      break;
+  //   case '/csp/productInqueries/':
+  //     functionName = "Sản phẩm"
+  //     break;
       
-    case '/csp/productInqueries/detail':
-     functionName = "Chi tiết sản phẩm"
-     break;
+  //   case '/csp/productInqueries/detail':
+  //    functionName = "Chi tiết sản phẩm"
+  //    break;
   
-    case '/csp/endUserInqueries/':
-      functionName = "Khách hàng"
-      break;
+  //   case '/csp/endUserInqueries/':
+  //     functionName = "Khách hàng"
+  //     break;
         
       
-    case '/csp/endUserInqueries/detail':
-      functionName = "Chi tiết Khách hàng"
-      break;      
-  }
+  //   case '/csp/endUserInqueries/detail':
+  //     functionName = "Chi tiết Khách hàng"
+  //     break;      
+  // }
   return {
     header : null
     // headerStyle: {

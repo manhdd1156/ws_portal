@@ -107,7 +107,7 @@ export const checkAsyncStorage = async () => {
 export const getFieldAttribute = (self, name) => {
     const splitedNameList = name.split('.'); // fieldName.index.subFieldName
     const { model, query, object } = self.state;
-    console.log('name,model, query, object :', name, model, query, object)
+    // console.log('name,model, query, object :', name, model, query, object)
     let fieldType;
     let fieldValue;
     if (splitedNameList.length < 3) { // single field or field with '$gt' / '$lt'
@@ -206,7 +206,8 @@ function login(email, password) {
             } else {
                 throw Exception();
             }
-        }).catch(err => { console.log('err :', err, err.response); reject(err.response) });
+        }).catch(err => { console.log('commonHelper>>Login>>err :', err, err.response); reject(err.response ? err.response : err) });
+
     });
 }
 export const convertDataOptionList = (objectList) => {
@@ -319,12 +320,14 @@ export function setTopLevelNavigator(navigatorRef) {
 }
 
 export function navigate(routeName, params) {
-    _navigator.dispatch(
-        NavigationActions.navigate({
-            routeName,
-            params,
-        }),
-    );
+    if (_navigator) {
+        _navigator.dispatch(
+            NavigationActions.navigate({
+                routeName,
+                params,
+            }),
+        );
+    }
 }
 
 export const equalToId = (id, otherId) => {

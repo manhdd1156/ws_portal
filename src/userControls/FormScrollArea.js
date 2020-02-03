@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Translation } from 'react-i18next';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Colors, moderateScale, verticalScale, scale } from '../constants/config';
+import { styles } from '../styles/formScrollAreaStyle';
 
 export default class FormScrollArea extends Component {
   static get propTypes() {
@@ -45,28 +46,3 @@ export default class FormScrollArea extends Component {
       </Translation>);
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-    paddingBottom: verticalScale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-  formScrollAreaView: {
-    marginLeft: scale(5),
-    marginRight: scale(5),
-    borderColor: Colors.black,
-    borderWidth: 1,
-    borderRadius: scale(4),
-    height: Dimensions.get('window').height * 0.25,
-  },
-})
-

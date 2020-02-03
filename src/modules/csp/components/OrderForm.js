@@ -5,24 +5,8 @@
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable arrow-parens */
 import React, { Component } from 'react';
-// import { Message, Container, Step } from 'semantic-ui-react';
-// import NumberFormat from 'react-number-format';
-import { createDraft, finishDraft } from 'immer';
-import { Icon, TabHeading, ScrollableTab, Tab } from 'native-base';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Dimensions,
-  Alert,
-  Platform,
-  ActivityIndicator,
-  ScrollView,
-  KeyboardAvoidingView,
-} from "react-native";
-import StepIndicator from 'react-native-step-indicator';
+import { Icon, Tab } from 'native-base';
+import { View, Text, ScrollView, KeyboardAvoidingView } from "react-native";
 import { Translation } from 'react-i18next';
 import { bindComponentToContext, listOptionsSelector } from '../../../libs/componentHelper';
 import { initComponent, loadComponentData } from '../../../libs/formComponentHelper'; // [!] component FORM helper
@@ -34,20 +18,18 @@ import FormActionContainer from '../../../userControls/FormActionContainer';
 import FormActionUpdate from '../../../userControls/FormActionUpdate';
 import FormActionCreate from '../../../userControls/FormActionCreate';
 import FormActionDelete from '../../../userControls/FormActionDelete';
-import DefaultButton from '../../../userControls/DefaultButton'
+import DefaultButton from '../../../userControls/DefaultButton';
 import FormActionGoBack from '../../../userControls/FormActionGoBack';
 import FormActionSend from '../../../userControls/FormActionSend';
 import EmptyField from '../../../userControls/EmptyField';
 import FormScrollArea from '../../../userControls/FormScrollArea';
 import FormWorkFlow from '../../../userControls/FormWorkFlow';
-import Loading from '../../../userControls/Loading'
-import RadioField from '../../../userControls/RadioField';
-import Tabs from '../../../userControls/Tabs'
+import Tabs from '../../../userControls/Tabs';
 import { Colors, scale, tabConfig } from '../../../constants/config';
+import FormTitle from '../../../userControls/FormTitle';
+import { styles } from '../styles/orderFormStyle';
 import TextAreaField from '../../../userControls/TextAreaField';
-// import { FormField, TextArea, Button } from 'semantic-ui-react';
 import { ORDERSTATE, getCurrentPosition, ORDER_STATE, PAY_TYPE } from '../constants/orderStateConstants';
-// import { getInputValue } from '../../../libs/commonHelper';
 import { orderListRenderSelector, getTotalPrice, convertMoney } from '../selectors/orderSelector';
 import { onSendWithoutCreate, onProductSearchChange } from '../functions/orderFunction';
 
@@ -78,7 +60,6 @@ export default class OrderForm extends Component {
     // if (redirectInjection) { return redirectInjection; }
     let totalFix = 0;
     let totalBudget = 0;
-    if (loading) return <Loading />
     if (orderLineAll != null) {
       orderLineAll.forEach(element => {
         if ((element.billingOption || element.payType) === PAY_TYPE.FIX) {
@@ -105,7 +86,7 @@ export default class OrderForm extends Component {
     }
     bindComponentToContext(
       [
-        FormWorkFlow, Tabs, Tab, FormRow, TextField, SelectionField, TextAreaField, Footer, FormActionContainer, FormActionCreate, FormActionUpdate,
+        FormTitle, FormWorkFlow, Tabs, Tab, FormRow, TextField, SelectionField, TextAreaField, Footer, FormActionContainer, FormActionCreate, FormActionUpdate,
         FormActionDelete, FormActionGoBack, FormActionSend, FormScrollArea
       ],
       ThisContext,
@@ -113,93 +94,95 @@ export default class OrderForm extends Component {
 
 
     return (
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={70} enabled>
-        <ThisContext.Provider value={{ self: this }} >
-          <ScrollView>
-            <FormWorkFlow steps={ORDERSTATE} active={currentPosition} />
 
-            <FormRow>
-              <TextField name="orderNumber" readOnly={true} />
-            </FormRow>
+      <ThisContext.Provider value={{ self: this }}>
+        <View style={styles.container}>
+          <FormTitle />
+          <KeyboardAvoidingView
+            behavior="padding"
+            style={styles.keyboard}
+            enabled>
+            <ScrollView>
+              <FormWorkFlow steps={ORDERSTATE} active={currentPosition} />
 
-            <FormRow>
-              {!handleStatus ? <SelectionField name="customerId" options={customerList} /> : <TextField name="customerName" readOnly />}
-            </FormRow>
+              <FormRow>
+                <TextField name="orderNumber" readOnly={true} />
+              </FormRow>
 
-            <FormRow>
-              <TextField name="departmentName" readOnly={handleStatus} />
-              <TextField name="salesmanName" alt="salesmanId" readOnly={handleStatus} />
-            </FormRow>
+              <FormRow>
+                {!handleStatus ? <SelectionField name="customerId" options={customerList} /> : <TextField name="customerName" readOnly />}
+              </FormRow>
 
-            <FormRow>
-              <TextField name="paymentTerm" readOnly={handleStatus} />
-              <EmptyField />
-            </FormRow>
+              <FormRow>
+                <TextField name="departmentName" readOnly={handleStatus} />
+                <TextField name="salesmanName" alt="salesmanId" readOnly={handleStatus} />
+              </FormRow>
 
-            <FormRow>
-              <TextField name="billToName" readOnly={handleStatus} />
-            </FormRow>
-
-            <FormRow>
-              <TextField name="shipToName" readOnly={handleStatus} />
-            </FormRow>
-            <Tabs>
-              <Tab heading="tab1">
-                <TextField name="billToName" readOnly={handleStatus} />
-              </Tab>
-              <Tab heading="tab2">
-                <TextField name="shipToName" readOnly={handleStatus} />
-                <TextField name="shipToName" readOnly={handleStatus} />
-              </Tab>
-              <Tab heading="tab3">
+              <FormRow>
                 <TextField name="paymentTerm" readOnly={handleStatus} />
-              </Tab>
-            </Tabs>
-            <FormScrollArea name='orderList'>
-              {orderListRenderSelector(this, object.orderLineAll, productList, periodList, handleStatus, modalVisible, 'orderLineAll')}
-            </FormScrollArea>
+                <EmptyField />
+              </FormRow>
 
-            {!handleStatus ? <DefaultButton icon={<Icon ios='plus' android="plus" style={{ color: 'white', fontSize: 20, }} type="FontAwesome" />} color={Colors.primaryColor} buttonStyle={{ padding: scale(2), minWidth: 0, width: scale(30) }} onPress={() => this.onAddSubDocument('orderLineAll')} /> : null}
+              <FormRow>
+                <TextField name="billToName" readOnly={handleStatus} />
+              </FormRow>
 
-            <View style={styles.customeView}>
-              <Text>Tổng tiền mua theo gói:{convertMoney(totalFix)}</Text>
-            </View>
+              <FormRow>
+                <TextField name="shipToName" readOnly={handleStatus} />
+              </FormRow>
+              <Tabs>
+                <Tab heading="tab1">
+                  <TextField name="billToName" readOnly={handleStatus} />
+                </Tab>
+                <Tab heading="tab2">
+                  <TextField name="shipToName" readOnly={handleStatus} />
+                  <TextField name="shipToName" readOnly={handleStatus} />
+                </Tab>
+                <Tab heading="tab3">
+                  <TextField name="paymentTerm" readOnly={handleStatus} />
+                </Tab>
+              </Tabs>
+              <FormScrollArea name='orderList'>
+                {orderListRenderSelector(this, object.orderLineAll, productList, periodList, handleStatus, modalVisible, 'orderLineAll')}
+              </FormScrollArea>
 
-            <View style={styles.customeView}>
-              <Text>Tổng ngân sách:{convertMoney(totalBudget)}</Text>
-            </View>
+              {!handleStatus ? <View style={{ paddingLeft: scale(10) }}>
+                <DefaultButton icon={<Icon ios='plus' android="plus" style={{ color: 'white', fontSize: 20, }} type="FontAwesome" />} color={Colors.primaryColor} buttonStyle={{ padding: scale(2), minWidth: 0, width: scale(30) }} onPress={() => this.onAddSubDocument('orderLineAll')} />
+              </View>
+                : null}
+              <View style={styles.customeView}>
+                <Text>Tổng tiền mua theo gói:{convertMoney(totalFix)}</Text>
+              </View>
 
-            <View style={styles.customeView}>
-              <Text>Tổng tiền:{convertMoney(getTotalPrice(this, totalFix, totalBudget, 'totalPrice'))}</Text>
-            </View>
+              <View style={styles.customeView}>
+                <Text>Tổng ngân sách:{convertMoney(totalBudget)}</Text>
+              </View>
 
-            <FormRow>
-              <TextAreaField name='note' readOnly={handleStatus} />
-            </FormRow>
-            <FormActionContainer >
-              {(objectId === '0') && (<FormActionCreate />)}
-              <Translation ns="system">
-                {
-                  t => ((permmission.canSend && objectId === '0') && (<DefaultButton color={Colors.primaryColor} onPress={this.onSendWithoutCreate} title={t('btn.send')} />))
-                }
-              </Translation>
-              {(orderState === ORDER_STATE.DRAFT) && (<FormActionUpdate />)}
-              {(orderState === ORDER_STATE.DRAFT || objectId === '0') && (<FormActionSend />)}
-              {orderState === ORDER_STATE.DRAFT && (<FormActionDelete />)}
-              <FormActionGoBack />
-            </FormActionContainer>
-            {/* {if(messages)} */}
-            <Footer />
-          </ScrollView>
-        </ThisContext.Provider>
-      </KeyboardAvoidingView >
+              <View style={styles.customeView}>
+                <Text>Tổng tiền:{convertMoney(getTotalPrice(this, totalFix, totalBudget, 'totalPrice'))}</Text>
+              </View>
 
+              <FormRow>
+                <TextAreaField name='note' readOnly={handleStatus} />
+              </FormRow>
+              <FormActionContainer >
+                {(objectId === '0') && (<FormActionCreate />)}
+                <Translation ns="system">
+                  {
+                    t => ((permmission.canSend && objectId === '0') && (<DefaultButton color={Colors.primaryColor} onPress={this.onSendWithoutCreate} title={t('btn.send')} />))
+                  }
+                </Translation>
+                {(orderState === ORDER_STATE.DRAFT) && (<FormActionUpdate />)}
+                {(orderState === ORDER_STATE.DRAFT || objectId === '0') && (<FormActionSend />)}
+                {orderState === ORDER_STATE.DRAFT && (<FormActionDelete />)}
+                <FormActionGoBack />
+              </FormActionContainer>
+              {/* {if(messages)} */}
+              <Footer />
+            </ScrollView>
+          </KeyboardAvoidingView >
+        </View>
+      </ThisContext.Provider >
     );
   }
 }
-const styles = StyleSheet.create({
-  customeView: {
-    paddingRight: scale(10),
-    alignItems: 'flex-end',
-  },
-});

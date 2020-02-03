@@ -3,14 +3,10 @@
 
 */
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-} from "react-native";
+import { Text, View } from "react-native";
 import PropTypes from 'prop-types';
-import { scale, moderateScale, verticalScale, Colors } from '../constants/config';
 import { Translation } from 'react-i18next';
+import { styles } from '../styles/customeFieldStyle'
 class CustomeField extends Component {
   static get propTypes() {
     return {
@@ -50,21 +46,6 @@ class CustomeField extends Component {
   }
 }
 
-const styles = StyleSheet.create({
 
-  textFieldView: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-});
 
 export default CustomeField;

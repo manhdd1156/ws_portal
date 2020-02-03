@@ -1,5 +1,5 @@
 /*
- 8/01/2020    FIT-ManhDD16     Created
+ 08/01/2020    FIT-ManhDD16     Created
 
 */
 /* eslint-disable react/prefer-stateless-function */
@@ -7,24 +7,15 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableNativeFeedback,
   TouchableOpacity,
-  Dimensions,
-  Alert,
-  Platform,
-  ActivityIndicator,
-  ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
 import PropTypes from 'prop-types';
 import { Icon } from 'native-base';
-import { scale, moderateScale, verticalScale, Colors } from '../constants/config';
 import { Translation } from 'react-i18next';
-
+import { styles } from '../styles/radioFieldStyle';
 import { getFieldAttribute } from '../libs/commonHelper';
 
-class RadioField extends React.Component {
+export default class RadioField extends Component {
   static get propTypes() {
     return {
       name: PropTypes.string.isRequired,
@@ -69,8 +60,8 @@ class RadioField extends React.Component {
           (t, { i18n }) => (
             <TouchableOpacity onPress={userDefinedOnChange || this.onValueChange(fieldValue)}>
               <View>
-                {fieldValue ? <Icon active style={{ fontSize: moderateScale(16), color: Colors.primaryColor }} ios='toggle-on' android='toggle-on' type='FontAwesome' />
-                  : <Icon active style={{ fontSize: moderateScale(16), color: Colors.grey }} ios='toggle-off' android='toggle-off' type='FontAwesome' />
+                {fieldValue ? <Icon active style={styles.toggleOnStyle} ios='toggle-on' android='toggle-on' type='FontAwesome' />
+                  : <Icon active style={styles.toggleOffStyle} ios='toggle-off' android='toggle-off' type='FontAwesome' />
                 }
                 <View style={styles.labelView}><Text style={styles.label}>{label && (i18n.exists(title) ? t(title) : title)}<Text style={styles.required}>{fieldType.required ? '*' : null}</Text></Text></View>
               </View>
@@ -80,26 +71,3 @@ class RadioField extends React.Component {
       </Translation>);
   }
 }
-const styles = StyleSheet.create({
-  textFieldView: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-  },
-  labelView: {
-    justifyContent: 'flex-start'
-  },
-  sectionView: {
-    borderRadius: scale(4),
-  },
-  required: {
-    color: 'red',
-  },
-  label: {
-    color: 'black',
-    fontSize: moderateScale(16)
-  },
-
-});
-export default RadioField;

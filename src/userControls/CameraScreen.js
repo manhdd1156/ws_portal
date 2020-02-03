@@ -32,20 +32,16 @@ export default class CameraScreen extends Component {
   }
   _snap = async () => {
     const { snap } = this.state
-    console.log('snap image start 1: ', new Date().getSeconds(), ':', new Date().getMilliseconds())
     if (this.camera && !snap) {
       this.setState({
         snap: true
       });
       let photo = await this.camera.takePictureAsync({ skipProcessing: true, quality: 0 });
-      console.log('snap image start 2: ', new Date().getSeconds(), ':', new Date().getMilliseconds())
       CameraRoll.saveToCameraRoll(photo.uri, 'photo').then(function (result) {
-        console.log('save succeeded ' + result);
 
       }).catch(function (error) {
         console.log('save failed ' + error);
       });
-      console.log('snap image end 2 : ', new Date().getSeconds(), ':', new Date().getMilliseconds())
       let { images } = this.context.self.state;
       // images.push({ source: { uri: photo.uri } });
       // images.push({ source: { ...photo, id: '' } })
@@ -54,7 +50,6 @@ export default class CameraScreen extends Component {
         images: images,
         isShowCamera: false
       });
-      console.log('snap image end 2 : ', new Date().getSeconds(), ':', new Date().getMilliseconds())
       // this.setState({ image: photo.uri });
 
     }

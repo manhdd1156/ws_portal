@@ -5,7 +5,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { PropsChildrenPropType } from '../libs/componentHelper';
-import { Colors, moderateScale, verticalScale, scale } from '../constants/config';
+import {styles } from '../styles/formObjectDetailModalStyle';
 
 export default class FormActionContainer extends Component {
   static get propTypes() {
@@ -17,23 +17,9 @@ export default class FormActionContainer extends Component {
   render() {
     return (
       <View style={styles.bottomView}>
-        <ScrollView horizontal>
-          {this.props.children}
-        </ScrollView>
+        {this.props.children}
       </View>
     );
   }
 
 }
-const styles = StyleSheet.create({
-  bottomView: {
-    paddingTop: verticalScale(15),
-    paddingBottom: verticalScale(15),
-    paddingLeft: scale(12),
-    paddingRight: scale(12),
-  },
-  scrollView: {
-    // flex: 1,
-    // justifyContent: 'flex-start',
-  }
-})

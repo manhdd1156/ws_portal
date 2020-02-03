@@ -1,10 +1,13 @@
+/*
+ 28/12/2019    FIT-ManhDD16     Created
+
+*/
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from "react";
 import { Translation } from 'react-i18next';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon } from 'native-base';
+import { View } from 'react-native';
 import DefaultButton from './DefaultButton'
-import { Colors, moderateScale, scale } from '../constants/config';
+import { Colors } from '../constants/config';
 
 export default class ListActionSearchAll extends Component {
   render() {
@@ -18,13 +21,6 @@ export default class ListActionSearchAll extends Component {
     if (!permmission.canRead) return (<View />);
 
     return (
-      /* onPress={() => onModalSearch(true)} cũng là cách truyền param vào function onModalSearch(self,visible)
-        còn nếu để mặc định như ở dưới thì sẽ truyền event vào onModalSearch(self,event)
-      */
-      // <TouchableOpacity onPress={onModalSearch}>
-      //   <Icon style={styles.actionSearch} ios='ios-search' android="ios-search" type="Ionicons" />
-      // </TouchableOpacity>
-
       <Translation ns="system">
         {
           t => (<DefaultButton loading={loading} color={Colors.primaryColor} onPress={onResetQuery} title={t('btn.searchAll')} />)
@@ -33,9 +29,3 @@ export default class ListActionSearchAll extends Component {
     )
   }
 }
-const styles = StyleSheet.create({
-  actionSearch: {
-    color: Colors.grey,
-    fontSize: moderateScale(28)
-  }
-})

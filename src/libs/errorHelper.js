@@ -39,67 +39,72 @@ export const errorParser = {
 
 export function apiError2Messages(apiError) {
   // console.log('apiError', apiError);
-  const { status, data } = apiError;
-  switch (status) {
-    case 401: 
-    case 403:
-    case 422: {
-      let errorObject;
+  try {
+    const { status, data } = apiError;
+    switch (status) {
+      case 401:
+      case 403:
+      case 422: {
+        let errorObject;
 
-      // console.log('data', data);
+        // console.log('data', data);
 
-      if (data && data.error) {
-        errorObject = data.error;
+        if (data && data.error) {
+          errorObject = data.error;
 
-        if (errorObject.errors) {
-          errorObject = errorObject.errors;
-        } else {
-          return errorObject;
-        }
-      }
-
-      if (errorObject) {
-        const messages = [];
-
-        Object.entries(errorObject).forEach(([name, value]) => {
-          let message = '';
-
-          switch (value.kind) {
-            case 'required':
-              message = 'system:msg.validate.required';
-              break;
-
-            default:
-              message = 'system:msg.validate.failure';
-              break;
+          if (errorObject.errors) {
+            errorObject = errorObject.errors;
+          } else {
+            return errorObject;
           }
+        }
 
-          messages.push({
-            name,
-            message,
+        if (errorObject) {
+          const messages = [];
+
+          Object.entries(errorObject).forEach(([name, value]) => {
+            let message = '';
+
+            switch (value.kind) {
+              case 'required':
+                message = 'system:msg.validate.required';
+                break;
+
+              default:
+                message = 'system:msg.validate.failure';
+                break;
+            }
+
+            messages.push({
+              name,
+              message,
+            });
           });
-        });
 
-        return messages;
+          return messages;
+        }
+        if (data.message) {
+          return data.message
+        }
+        return `system:msg.httpResponseCode.${status.toString()}`;
       }
-      if (data.message) {
-        return data.message
+
+      case 500: {
+        const errorObject = data && data.error ? data.error : undefined;
+
+        if (errorObject && errorObject.message) {
+          return errorObject.message;
+        }
+
+        return `system:msg.httpResponseCode.${status.toString()}`;
       }
-      return `system:msg.httpResponseCode.${status.toString()}`;
+
+      default:
+        console.log('default error')
+        return `system:msg.httpResponseCode.${status.toString()}`;
     }
-
-    case 500: {
-      const errorObject = data && data.error ? data.error : undefined;
-
-      if (errorObject && errorObject.message) {
-        return errorObject.message;
-      }
-
-      return `system:msg.httpResponseCode.${status.toString()}`;
-    }
-
-    default:
-      console.log('default error')
-      return `system:msg.httpResponseCode.${status.toString()}`;
+  } catch (error) {
+    console.log('errorHelper>>apiError2Messages>>error :', error)
+    return apiError;
   }
 }

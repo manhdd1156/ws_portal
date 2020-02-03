@@ -3,13 +3,10 @@
 
 */
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
-// import { Menu, Dropdown, Grid, GridColumn } from 'semantic-ui-react';
-import { Colors, moderateScale, verticalScale, scale } from '../constants/config';
 import { Translation } from 'react-i18next';
-import { ScrollView, StyleSheet, TouchableOpacity, View, Text, Dimensions } from "react-native";
-import { CheckBox, Body } from "native-base"
-
+import { ScrollView, TouchableOpacity, View, Text } from "react-native";
+import { CheckBox } from "native-base"
+import { styles } from '../styles/listNavigatorStyle';
 // import { ITEM_AMOUNT_PER_PAGE, ITEM_AMOUNT_PER_PAGE_VALUES, PAGE_RANGE_DISPLAYED } from '../constants/config';
 
 // const PageRender = ({
@@ -34,7 +31,7 @@ import { CheckBox, Body } from "native-base"
 //   // onPageChange: () => {},
 // };
 
-class ListNavigator extends React.Component {
+export default class ListNavigator extends Component {
   constructor(props) {
     super(props);
     this.selectAllObjectList = this.selectAllObjectList.bind(this);
@@ -44,7 +41,6 @@ class ListNavigator extends React.Component {
     const { self } = this.context;
     const { state, onSelectAllObjectList } = self;
     const { selectedAll } = state;
-    console.log('selectAllObjectList :', selectedAll)
     const data = { type: 'checkbox', checked: !selectedAll };
     onSelectAllObjectList(data);
   }
@@ -53,13 +49,9 @@ class ListNavigator extends React.Component {
     const { self } = this.context;
     const { state, onSelectAllObjectList } = self;
     const { actionList } = self.props
-    console.log('onChangeActionList :', value)
     if (value) {
-      console.log('ListNavigator.value', value);
       const selecteAction = actionList.find(f => f.actionCode === value);
-      console.log('selecteAction: ', selecteAction)
       if (selecteAction) {
-        console.log('here')
         await (selecteAction.actionHandler)(self);
       }
     }
@@ -67,16 +59,14 @@ class ListNavigator extends React.Component {
 
   render() {
     const { self } = this.context;
-    if (!self || !self.state) return (<React.Fragment />);
+    if (!self || !self.state) return (<View />);
 
     // [!] Cause of props change twice but component load once => CAN NOT save in state
     const { actionList } = self.props;
-
     const {
       state,
       // onPageChange, onItemsPerPageChange,
     } = self;
-    const { showCheckbox } = state;
     const {
       query, loading,
       objectList, selectedObjectList, selectedAll
@@ -84,7 +74,7 @@ class ListNavigator extends React.Component {
 
     // const activePage = query.page ? query.page : 1;
     // const itemsPerPage = query.itemsPerPage ? query.itemsPerPage : ITEM_AMOUNT_PER_PAGE;
-    // const totalAmount = objectList && objectList.length ? objectList.length : 0;
+    const totalAmount = objectList && objectList.length ? objectList.length : 0;
     const selectedAmount = selectedObjectList ? selectedObjectList.length : 0;
 
     // let pageAmount = 0;
@@ -118,89 +108,45 @@ class ListNavigator extends React.Component {
     //     text: action.actionName,
     //   });
     // });
-
     return (
 
       <Translation>
         {
           (t) => {
             return (
-              <View style={styles.headerView}>
-                <View style={styles.selectAllView}>
-                  <TouchableOpacity style={styles.checkboxTouchArea} onPress={() => this.selectAllObjectList()}>
-                    <CheckBox onPress={() => this.selectAllObjectList()} checked={selectedAll} />
-                  </TouchableOpacity>
-                  <View style={styles.resultSelectedView}>
-                    <Text style={styles.resultSelectedText}>{t('system:pageNav.selectedAmount', { selectedAmount })} </Text>
+              <View>
+                <View style={styles.resultSearchView}>
+                  <Text style={styles.resultSearchText}>{t('system:pageNav.totalAmount', { totalAmount })} </Text>
+                </View>
+
+                <View style={styles.headerView}>
+                  <View style={styles.selectAllView}>
+                    <TouchableOpacity style={styles.checkboxTouchArea} onPress={() => this.selectAllObjectList()}>
+                      <CheckBox onPress={() => this.selectAllObjectList()} checked={selectedAll} />
+                    </TouchableOpacity>
+
+                    <View style={styles.resultSelectedView}>
+                      <Text style={styles.resultSelectedText}>{t('system:pageNav.selectedAmount', { selectedAmount })} </Text>
+                    </View>
+                  </View>
+                  <View style={styles.navigatorView}>
+
+                    <ScrollView style={styles.actionView} horizontal={true} >
+                      {(selectedAmount > 0) && (actionCount > 0) && actionList.map((action) => {
+                        return (
+                          <TouchableOpacity style={styles.actionButtonStyle} onPress={() => { this.onChangeActionList(action.actionCode) }}>
+                            <Text style={styles.actionText}>{action.actionName}</Text>
+                          </TouchableOpacity>
+                        )
+                      })}
+                    </ScrollView>
                   </View>
                 </View>
-                <View style={styles.navigatorView}>
-
-                  <ScrollView style={styles.actionView} horizontal={true} >
-                    {(selectedAmount > 0) && (actionCount > 0) && actionList.map((action) => {
-                      return (
-                        <TouchableOpacity style={{ marginLeft: scale(5), marginRight: scale(5), justifyContent: 'center' }} onPress={() => { this.onChangeActionList(action.actionCode) }}>
-                          <Text style={styles.actionText}>{action.actionName}</Text>
-                        </TouchableOpacity>
-                      )
-                    })}
-
-                    <TouchableOpacity style={{ marginLeft: scale(5), marginRight: scale(5), justifyContent: 'center' }} onPress={() => { if (showCheckbox) self.setState({ showCheckbox: false }) }}>
-                      <Text style={[styles.actionText, { color: Colors.grey }]}>{t('btn.goBack')}</Text>
-                    </TouchableOpacity>
-                  </ScrollView>
-
-                </View>
               </View>
-
             );
           }
         }
-      </Translation>
+      </Translation >
     );
   }
 }
-const styles = StyleSheet.create({
-  headerView: {
-    flex: 0.1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: verticalScale(5),
-    paddingRight: scale(5),
-    borderBottomColor: Colors.black,
-    borderBottomWidth: 1,
-  },
-  selectAllView: {
-    flexDirection: 'row',
-    flex: 0.4
-    // flex: 0.2,
-  },
-  navigatorView: {
-    flex: 0.6,
-  },
-  actionView: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-  },
-  resultSelectedText: {
-    color: Colors.black,
-    fontSize: moderateScale(16),
-  },
-  actionText: {
-
-    color: Colors.primaryColor,
-    fontSize: moderateScale(16),
-  },
-  checkboxTouchArea: {
-    justifyContent: 'center',
-    width: Dimensions.get('window').width * 0.1,
-    paddingLeft: scale(1)
-  },
-  resultSelectedView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    // width: Dimensions.get('window').width * 0.3
-  }
-})
-export default ListNavigator;

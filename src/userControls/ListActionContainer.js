@@ -1,8 +1,11 @@
-import React, { Component } from "react";
-import { View, StyleSheet, } from 'react-native';
-import { PropsChildrenPropType } from '../libs/componentHelper';
-import { Colors, moderateScale, verticalScale, scale } from '../constants/config';
+/*
+ 22/12/2019    FIT-ManhDD16     Created
 
+*/
+import React, { Component } from "react";
+import { View } from 'react-native';
+import { PropsChildrenPropType } from '../libs/componentHelper';
+import { styles } from '../styles/listActionContainerStyle'
 export default class ListActionContainer extends Component {
   static get propTypes() {
     return {
@@ -18,14 +21,3 @@ export default class ListActionContainer extends Component {
   }
 
 }
-const styles = StyleSheet.create({
-  headerView: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: verticalScale(5),
-    paddingBottom: verticalScale(5),
-    paddingLeft: scale(10),
-    paddingRight: scale(10),
-  },
-})

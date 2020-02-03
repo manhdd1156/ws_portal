@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import { Icon } from 'native-base'
 import WrapText from '../../../userControls/WrapText'
-import LineInRow from '../../../userControls/LineInRow'
+import ModalRow from '../../../userControls/ModalRow'
 import SelectionField from '../../../userControls/SelectionField'
 import { bindComponentToContext } from '../../../libs/componentHelper';
 import { Colors, moderateScale, verticalScale, scale } from '../../../constants/config';
@@ -124,12 +124,12 @@ export const productListRenderSelector = createCachedSelector(
                                                     <View style={styles.rowFront}>
                                                         <Touchable onPress={() => { changeIndex(index); self.onModal(); }}>
                                                             <View style={{ width: '100%', justifyContent: 'center', paddingRight: 3, flex: 1, }}>
-                                                                <LineInRow>
+                                                                <ModalRow>
                                                                     <WrapText serial={index + 1} >
                                                                         {productName}
                                                                     </WrapText>
 
-                                                                </LineInRow>
+                                                                </ModalRow>
                                                             </View>
                                                         </Touchable>
                                                     </View>

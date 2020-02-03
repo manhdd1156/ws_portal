@@ -4,24 +4,18 @@
 */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-// import { Message, Step } from 'semantic-ui-react';
-import { Colors, moderateScale, verticalScale, scale } from '../constants/config';
+import { moderateScale } from '../constants/config';
 import {
   View,
-  Text,
   StyleSheet,
-  TouchableNativeFeedback,
-  TouchableOpacity,
   Dimensions,
-  Alert,
   ScrollView,
-  Platform,
-  ActivityIndicator,
 } from "react-native";
 import StepIndicator from 'react-native-step-indicator';
+import { styles } from '../styles/formWorkFlowStyle';
 import PropTypes from 'prop-types';
 
-class FormWorkFlow extends Component {
+export default class FormWorkFlow extends Component {
   static get propTypes() {
     return {
       steps: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -65,7 +59,7 @@ class FormWorkFlow extends Component {
     if (steps.length > 5) {
       return (
         < ScrollView horizontal >
-          <View style={[styles.workFlowView, { width: (Dimensions.get('window').width / 4) * steps.length }]}> 
+          <View style={[styles.workFlowView, { width: (Dimensions.get('window').width / 4) * steps.length }]}>
             <StepIndicator
               customStyles={StyleSheet.flatten([defaultStyles, style])}
               currentPosition={active}
@@ -87,11 +81,4 @@ class FormWorkFlow extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  workFlowView: {
-    paddingTop: verticalScale(10),
-    paddingBottom: verticalScale(5)
-  },
-})
-export default FormWorkFlow;
 

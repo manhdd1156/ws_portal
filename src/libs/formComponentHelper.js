@@ -22,8 +22,7 @@ import {
   onDownloadFile,
 } from './componentHelper';
 
-async function onClickNextObject(self, event) {
-  event.preventDefault();
+async function onClickNextObject(self) {
   self.setState(LOADING_STATE);
 
   const {
@@ -60,8 +59,7 @@ async function onClickNextObject(self, event) {
   }
 }
 
-async function onClickPrevObject(self, event) {
-  event.preventDefault();
+async function onClickPrevObject(self) {
   self.setState(LOADING_STATE);
 
   const {
@@ -270,8 +268,7 @@ async function onDeleteConfirm(self) {
 //   self.setState({ deleting: false });
 // }
 
-async function onClickObjectList(self, event) {
-  event.preventDefault();
+async function onClickObjectList(self) {
 
   self.setState({
     ...self.state,
@@ -279,8 +276,7 @@ async function onClickObjectList(self, event) {
   });
 }
 
-async function onClickCopyObject(self, event) {
-  event.preventDefault();
+async function onClickCopyObject(self) {
 
   const { objectId, object } = self.state;
   const { location, history, document } = window;
@@ -692,10 +688,10 @@ export const initComponent = (self, props) => {
   // self.onDownloadFile = onDownloadFile.bind(self, self);
 
   self.onGoBack = onGoBack.bind(self, self);
-  // self.onClickNextObject = onClickNextObject.bind(self, self);
-  // self.onClickPrevObject = onClickPrevObject.bind(self, self);
-  // self.onClickObjectList = onClickObjectList.bind(self, self);
-  // self.onClickCopyObject = onClickCopyObject.bind(self, self);
+  self.onClickNextObject = onClickNextObject.bind(self, self);
+  self.onClickPrevObject = onClickPrevObject.bind(self, self);
+  self.onClickObjectList = onClickObjectList.bind(self, self);
+  self.onClickCopyObject = onClickCopyObject.bind(self, self);
   self.onRedirect = onRedirect.bind(self, self);
 
   // self.onChangeComment = onChangeComment.bind(self, self);
