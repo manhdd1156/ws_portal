@@ -24,6 +24,7 @@ import { DATE_FORMAT, scale, moderateScale, verticalScale, Colors, months, weekd
 import CalendarPicker from 'react-native-calendar-picker';
 import { getFieldAttribute } from '../libs/commonHelper';
 import { OPERATOR_SIGN, OPERATOR_REPLACER } from '../libs/constants/mongoOperator';
+import { onValueChange, _toggleSelector, _submitSelection, _closeSelector } from '../functions/dateFieldFunction';
 
 const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
 
@@ -50,8 +51,13 @@ class DateField extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onValueChange = this.onValueChange.bind(this);
+    console.log('thisddddd', onValueChange);
 
+    this.onValueChange = onValueChange.bind(this, this);
+    this._toggleSelector = _toggleSelector.bind(this);
+    this._submitSelection = _submitSelection.bind(this);
+    this._closeSelector = _closeSelector.bind(this);
+    
     this.state = {
       selector: false,
       // searchTerm: '',
@@ -59,33 +65,33 @@ class DateField extends React.Component {
     }
   }
 
-  onValueChange(choosenDate) {
-    const { self } = this.context;
-    const { name } = this.props;
-    const { onChange } = self;
+  // onValueChange(choosenDate) {
+  //   const { self } = this.context;
+  //   const { name } = this.props;
+  //   const { onChange } = self;
 
-    const value = choosenDate ? choosenDate.toDate() : null;
-    const data = { type: 'input.date', name, value };
+  //   const value = choosenDate ? choosenDate.toDate() : null;
+  //   const data = { type: 'input.date', name, value };
 
-    onChange(data);
-  }
+  //   onChange(data);
+  // }
 
-  _toggleSelector = () => {
-    const newState = !this.state.selector
-    this.setState({
-      selector: newState,
-    })
-  }
+  // _toggleSelector = () => {
+  //   const newState = !this.state.selector
+  //   this.setState({
+  //     selector: newState,
+  //   })
+  // }
 
-  _closeSelector = () => {
-    this.setState({
-      selector: false,
-      // searchTerm: '',
-    })
-  }
-  _submitSelection = () => {
-    this._toggleSelector()
-  }
+  // _closeSelector = () => {
+  //   this.setState({
+  //     selector: false,
+  //     // searchTerm: '',
+  //   })
+  // }
+  // _submitSelection = (this) => {
+  //   this._toggleSelector(this)
+  // }
 
   render() {
     const { self } = this.context;
@@ -134,7 +140,7 @@ class DateField extends React.Component {
                 animationType="fade"
                 transparent
                 visible={selector}
-                onRequestClose={this._closeSelector}
+                onRequestClose={() => this._closeSelector(this)}
               >
                 <View style={styles.container}>
                   <View style={styles.modalView}>
@@ -152,7 +158,7 @@ class DateField extends React.Component {
 
                     <Touchable
                       accessibilityComponentType="button"
-                      onPress={this._submitSelection}
+                      onPress={() => this._submitSelection(this)}
                       style={styles.touchableStyle}
                     >
                       <View
@@ -183,7 +189,7 @@ class DateField extends React.Component {
               </View>
 
               <TouchableWithoutFeedback
-                onPress={this._toggleSelector}
+                onPress={() => this._toggleSelector(this)}
               >
                 <View
                   style={[

@@ -16,6 +16,8 @@ import { fieldErrorSelector } from '../libs/errorHelper';
 import { getFieldAttribute } from '../libs/commonHelper';
 import { Translation } from 'react-i18next';
 import { styles } from '../styles/textFieldStyle';
+import { onValueChange } from '../functions/textFieldFunction';
+
 export default class TextField extends Component {
   static get propTypes() {
     return {
@@ -44,15 +46,15 @@ export default class TextField extends Component {
   constructor(props) {
     super(props);
 
-    this.onValueChange = this.onValueChange.bind(this);
+    this.onValueChange = onValueChange.bind(this, this);
   }
-  onValueChange(text) {
-    const { name } = this.props;
-    const { onChange } = this.context.self;
-    const data = { type: 'input.textField', name, value: text };
-    // console.log('this : ', this)
-    onChange(data);
-  }
+  // onValueChange(text) {
+  //   const { name } = this.props;
+  //   const { onChange } = this.context.self;
+  //   const data = { type: 'input.textField', name, value: text };
+  //   // console.log('this : ', this)
+  //   onChange(data);
+  // }
 
   render() {
 
