@@ -14,6 +14,7 @@ import TextField from '../../../userControls/TextField';
 import SelectionField from '../../../userControls/SelectionField';
 import Footer from '../../../userControls/Footer';
 import FormRow from '../../../userControls/FormRow';
+import FormBody from '../../../userControls/FormBody';
 import FormActionContainer from '../../../userControls/FormActionContainer';
 import FormActionUpdate from '../../../userControls/FormActionUpdate';
 import FormActionCreate from '../../../userControls/FormActionCreate';
@@ -86,7 +87,7 @@ export default class OrderForm extends Component {
     }
     bindComponentToContext(
       [
-        FormTitle, FormWorkFlow, Tabs, Tab, FormRow, TextField, SelectionField, TextAreaField, Footer, FormActionContainer, FormActionCreate, FormActionUpdate,
+        FormTitle, FormBody, FormWorkFlow, Tabs, Tab, FormRow, TextField, SelectionField, TextAreaField, Footer, FormActionContainer, FormActionCreate, FormActionUpdate,
         FormActionDelete, FormActionGoBack, FormActionSend, FormScrollArea
       ],
       ThisContext,
@@ -102,6 +103,7 @@ export default class OrderForm extends Component {
             behavior="padding"
             style={styles.keyboard}
             enabled>
+     <FormBody>
             <ScrollView>
               <FormWorkFlow steps={ORDERSTATE} active={currentPosition} />
 
@@ -130,18 +132,6 @@ export default class OrderForm extends Component {
               <FormRow>
                 <TextField name="shipToName" readOnly={handleStatus} />
               </FormRow>
-              <Tabs>
-                <Tab heading="tab1">
-                  <TextField name="billToName" readOnly={handleStatus} />
-                </Tab>
-                <Tab heading="tab2">
-                  <TextField name="shipToName" readOnly={handleStatus} />
-                  <TextField name="shipToName" readOnly={handleStatus} />
-                </Tab>
-                <Tab heading="tab3">
-                  <TextField name="paymentTerm" readOnly={handleStatus} />
-                </Tab>
-              </Tabs>
               <FormScrollArea name='orderList'>
                 {orderListRenderSelector(this, object.orderLineAll, productList, periodList, handleStatus, modalVisible, 'orderLineAll')}
               </FormScrollArea>
@@ -180,6 +170,7 @@ export default class OrderForm extends Component {
               {/* {if(messages)} */}
               <Footer />
             </ScrollView>
+            </FormBody>
           </KeyboardAvoidingView >
         </View>
       </ThisContext.Provider >
