@@ -5,7 +5,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { PropsChildrenPropType } from '../libs/componentHelper';
-import {styles } from '../styles/formObjectDetailModalStyle';
+import {styles } from '../styles/formActionContainerStyle';
 
 export default class FormActionContainer extends Component {
   static get propTypes() {
