@@ -5,6 +5,7 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import { View } from "react-native";
 import PropTypes from 'prop-types';
 
 export default class FormBody extends Component {
