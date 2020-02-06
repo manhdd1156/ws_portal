@@ -23,36 +23,36 @@ import AuthLoadingScreen from './csp/screens/AuthLoadingScreen';
 // import { Colors } from '../constants/config';
 
 const defaultStackNavOptions = (params) => {
-  let functionName;
+  // let functionName;
 
-  switch (params.navigation.state.routeName) {
-    case '/csp/dashboard/':
-      functionName = "Trang chủ"
-      break;
-    case '/csp/order/':
-      functionName = "Đơn hàng"
-      break;
-    case '/csp/order/detail':
-      functionName = "Chi tiết đơn hàng"
-      break;
+  // switch (params.navigation.state.routeName) {
+  //   case '/csp/dashboard/':
+  //     functionName = "Trang chủ"
+  //     break;
+  //   case '/csp/order/':
+  //     functionName = "Đơn hàng"
+  //     break;
+  //   case '/csp/order/detail':
+  //     functionName = "Chi tiết đơn hàng"
+  //     break;
 
-    case '/csp/productInqueries/':
-      functionName = "Sản phẩm"
-      break;
+  //   case '/csp/productInqueries/':
+  //     functionName = "Sản phẩm"
+  //     break;
       
-    case '/csp/productInqueries/detail':
-     functionName = "Chi tiết sản phẩm"
-     break;
+  //   case '/csp/productInqueries/detail':
+  //    functionName = "Chi tiết sản phẩm"
+  //    break;
   
-    case '/csp/endUserInqueries/':
-      functionName = "Khách hàng"
-      break;
+  //   case '/csp/endUserInqueries/':
+  //     functionName = "Khách hàng"
+  //     break;
         
       
-    case '/csp/endUserInqueries/detail':
-      functionName = "Chi tiết Khách hàng"
-      break;      
-  }
+  //   case '/csp/endUserInqueries/detail':
+  //     functionName = "Chi tiết Khách hàng"
+  //     break;      
+  // }
   return {
     header : null
     // headerStyle: {

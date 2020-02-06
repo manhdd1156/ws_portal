@@ -1,6 +1,6 @@
 import { Notifications } from 'expo'
 import * as Permissions from 'expo-permissions';
-import * as firebase from 'firebase'
+// import * as firebase from 'firebase'
 import { Platform } from 'react-native'
 
 

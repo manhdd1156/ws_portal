@@ -4,7 +4,6 @@ import ProductInqueryFormContainer from '../containers/ProductInqueryFormContain
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 export default class ProductInqueryFormScreen extends Component {
   render() {
-    console.log('step 4 : OrderFormScreen')
     return (
       <ProductInqueryFormContainer navigation={this.props.navigation} />
     );

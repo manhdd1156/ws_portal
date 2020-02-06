@@ -7,7 +7,6 @@ import HeaderButton from '../../../userControls/HeaderButton';
 import { Colors } from "../../../constants/config"
 export default class HomeScreen extends Component {
   render() {
-    console.log('step 2 : HomeScreen')
     return (
       <HomeContainer navigation={this.props.navigation} />
     );
