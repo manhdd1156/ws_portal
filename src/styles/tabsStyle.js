@@ -8,9 +8,9 @@ export const styles = StyleSheet.create({
   },
   tabContainerStyle: {
     elevation: 0,
-    backgroundColor: 'white',
+    backgroundColor: Colors.transparentColor,
     flex: 1,
-    height: verticalScale(40)
+    height: verticalScale(40),
   },
   tabBarUnderlineStyle: {
     height: 0
