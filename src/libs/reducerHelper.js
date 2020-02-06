@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { getDefaultModelValue } from '../libs/modelHelper';
 import { DATA_TYPE } from '../constants/dataType';
 import { ITEM_AMOUNT_PER_PAGE } from '../constants/config';
-import { ACTIONS as HOME_ACTIONS, CHANGE_CURRENT_FUNCTION } from '../modules/csp/actions/homeAction';
+import { ACTIONS as HOME_ACTIONS, CHANGE_CURRENT_FUNCTION } from '../modules/home/actions/homeAction';
 import { SAVE_QUERY_STATE, SAVE_OBJECT_SURFFING_STATE } from './constants/actionConstant';
 import { convertModelName2ApiEndpoint } from './apiHelper';
 import { OPERATOR_SIGN } from './constants/mongoOperator';

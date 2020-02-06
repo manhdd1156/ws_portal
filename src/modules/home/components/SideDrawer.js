@@ -8,37 +8,35 @@ import {
   Alert,
   Linking,
   Image,
-  SectionList,
+  FlatList
 } from "react-native";
-import { Colors, scale, moderateScale, verticalScale } from '../../../constants/config';
 import { NavigationActions } from 'react-navigation';
 import Constants from "expo-constants";
-import { convertCspFunctionList } from '../../../libs/componentHelper'
+import { convertFunctionList, convertModuleList } from '../../../libs/componentHelper'
 const imageUser = require('../../../assets/images/user-image.png');
 const logo = require('../../../assets/images/fit-logo2.png')
 import { styles } from '../styles/sideDrawerStyle';
 export default class SideDrawer extends Component {
   constructor(props) {
     super(props);
-    // console.log('props : ', props)
     this.state = {
       ...this.state,
 
     }
   }
 
-  navigateToScreen = (route, functionId) => async () => {
+  navigateToScreen = (route, modName) => async () => {
+    console.log('modName :', modName)
     const navigateAction = NavigationActions.navigate({
-      routeName: route
-    });
-    if (route === "/csp/dashboard/") {
+      routeName: route.toUpperCase()
+    }, { moduleName: modName });
+    if (route === "home") {
       this.props.navigation.closeDrawer()
     }
     else if (route === "SignOut") {
       await this.props.onLogout();
       this.props.navigation.navigate('Auth');
     } else {
-      this.props.handleChangeCurrentFunction(functionId);
       this.props.navigation.dispatch(navigateAction);
     }
 
@@ -62,8 +60,8 @@ export default class SideDrawer extends Component {
       .catch(err => console.log(err));
   };
   render() {
-    const { functionList, user } = this.props
-    const cspFunctionList = convertCspFunctionList(functionList)
+    const { user, moduleList } = this.props
+    console.log('this.props :', this.props)
     return (
       <View
         style={
@@ -82,23 +80,19 @@ export default class SideDrawer extends Component {
         <View style={styles.line}>
         </View>
         <ScrollView>
-          <TouchableOpacity onPress={this.navigateToScreen('/csp/dashboard/')}>
+          <TouchableOpacity onPress={this.navigateToScreen('home')}>
             <View style={styles.drawerItem}>
               <Text style={styles.drawerItemText}>Trang chủ</Text>
             </View>
           </TouchableOpacity>
-          <SectionList
+          <FlatList
             keyExtractor={(item, index) => item._id}
-            sections={cspFunctionList}
-            renderSectionHeader={({ section }) => (
-              <View >
-                <Text style={{ paddingLeft: scale(5) }}>{section.title}</Text>
-              </View>
-            )}
+            data={moduleList}
+           
             renderItem={(itemData) => (
-              <TouchableOpacity onPress={this.navigateToScreen(itemData.item.functionUrl, itemData.item.functionId)}>
+              <TouchableOpacity onPress={this.navigateToScreen(itemData.item.moduleCode, itemData.item.moduleName)}>
                 <View style={styles.drawerItem}>
-                  <Text style={styles.drawerItemText}>{itemData.item.functionName}</Text>
+                  <Text style={styles.drawerItemText}>{itemData.item.moduleName}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -124,7 +118,4 @@ export default class SideDrawer extends Component {
   }
 }
 
-// SideDrawer.propTypes = {
-//   navigation: PropTypes.object
-// };
 

@@ -12,73 +12,24 @@ import ProductInqueryFormScreen from "./csp/screens/ProductInqueryFormScreen";
 import EndUserInqueryListScreen from "./csp/screens/EndUserInqueryListScreen";
 import EndUserInqueryFormScreen from "./csp/screens/EndUserInqueryFormScreen";
 
-import SigninScreen from "./csp/screens/SigninScreen";
-import HomeScreen from './csp/screens/HomeScreen'
+import SigninScreen from "./home/screens/SigninScreen";
+import SideDrawerScreen from "./home/screens/SideDrawerScreen";
+import AuthLoadingScreen from './home/screens/AuthLoadingScreen';
+import HomeScreen from './home/screens/HomeScreen'
 import OrderListScreen from "./csp/screens/OrderListScreen";
 import OrderFormScreen from "./csp/screens/OrderFormScreen";
-import SideDrawerScreen from "./csp/screens/SideDrawerScreen";
-import AuthLoadingScreen from './csp/screens/AuthLoadingScreen';
+
 // import HeaderButton from '../userControls/HeaderButton';
 // import TopBarTitle from '../userControls/TopBarTitle'
 // import { Colors } from '../constants/config';
 
-const defaultStackNavOptions = (params) => {
-  // let functionName;
-
-  // switch (params.navigation.state.routeName) {
-  //   case '/csp/dashboard/':
-  //     functionName = "Trang chủ"
-  //     break;
-  //   case '/csp/order/':
-  //     functionName = "Đơn hàng"
-  //     break;
-  //   case '/csp/order/detail':
-  //     functionName = "Chi tiết đơn hàng"
-  //     break;
-
-  //   case '/csp/productInqueries/':
-  //     functionName = "Sản phẩm"
-  //     break;
-      
-  //   case '/csp/productInqueries/detail':
-  //    functionName = "Chi tiết sản phẩm"
-  //    break;
-  
-  //   case '/csp/endUserInqueries/':
-  //     functionName = "Khách hàng"
-  //     break;
-        
-      
-  //   case '/csp/endUserInqueries/detail':
-  //     functionName = "Chi tiết Khách hàng"
-  //     break;      
-  // }
+const defaultStackNavOptions = (params) => { // config header của screen
+  console.log('navigation params :', params)
   return {
-    header : null
-    // headerStyle: {
-    //   backgroundColor: Platform.OS === 'android' ? Colors.transparentColor : ''
-    // },
-
-    // headerBackTitleStyle: {
-    //   // fontFamily: 'open-sans'
-    // },
-    // headerLeft: (
-    //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
-    //     <Item
-    //       title="back"
-    //       iconName="ios-arrow-back"
-    //       onPress={() => {
-    //         params.navigation.goBack();
-    //       }}
-    //     />
-    //   </HeaderButtons>
-    // ),
-    // headerTintColor: Colors.primaryColor,
-    // headerTitle: () => (<TopBarTitle functionName={functionName} />
-    // )
+    headerShown: false
   }
 };
-const HomeStack = createStackNavigator(
+const CSPStack = createStackNavigator(
   {
     '/csp/dashboard/': {
       screen: HomeScreen,
@@ -105,17 +56,37 @@ const HomeStack = createStackNavigator(
     '/csp/endUserInqueries/detail': {
       screen: EndUserInqueryFormScreen
     },
-    
+
 
   },
   {
-    // initialRouteName: 'Categories',
+    initialRouteName: '/csp/dashboard/',
     defaultNavigationOptions: defaultStackNavOptions
   }
 );
+const ESDStack = createStackNavigator(
+  {
+    '/esd/dashboard/': {
+      screen: HomeScreen,
+    },
+  },
+  {
+    initialRouteName: '/esd/dashboard/',
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+const ModuleStack = createSwitchNavigator(
+  {
+    CSP: CSPStack,
+    ESD: ESDStack,
+  },
+  {
+    initialRouteName: 'CSP',
+  },
+);
 const AppStack = createDrawerNavigator({
   Main: {
-    screen: HomeStack,
+    screen: ModuleStack,
   },
   Signin: {
     screen: SigninScreen,

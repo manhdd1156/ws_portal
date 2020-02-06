@@ -10,6 +10,7 @@ const getSystemState = (currentState, systemState) => systemState;
 
 // expensive calculation
 const getFunctionProps = (currentState, systemState) => {
+    console.log('systemState :', systemState)
     const {
         currentFunctionId,
         currentFunctionName,
@@ -54,7 +55,7 @@ const getFunctionProps = (currentState, systemState) => {
         queryList, selectedQueryId,
         query, defaultQuery, objectList,
         pageLoad,
-        prevObjectId, objectId, nextObjectId, modalVisible, showCheckbox,rowRef
+        prevObjectId, objectId, nextObjectId, modalVisible, showCheckbox, rowRef
     } = currentState;
     // console.log('user info :', user)
     return {

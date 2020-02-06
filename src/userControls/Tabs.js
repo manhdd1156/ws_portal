@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from "react-native";
 import { Icon, Tabs as TabsLib, Tab as TabLib, Header, TabHeading, ScrollableTab, Container, Content } from 'native-base';
 import { Colors, scale, verticalScale } from '../constants/config';
+import { PropsChildrenPropType } from '../libs/componentHelper'
 import { styles } from '../styles/tabsStyle';
 export default class Tabs extends Component {
   static get propTypes() {

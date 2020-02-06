@@ -131,7 +131,7 @@ export default class ListNavigator extends Component {
                   </View>
                   <View style={styles.navigatorView}>
 
-                    <ScrollView style={styles.actionView} horizontal={true} >
+                    <ScrollView style={styles.actionView} contentContainerStyle={styles.contentContainerActionView} horizontal={true} >
                       {(selectedAmount > 0) && (actionCount > 0) && actionList.map((action) => {
                         return (
                           <TouchableOpacity style={styles.actionButtonStyle} onPress={() => { this.onChangeActionList(action.actionCode) }}>

@@ -15,7 +15,7 @@ import { NavigationActions, StackActions } from 'react-navigation'
 import { Notifications } from 'expo';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { convertCspFunctionList } from '../../../libs/componentHelper'
+import { convertFunctionList } from '../../../libs/componentHelper'
 import registerForPushNotificationAsync from '../../../constants/registerForPushNotificationsAsync'
 import { checkLogin } from '../../../libs/componentHelper';
 import io from 'socket.io-client/dist/socket.io';
@@ -114,9 +114,11 @@ export default class Home extends Component {
     };
     render() {
         const { notification, currentRole } = this.state
+        console.log('home this : ', this)
         const { functionList } = this.props
-        const cspFunctionList = convertCspFunctionList(functionList)
-        if (cspFunctionList.length === 0) return (<React.Fragment />);
+
+        const renderFunctionList = convertFunctionList(functionList)
+        if (renderFunctionList.length === 0) return (<React.Fragment />);
         const renderGridItem = (itemData) => {
             const numColumns = 2;
             // console.log('itemData : ', itemData)
@@ -189,7 +191,7 @@ export default class Home extends Component {
                 >
                     <SectionList
                         keyExtractor={(item, index) => item._id}
-                        sections={cspFunctionList}
+                        sections={renderFunctionList}
                         renderSectionHeader={({ section }) => (
                             <View style={styles.titleView}>
                                 <Text style={styles.titleText}>{section.title}</Text>

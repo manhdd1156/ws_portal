@@ -223,6 +223,7 @@ async function logout(getState) {
     return new Promise(async (resolve, reject) => {
         try {
             const currentState = await getState();
+
             const { token } = currentState.system;
             // axios.post(`${API_LOGIN_URL}/user/logout`, {}, {
             //     headers: {

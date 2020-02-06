@@ -9,3 +9,9 @@ export default class ProductInqueryFormScreen extends Component {
     );
   };
 };
+// CustomerFormScreen.navigationOptions = navData => {
+//   return {
+//     headerLeft: null
+
+//   }
+// }

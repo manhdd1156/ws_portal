@@ -1,10 +1,10 @@
 import { getStateName, stateSelector } from './containerHelper';
-import { action as homeAction } from '../modules/csp/actions/homeAction';
+import { action as homeAction } from '../modules/home/actions/homeAction';
 
 export const getStateProps = (state, moduleName, modelName) => {
   const stateName = getStateName(moduleName, modelName);
 
-  return stateSelector(state[stateName], state.system, stateName);
+  return stateSelector(state[moduleName][stateName], state.system, stateName);
 };
 
 export const getDispatchProps = (dispatch, action) => ({

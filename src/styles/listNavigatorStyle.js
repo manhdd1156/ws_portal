@@ -28,6 +28,8 @@ export const styles = StyleSheet.create({
   },
   actionView: {
     flex: 1,
+  },
+  contentContainerActionView: {
     justifyContent: 'space-between',
     alignItems: 'stretch',
   },

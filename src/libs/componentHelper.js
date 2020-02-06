@@ -390,23 +390,49 @@ export const listOptionsSelector = createCachedSelector(
   },
 )((objectList, keyField, codeField, nameField, fieldName) => fieldName);
 
-export const convertCspFunctionList = (functionList) => {
-  if (functionList) {
-    let resultCspFunction = [];
+export const convertModuleList = (moduleList) => {
+  if (moduleList) {
+    let resultModules = [];
     let titles = [];
-    functionList.filter(object => object.moduleCode === 'csp').map(async (object) => {
+    console.log('moduleList : ', moduleList)
+    // moduleList.map(async (object) => {
+    //   if (titles.includes(object.moduleName) && object.moduleName !== '') { // nếu moduleName là rỗng thì k lấy vì nó chỉ là object title
+    //     resultModules.map((objectExist) => {
+    //       if (objectExist.title.includes(object.moduleName)) {
+    //         objectExist.data.push(object)
+    //       }
+    //     })
+    //   } else if (object.moduleName !== '') {
+    //     titles.push(object.moduleName)
+    //     resultModules.push({ title: object.moduleName, data: [object] })
+    //   }
+    // })
+    moduleList.map(async (object) => {
+      resultModules.push(object.moduleName)
+    })
+    return resultModules
+  }
+  return [];
+}
+
+export const convertFunctionList = (functionList) => {
+  if (functionList) {
+    let resultFunctions = [];
+    let titles = [];
+    console.log('functionList : ', functionList)
+    functionList.map(async (object) => {
       if (titles.includes(object.functionParentName) && object.functionParentName !== '') { // nếu functionParentName là rỗng thì k lấy vì nó chỉ là object title
-        resultCspFunction.map((objectExist) => {
+        resultFunctions.map((objectExist) => {
           if (objectExist.title.includes(object.functionParentName)) {
             objectExist.data.push(object)
           }
         })
       } else if (object.functionParentName !== '') {
         titles.push(object.functionParentName)
-        resultCspFunction.push({ title: object.functionParentName, data: [object] })
+        resultFunctions.push({ title: object.functionParentName, data: [object] })
       }
     })
-    return resultCspFunction
+    return resultFunctions
   }
   return [];
 }
@@ -443,6 +469,8 @@ export function removeJunkValue(self, query) {
 
 export async function checkLogin(self) {
   const token = await getToken();
+  console.log('self in home : ', self, self.props.navigation.getParam('moduleName'), self.props.navigation.state.routeName.split('/')[1])
+
   console.log('token : ', token)
 
   if (!token) {
@@ -455,7 +483,8 @@ export async function checkLogin(self) {
   if (status !== 'authenticated') { //  || !user
     try {
       const data = {
-        moduleCode: MODULE_CODE,
+        // moduleCode: MODULE_CODE,
+        moduleCode: self.props.navigation.state.routeName.split('/')[1],
       };
       const result = await axios({
         method: 'POST',
@@ -471,6 +500,7 @@ export async function checkLogin(self) {
       // const location = history.location.pathname;
       const location = self.props.navigation.state.routeName;
       const userData = result.data.data;
+      console.log('userData : ', userData)
       const { currentModuleId, moduleList, functionList } = userData;
 
       let currentFunctionId = '';
