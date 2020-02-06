@@ -4,7 +4,6 @@ import EndUserInqueryFormContainer from '../containers/EndUserInqueryFormContain
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 export default class EndUserInqueryFormScreen extends Component {
   render() {
-    console.log('step 4 : OrderFormScreen')
     return (
       <EndUserInqueryFormContainer navigation={this.props.navigation} />
     );
