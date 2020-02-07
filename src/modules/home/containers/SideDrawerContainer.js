@@ -20,7 +20,6 @@ function mapStateToProps(state) {
         currentFunctionUrl,
         currentFunctionActionList,
     } = state.system;
-    // console.log('state home : ', state.csp_signin)
 
     return {
         user,

@@ -24,7 +24,6 @@ const backgroundImage = require('../../../assets/images/background2.png');
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        console.log('Component/Home :')
         // initComponent(this, props);
 
         this.state = {
@@ -114,7 +113,6 @@ export default class Home extends Component {
     };
     render() {
         const { notification, currentRole } = this.state
-        console.log('home this : ', this)
         const { functionList } = this.props
 
         const renderFunctionList = convertFunctionList(functionList)
@@ -138,7 +136,6 @@ export default class Home extends Component {
                             try {
                                 console.log('itemData.section.data[i].functionUrl :', itemData.section.data[i].functionUrl)
                                 this.props.handleChangeCurrentFunction(itemData.section.data[i].functionId);
-                                // console.log('this.props :', this)
                                 this.props.navigation.navigate({
                                     routeName: itemData.section.data[i].functionUrl,
                                     // params: {

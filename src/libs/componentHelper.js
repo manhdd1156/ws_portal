@@ -419,7 +419,6 @@ export const convertFunctionList = (functionList) => {
   if (functionList) {
     let resultFunctions = [];
     let titles = [];
-    console.log('functionList : ', functionList)
     functionList.map(async (object) => {
       if (titles.includes(object.functionParentName) && object.functionParentName !== '') { // nếu functionParentName là rỗng thì k lấy vì nó chỉ là object title
         resultFunctions.map((objectExist) => {
@@ -469,7 +468,6 @@ export function removeJunkValue(self, query) {
 
 export async function checkLogin(self) {
   const token = await getToken();
-  console.log('self in home : ', self, self.props.navigation.getParam('moduleName'), self.props.navigation.state.routeName.split('/')[1])
 
   console.log('token : ', token)
 
@@ -479,7 +477,6 @@ export async function checkLogin(self) {
   }
 
   const { status, handleReloginUserSuccess } = self.props;
-  console.log('status : ', status)
   if (status !== 'authenticated') { //  || !user
     try {
       const data = {
@@ -500,7 +497,6 @@ export async function checkLogin(self) {
       // const location = history.location.pathname;
       const location = self.props.navigation.state.routeName;
       const userData = result.data.data;
-      console.log('userData : ', userData)
       const { currentModuleId, moduleList, functionList } = userData;
 
       let currentFunctionId = '';
@@ -546,7 +542,6 @@ export async function checkLogin(self) {
         }
       }
       // currentFunctionId = '545454545454545'
-      console.log('currentFunctionId :', currentFunctionId)
       setFunctionId(currentFunctionId);
 
       handleReloginUserSuccess(

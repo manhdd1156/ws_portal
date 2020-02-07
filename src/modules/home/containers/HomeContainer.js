@@ -8,7 +8,6 @@ import { getStateProps, getDispatchProps } from '../../../libs/listContainerHelp
 import { model } from '../models/homeModel';
 
 function mapStateToProps(state) {
-  console.log('state in home HomeContainer >> :', state)
   const {
     user,
     account,
@@ -20,7 +19,6 @@ function mapStateToProps(state) {
     currentFunctionUrl,
     currentFunctionActionList,
   } = state.system;
-  console.log('state home : ', state.system)
   // console.log('state home2 : ', state.system)
   return {
     user,

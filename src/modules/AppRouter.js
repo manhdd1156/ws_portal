@@ -24,7 +24,6 @@ import OrderFormScreen from "./csp/screens/OrderFormScreen";
 // import { Colors } from '../constants/config';
 
 const defaultStackNavOptions = (params) => { // config header của screen
-  console.log('navigation params :', params)
   return {
     headerShown: false
   }
@@ -75,13 +74,25 @@ const ESDStack = createStackNavigator(
     defaultNavigationOptions: defaultStackNavOptions
   }
 );
-const ModuleStack = createSwitchNavigator(
+const SalesStack = createStackNavigator(
   {
-    CSP: CSPStack,
-    ESD: ESDStack,
+    '/sales/dashboard/': {
+      screen: HomeScreen,
+    },
   },
   {
-    initialRouteName: 'CSP',
+    initialRouteName: '/sales/dashboard/',
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+const ModuleStack = createSwitchNavigator(
+  {
+    csp: CSPStack,
+    esd: ESDStack,
+    sales: SalesStack,
+  },
+  {
+    initialRouteName: 'csp',
   },
 );
 const AppStack = createDrawerNavigator({

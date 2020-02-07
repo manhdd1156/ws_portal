@@ -26,9 +26,12 @@ export default class SideDrawer extends Component {
   }
 
   navigateToScreen = (route, modName) => async () => {
-    console.log('modName :', modName)
+    console.log('moduleCode :', route)
+    console.log('moduleName :', modName)
+    console.log('this.props.navigation :', this.props.navigation)
+    console.log('NavigationActions :', NavigationActions)
     const navigateAction = NavigationActions.navigate({
-      routeName: route.toUpperCase()
+      routeName: route
     }, { moduleName: modName });
     if (route === "home") {
       this.props.navigation.closeDrawer()
@@ -61,7 +64,6 @@ export default class SideDrawer extends Component {
   };
   render() {
     const { user, moduleList } = this.props
-    console.log('this.props :', this.props)
     return (
       <View
         style={
@@ -88,7 +90,7 @@ export default class SideDrawer extends Component {
           <FlatList
             keyExtractor={(item, index) => item._id}
             data={moduleList}
-           
+
             renderItem={(itemData) => (
               <TouchableOpacity onPress={this.navigateToScreen(itemData.item.moduleCode, itemData.item.moduleName)}>
                 <View style={styles.drawerItem}>
