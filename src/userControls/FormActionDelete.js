@@ -9,30 +9,31 @@ import { Alert } from 'react-native'
 import DefaultButton from './DefaultButton'
 import { Colors, moderateScale, scale } from '../constants/config';
 import { validateObjectId } from '../libs/commonHelper';
+import { onDeleteCustome } from '../functions/formActionDeleteFunction';
 
 export default class FormActionDelete extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onDeleteCustome = this.onDeleteCustome.bind(this);
+    this.onDeleteCustome = onDeleteCustome.bind(this, this);
   }
-  onDeleteCustome(t) {
-    const { onDeleteCancle, onDeleteConfirm } = this.context.self;
+  // onDeleteCustome(t) {
+  //   const { onDeleteCancle, onDeleteConfirm } = this.context.self;
 
-    Alert.alert(
-      'Thông báo',
-      t('msg.delete.confirmMessage'),
-      [
-        { text: t('btn.confirm'), onPress: onDeleteConfirm },
-        {
-          text: t('btn.cancel'),
-          // onPress: onDeleteCancle,
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false },
-    )
-  }
+  //   Alert.alert(
+  //     'Thông báo',
+  //     t('msg.delete.confirmMessage'),
+  //     [
+  //       { text: t('btn.confirm'), onPress: onDeleteConfirm },
+  //       {
+  //         text: t('btn.cancel'),
+  //         // onPress: onDeleteCancle,
+  //         style: 'cancel',
+  //       },
+  //     ],
+  //     { cancelable: false },
+  //   )
+  // }
 
   render() {
     const { self } = this.context;

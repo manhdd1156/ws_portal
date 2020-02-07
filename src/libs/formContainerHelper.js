@@ -3,7 +3,6 @@ import { action as homeAction } from '../modules/home/actions/homeAction';
 
 export const getStateProps = (state, moduleName, modelName) => {
   const stateName = getStateName(moduleName, modelName);
-
   return stateSelector(state[moduleName][stateName], state.system, stateName);
 };
 

@@ -468,7 +468,6 @@ export function removeJunkValue(self, query) {
 
 export async function checkLogin(self) {
   const token = await getToken();
-
   console.log('token : ', token)
 
   if (!token) {

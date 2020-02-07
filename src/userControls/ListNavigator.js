@@ -7,6 +7,7 @@ import { Translation } from 'react-i18next';
 import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { CheckBox } from "native-base"
 import { styles } from '../styles/listNavigatorStyle';
+import { selectAllObjectList , onChangeActionList } from '../functions/listNavigatorFunction';
 // import { ITEM_AMOUNT_PER_PAGE, ITEM_AMOUNT_PER_PAGE_VALUES, PAGE_RANGE_DISPLAYED } from '../constants/config';
 
 // const PageRender = ({
@@ -34,28 +35,28 @@ import { styles } from '../styles/listNavigatorStyle';
 export default class ListNavigator extends Component {
   constructor(props) {
     super(props);
-    this.selectAllObjectList = this.selectAllObjectList.bind(this);
-    this.onChangeActionList = this.onChangeActionList.bind(this);
+    this.selectAllObjectList = selectAllObjectList.bind(this, this);
+    this.onChangeActionList = onChangeActionList.bind(this, this);
   }
-  selectAllObjectList() {
-    const { self } = this.context;
-    const { state, onSelectAllObjectList } = self;
-    const { selectedAll } = state;
-    const data = { type: 'checkbox', checked: !selectedAll };
-    onSelectAllObjectList(data);
-  }
+  // selectAllObjectList() {
+  //   const { self } = this.context;
+  //   const { state, onSelectAllObjectList } = self;
+  //   const { selectedAll } = state;
+  //   const data = { type: 'checkbox', checked: !selectedAll };
+  //   onSelectAllObjectList(data);
+  // }
 
-  async onChangeActionList(value) {
-    const { self } = this.context;
-    const { state, onSelectAllObjectList } = self;
-    const { actionList } = self.props
-    if (value) {
-      const selecteAction = actionList.find(f => f.actionCode === value);
-      if (selecteAction) {
-        await (selecteAction.actionHandler)(self);
-      }
-    }
-  }
+  // async onChangeActionList(value) {
+  //   const { self } = this.context;
+  //   const { state, onSelectAllObjectList } = self;
+  //   const { actionList } = self.props
+  //   if (value) {
+  //     const selecteAction = actionList.find(f => f.actionCode === value);
+  //     if (selecteAction) {
+  //       await (selecteAction.actionHandler)(self);
+  //     }
+  //   }
+  // }
 
   render() {
     const { self } = this.context;
@@ -121,8 +122,8 @@ export default class ListNavigator extends Component {
 
                 <View style={styles.headerView}>
                   <View style={styles.selectAllView}>
-                    <TouchableOpacity style={styles.checkboxTouchArea} onPress={() => this.selectAllObjectList()}>
-                      <CheckBox onPress={() => this.selectAllObjectList()} checked={selectedAll} />
+                    <TouchableOpacity style={styles.checkboxTouchArea} onPress={this.selectAllObjectList}>
+                      <CheckBox onPress={this.selectAllObjectList} checked={selectedAll} />
                     </TouchableOpacity>
 
                     <View style={styles.resultSelectedView}>

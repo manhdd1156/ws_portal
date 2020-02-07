@@ -9,9 +9,3 @@ export default class EndUserInqueryFormScreen extends Component {
     );
   };
 };
-// CustomerFormScreen.navigationOptions = navData => {
-//   return {
-//     headerLeft: null
-
-//   }
-// }

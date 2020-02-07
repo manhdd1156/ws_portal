@@ -89,11 +89,11 @@ export async function apiCreate(endPoint, data) {
 }
 export async function apiGet(endPoint, queryString) {
     try {
-        console.log('endPoint : ', endPoint)
-        console.log('queryString : ', queryString)
-        console.log('API_GATEWAY_URL : ', API_GATEWAY_URL)
-        console.log('${API_GATEWAY_URL}/${endPoint}/${queryString} : ', `${API_GATEWAY_URL}/${endPoint}/${queryString}`)
-        console.log('token : ', await getRequestHeader())
+        // console.log('endPoint : ', endPoint)
+        // console.log('queryString : ', queryString)
+        // console.log('API_GATEWAY_URL : ', API_GATEWAY_URL)
+        // console.log('${API_GATEWAY_URL}/${endPoint}/${queryString} : ', `${API_GATEWAY_URL}/${endPoint}/${queryString}`)
+        // console.log('token : ', await getRequestHeader())
         const result = await axios({
             method: 'GET',
             url: `${API_GATEWAY_URL}/${endPoint}/${queryString}`,
@@ -153,38 +153,6 @@ export async function apiUpdateImage(endPoint, object, images) {
         return { error: error.response ? error.response : error };
     }
 
-}
-export async function apiUpload(fileList) {
-    try {
-        const tokenFromStorage = await getToken();
-        const data = new FormData();
-
-        /*
-        const config = {
-          onUploadProgress: (progressEvent) => {
-            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total );
-          }
-        };
-        */
-
-        fileList.forEach((file) => {
-            data.append(file.name, file);
-        });
-
-        const result = await axios({
-            method: 'POST',
-            data,
-            url: `${API_GATEWAY_URL}/v2/files`,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${tokenFromStorage}`,
-            },
-        });
-
-        return { data: result.data };
-    } catch (error) {
-        return { error: error.response ? error.response : error };
-    }
 }
 
 export async function apiUpdateById(endPoint, data) {

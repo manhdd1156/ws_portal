@@ -42,7 +42,6 @@ export default class OrderList extends Component {
   render() {
     this.onRedirect();
     const { loading } = this.state;
-    console.log('orderList : this.state : ', this.state)
     bindComponentToContext(
       [
         ListTitle, ListBody, AdvancedSearchScreen, ListActionList,

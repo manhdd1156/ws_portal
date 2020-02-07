@@ -9,9 +9,3 @@ export default class OrderFormScreen extends Component {
     );
   };
 };
-// CustomerFormScreen.navigationOptions = navData => {
-//   return {
-//     headerLeft: null
-
-//   }
-// }

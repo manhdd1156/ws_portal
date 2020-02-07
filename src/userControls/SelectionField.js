@@ -18,6 +18,7 @@ import _ from 'lodash';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 // import { fieldErrorSelector } from '../libs/errorHelper';
 import { getFieldAttribute, convertDataOptionList } from '../libs/commonHelper';
+import { onValueChange } from '../functions/selectionFieldFunction'
 
 export default class SelectionField extends Component {
   static get propTypes() {
@@ -55,17 +56,17 @@ export default class SelectionField extends Component {
   constructor(props) {
     super(props);
 
-    this.onValueChange = this.onValueChange.bind(this);
+    this.onValueChange = onValueChange.bind(this,this);
   }
-  onValueChange(text) {
-    const { name, multiple } = this.props;
-    const { onChange } = this.context.self;
-    // if (text === null || text === 'undefined' || text === '') return
-    console.log('text : ', text)
-    const data = { type: 'input.selectionField', name, value: multiple ? text : text[0] }; // thư viện selectionField này luôn trả về array dù mode là single => nếu là single thì lấy giá trị đầu ti 
-    // console.log('this : ', this)
-    onChange(data);
-  }
+  // onValueChange(text) {
+  //   const { name, multiple } = this.props;
+  //   const { onChange } = this.context.self;
+  //   // if (text === null || text === 'undefined' || text === '') return
+  //   console.log('text : ', text)
+  //   const data = { type: 'input.selectionField', name, value: multiple ? text : text[0] }; // thư viện selectionField này luôn trả về array dù mode là single => nếu là single thì lấy giá trị đầu ti 
+  //   // console.log('this : ', this)
+  //   onChange(data);
+  // }
 
   getProp = (object, key) => object && object[key]
 

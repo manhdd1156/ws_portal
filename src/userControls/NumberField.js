@@ -12,6 +12,7 @@ import { View, Text, TextInput } from 'react-native'
 import { fieldErrorSelector } from '../libs/errorHelper';
 import { getFieldAttribute } from '../libs/commonHelper';
 import {styles} from '../styles/numberFieldStyle';
+import { onValueChange } from '../functions/numberFieldFunction';
 
 export default class NumberField extends Component {
   static get propTypes() {
@@ -44,18 +45,18 @@ export default class NumberField extends Component {
   constructor(props) {
     super(props);
 
-    this.onValueChange = this.onValueChange.bind(this);
+    this.onValueChange = onValueChange.bind(this, this);
   }
 
-  onValueChange(values) {
-    const { name } = this.props;
-    const { self } = this.context;
-    const { onChange } = self;
-    console.log('value input text : ', values)
-    const data = { type: 'input.numberField', name, value: values };
+  // onValueChange(values) {
+  //   const { name } = this.props;
+  //   const { self } = this.context;
+  //   const { onChange } = self;
+  //   console.log('value input text : ', values)
+  //   const data = { type: 'input.numberField', name, value: values };
 
-    onChange(data);
-  }
+  //   onChange(data);
+  // }
 
   render() {
     const { self } = this.context;

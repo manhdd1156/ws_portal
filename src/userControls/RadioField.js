@@ -14,6 +14,7 @@ import { Icon } from 'native-base';
 import { Translation } from 'react-i18next';
 import { styles } from '../styles/radioFieldStyle';
 import { getFieldAttribute } from '../libs/commonHelper';
+import { onValueChange } from '../functions/radioFieldFunction';
 
 export default class RadioField extends Component {
   static get propTypes() {
@@ -37,14 +38,14 @@ export default class RadioField extends Component {
   constructor(props) {
     super(props);
 
-    this.onValueChange = this.onValueChange.bind(this);
+    this.onValueChange = onValueChange.bind(this, this);
   }
-  onValueChange(value) {
-    const { name } = this.props;
-    const { onChange } = this.context.self;
-    const data = { type: 'radio', name, checked: !value, };
-    onChange(data);
-  }
+  // onValueChange(value) {
+  //   const { name } = this.props;
+  //   const { onChange } = this.context.self;
+  //   const data = { type: 'radio', name, checked: !value, };
+  //   onChange(data);
+  // }
   render() {
     const { self } = this.context;
     if (!self || !self.state) return (<React.Fragment />);

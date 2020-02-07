@@ -10,7 +10,6 @@ const getSystemState = (currentState, systemState) => systemState;
 
 // expensive calculation
 const getFunctionProps = (currentState, systemState) => {
-    console.log('systemState :', systemState)
     const {
         currentFunctionId,
         currentFunctionName,
